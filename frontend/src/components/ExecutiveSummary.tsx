@@ -54,7 +54,7 @@ export function ExecutiveSummary({ story }: ExecutiveSummaryProps) {
           <article className="group relative overflow-hidden rounded-[28px] border border-[var(--color-border)] bg-[var(--color-coral-soft)] p-6">
             <div className="relative z-0">
               <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-[var(--color-muted)]">The crisis</p>
-              <p className="mt-4 text-6xl font-semibold text-[var(--color-coral)]">{story.crisisCard.gapPeak}</p>
+              <p className="mt-4 text-6xl font-semibold text-[var(--color-coral)]">-31pp</p>
               <p className="mt-4 text-sm leading-7 text-[var(--color-ink)]">
                 Peak gap year: {story.crisisCard.peakYear}. Applications were {story.crisisCard.applications} and originations were {story.crisisCard.originations}.
               </p>
