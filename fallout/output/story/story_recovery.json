@@ -1,0 +1,166 @@
+{
+  "gap_series": [
+    {
+      "year": 2007,
+      "applications": 21.82,
+      "originations": 10.44
+    },
+    {
+      "year": 2008,
+      "applications": 14.47,
+      "originations": 7.18
+    },
+    {
+      "year": 2009,
+      "applications": 15.2,
+      "originations": 8.95
+    },
+    {
+      "year": 2010,
+      "applications": 13.12,
+      "originations": 7.86
+    },
+    {
+      "year": 2011,
+      "applications": 11.93,
+      "originations": 7.1
+    },
+    {
+      "year": 2012,
+      "applications": 15.52,
+      "originations": 9.78
+    },
+    {
+      "year": 2013,
+      "applications": 14.22,
+      "originations": 8.71
+    },
+    {
+      "year": 2014,
+      "applications": 10.25,
+      "originations": 6.04
+    },
+    {
+      "year": 2015,
+      "applications": 12.27,
+      "originations": 7.4
+    },
+    {
+      "year": 2016,
+      "applications": 14.1,
+      "originations": 8.38
+    },
+    {
+      "year": 2017,
+      "applications": 12.2,
+      "originations": 7.34
+    }
+  ],
+  "milestones": {
+    "floor_year": 2008,
+    "recovery_start_year": 2009,
+    "approval_2007_pct": 48,
+    "approval_2009_pct": 59,
+    "approval_2012_pct": 63,
+    "approval_2017_pct": 60
+  },
+  "refi_series": [
+    {
+      "year": 2010,
+      "refiIndex": 100.0
+    },
+    {
+      "year": 2011,
+      "refiIndex": 87.0
+    },
+    {
+      "year": 2012,
+      "refiIndex": 133.9
+    },
+    {
+      "year": 2013,
+      "refiIndex": 103.6
+    },
+    {
+      "year": 2014,
+      "refiIndex": 47.8
+    },
+    {
+      "year": 2015,
+      "refiIndex": 65.3
+    },
+    {
+      "year": 2016,
+      "refiIndex": 75.9
+    },
+    {
+      "year": 2017,
+      "refiIndex": 50.9
+    }
+  ],
+  "refi_peak": {
+    "year": 2012,
+    "delta_from_baseline_pct": "+34%"
+  },
+  "loan_type_series": [
+    {
+      "year": 2007,
+      "conventional": 94,
+      "govtBacked": 6
+    },
+    {
+      "year": 2008,
+      "conventional": 79,
+      "govtBacked": 21
+    },
+    {
+      "year": 2009,
+      "conventional": 74,
+      "govtBacked": 26
+    },
+    {
+      "year": 2010,
+      "conventional": 77,
+      "govtBacked": 23
+    },
+    {
+      "year": 2011,
+      "conventional": 78,
+      "govtBacked": 22
+    },
+    {
+      "year": 2012,
+      "conventional": 79,
+      "govtBacked": 21
+    },
+    {
+      "year": 2013,
+      "conventional": 80,
+      "govtBacked": 20
+    },
+    {
+      "year": 2014,
+      "conventional": 77,
+      "govtBacked": 24
+    },
+    {
+      "year": 2015,
+      "conventional": 73,
+      "govtBacked": 26
+    },
+    {
+      "year": 2016,
+      "conventional": 73,
+      "govtBacked": 27
+    },
+    {
+      "year": 2017,
+      "conventional": 74,
+      "govtBacked": 26
+    }
+  ],
+  "structural_shift": {
+    "govt_share_2007_pct": "6%",
+    "govt_share_2017_pct": "26%"
+  }
+}

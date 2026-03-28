@@ -1,57 +1,57 @@
 [
   {
     "year": 2007,
-    "applications": 10.44,
+    "applications": 21.82,
     "originations": 10.44
   },
   {
     "year": 2008,
-    "applications": 7.18,
+    "applications": 14.47,
     "originations": 7.18
   },
   {
     "year": 2009,
-    "applications": 8.95,
+    "applications": 15.2,
     "originations": 8.95
   },
   {
     "year": 2010,
-    "applications": 7.86,
+    "applications": 13.12,
     "originations": 7.86
   },
   {
     "year": 2011,
-    "applications": 7.1,
+    "applications": 11.93,
     "originations": 7.1
   },
   {
     "year": 2012,
-    "applications": 9.78,
+    "applications": 15.52,
     "originations": 9.78
   },
   {
     "year": 2013,
-    "applications": 8.71,
+    "applications": 14.22,
     "originations": 8.71
   },
   {
     "year": 2014,
-    "applications": 6.04,
+    "applications": 10.25,
     "originations": 6.04
   },
   {
     "year": 2015,
-    "applications": 7.4,
+    "applications": 12.27,
     "originations": 7.4
   },
   {
     "year": 2016,
-    "applications": 8.38,
+    "applications": 14.1,
     "originations": 8.38
   },
   {
     "year": 2017,
-    "applications": 7.34,
+    "applications": 12.2,
     "originations": 7.34
   }
 ]

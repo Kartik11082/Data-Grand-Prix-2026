@@ -1,0 +1,136 @@
+{
+  "crisis_card": {
+    "gap_peak_pp": "-13pp",
+    "peak_year": 2008,
+    "applications_m": "14.5M",
+    "originations_m": "7.2M",
+    "sparkline": [
+      {
+        "year": 2007,
+        "applications": 21.82,
+        "originations": 10.44
+      },
+      {
+        "year": 2008,
+        "applications": 14.47,
+        "originations": 7.18
+      },
+      {
+        "year": 2009,
+        "applications": 15.2,
+        "originations": 8.95
+      },
+      {
+        "year": 2010,
+        "applications": 13.12,
+        "originations": 7.86
+      },
+      {
+        "year": 2011,
+        "applications": 11.93,
+        "originations": 7.1
+      },
+      {
+        "year": 2012,
+        "applications": 15.52,
+        "originations": 9.78
+      },
+      {
+        "year": 2013,
+        "applications": 14.22,
+        "originations": 8.71
+      },
+      {
+        "year": 2014,
+        "applications": 10.25,
+        "originations": 6.04
+      },
+      {
+        "year": 2015,
+        "applications": 12.27,
+        "originations": 7.4
+      },
+      {
+        "year": 2016,
+        "applications": 14.1,
+        "originations": 8.38
+      },
+      {
+        "year": 2017,
+        "applications": 12.2,
+        "originations": 7.34
+      }
+    ]
+  },
+  "structural_shift_card": {
+    "govt_share_2007_pct": 6,
+    "govt_share_2017_pct": 26
+  },
+  "recovery_card": {
+    "states": [
+      {
+        "state": "Colorado",
+        "bucket": "medium",
+        "value": "-1%"
+      },
+      {
+        "state": "North Dakota",
+        "bucket": "medium",
+        "value": "-9%"
+      },
+      {
+        "state": "Minnesota",
+        "bucket": "medium",
+        "value": "-10%"
+      },
+      {
+        "state": "New Mexico",
+        "bucket": "low",
+        "value": "-46%"
+      },
+      {
+        "state": "New Jersey",
+        "bucket": "low",
+        "value": "-47%"
+      },
+      {
+        "state": "Connecticut",
+        "bucket": "low",
+        "value": "-47%"
+      }
+    ],
+    "top_states": [
+      {
+        "state": "CO",
+        "value": "+-1%"
+      },
+      {
+        "state": "ND",
+        "value": "+-9%"
+      },
+      {
+        "state": "MN",
+        "value": "+-10%"
+      }
+    ],
+    "bottom_states": [
+      {
+        "state": "NM",
+        "value": "-46%"
+      },
+      {
+        "state": "NJ",
+        "value": "-47%"
+      },
+      {
+        "state": "CT",
+        "value": "-47%"
+      }
+    ],
+    "summary_sentence": "CO, ND, MN were leading the recovery while NJ and CT were still below baseline by 2017."
+  },
+  "footer": {
+    "headline": "The crisis lasted 2 years. The structural change it caused lasted a decade.",
+    "source_label": "Source: HMDA Historic Data 2007-2017 \u2014 Consumer Financial Protection Bureau"
+  }
+}

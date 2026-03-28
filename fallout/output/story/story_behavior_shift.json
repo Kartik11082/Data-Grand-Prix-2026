@@ -1,0 +1,214 @@
+{
+  "eras": {
+    "2007": {
+      "lender_mix": {
+        "conventional_pct": "94%",
+        "govt_backed_pct": "6%",
+        "second_mortgage_pct": "9%"
+      },
+      "borrower_profile": {
+        "median_income_usd": "$76,000",
+        "approval_rate_pct": "48%",
+        "dominant_purpose_label": "Refinancing",
+        "dominant_purpose_pct": "46%",
+        "received_loan_type_label": "Conventional (private)"
+      },
+      "geography": {
+        "states": [
+          {
+            "state": "California",
+            "value": "1.2M",
+            "bucket": "high"
+          },
+          {
+            "state": "Florida",
+            "value": "735K",
+            "bucket": "high"
+          },
+          {
+            "state": "Texas",
+            "value": "653K",
+            "bucket": "high"
+          },
+          {
+            "state": "Illinois",
+            "value": "470K",
+            "bucket": "high"
+          },
+          {
+            "state": "Pennsylvania",
+            "value": "427K",
+            "bucket": "high"
+          },
+          {
+            "state": "District of Columbia",
+            "value": "23K",
+            "bucket": "low"
+          },
+          {
+            "state": "Alaska",
+            "value": "21K",
+            "bucket": "low"
+          },
+          {
+            "state": "Wyoming",
+            "value": "21K",
+            "bucket": "low"
+          },
+          {
+            "state": "Vermont",
+            "value": "20K",
+            "bucket": "low"
+          },
+          {
+            "state": "North Dakota",
+            "value": "17K",
+            "bucket": "low"
+          }
+        ],
+        "top_states": [
+          {
+            "state": "CA",
+            "value": "1.2M",
+            "label": "Top lending state by volume"
+          },
+          {
+            "state": "FL",
+            "value": "735K",
+            "label": "Top lending state by volume"
+          },
+          {
+            "state": "TX",
+            "value": "653K",
+            "label": "Top lending state by volume"
+          }
+        ],
+        "bottom_states": [
+          {
+            "state": "WY",
+            "value": "21K",
+            "label": "Smallest lending volume"
+          },
+          {
+            "state": "VT",
+            "value": "20K",
+            "label": "Smallest lending volume"
+          },
+          {
+            "state": "ND",
+            "value": "17K",
+            "label": "Smallest lending volume"
+          }
+        ]
+      }
+    },
+    "2017": {
+      "lender_mix": {
+        "conventional_pct": "74%",
+        "govt_backed_pct": "26%",
+        "second_mortgage_pct": "3%"
+      },
+      "borrower_profile": {
+        "median_income_usd": "$83,000",
+        "approval_rate_pct": "60%",
+        "dominant_purpose_label": "Purchase",
+        "dominant_purpose_pct": "58%",
+        "received_loan_type_label": "Conventional (private)"
+      },
+      "geography": {
+        "states": [
+          {
+            "state": "Colorado",
+            "value": "0.99",
+            "bucket": "medium"
+          },
+          {
+            "state": "North Dakota",
+            "value": "0.91",
+            "bucket": "medium"
+          },
+          {
+            "state": "Minnesota",
+            "value": "0.9",
+            "bucket": "medium"
+          },
+          {
+            "state": "Texas",
+            "value": "0.86",
+            "bucket": "medium"
+          },
+          {
+            "state": "Iowa",
+            "value": "0.86",
+            "bucket": "medium"
+          },
+          {
+            "state": "Illinois",
+            "value": "0.56",
+            "bucket": "low"
+          },
+          {
+            "state": "Maryland",
+            "value": "0.55",
+            "bucket": "low"
+          },
+          {
+            "state": "New Mexico",
+            "value": "0.54",
+            "bucket": "low"
+          },
+          {
+            "state": "Connecticut",
+            "value": "0.53",
+            "bucket": "low"
+          },
+          {
+            "state": "New Jersey",
+            "value": "0.53",
+            "bucket": "low"
+          }
+        ],
+        "top_states": [
+          {
+            "state": "CO",
+            "value": "0.99",
+            "label": "Fast recovery index"
+          },
+          {
+            "state": "ND",
+            "value": "0.91",
+            "label": "Fast recovery index"
+          },
+          {
+            "state": "MN",
+            "value": "0.9",
+            "label": "Fast recovery index"
+          }
+        ],
+        "bottom_states": [
+          {
+            "state": "NM",
+            "value": "0.54",
+            "label": "Still below baseline"
+          },
+          {
+            "state": "CT",
+            "value": "0.53",
+            "label": "Still below baseline"
+          },
+          {
+            "state": "NJ",
+            "value": "0.53",
+            "label": "Still below baseline"
+          }
+        ]
+      }
+    }
+  },
+  "comparison": {
+    "borrower_summary_2007": "The 2007 borrower had a median income of $76,000 with a 48% approval rate.",
+    "borrower_summary_2017": "The 2017 borrower earns $83,000 but faces a 60% approval rate.",
+    "lender_summary_2007": "Taking on risk was the business model.",
+    "lender_summary_2017": "Safety first. Government guarantees preferred."
+  }
+}

@@ -1,0 +1,70 @@
+{
+  "approval_shift": {
+    "base_year": 2007,
+    "base_pct": 48,
+    "floor_year": 2008,
+    "floor_pct": 50,
+    "drop_pp": -2
+  },
+  "markers": {
+    "collapse_label_year": 2008,
+    "floor_year": 2008
+  },
+  "gap_series": [
+    {
+      "year": 2007,
+      "applications": 21.82,
+      "originations": 10.44,
+      "approvalRate": 48,
+      "denialRate": 27.3
+    },
+    {
+      "year": 2008,
+      "applications": 14.47,
+      "originations": 7.18,
+      "approvalRate": 50,
+      "denialRate": 27.3
+    },
+    {
+      "year": 2009,
+      "applications": 15.2,
+      "originations": 8.95,
+      "approvalRate": 59,
+      "denialRate": 19.8
+    },
+    {
+      "year": 2010,
+      "applications": 13.12,
+      "originations": 7.86,
+      "approvalRate": 60,
+      "denialRate": 19.5
+    }
+  ],
+  "kpis": {
+    "applications_peak_m": "21.8M",
+    "originations_floor_m": "7.2M",
+    "approval_drop_pct": "-2pp"
+  },
+  "loan_type_series": [
+    {
+      "year": 2007,
+      "conventional": 94,
+      "govtBacked": 6
+    },
+    {
+      "year": 2008,
+      "conventional": 79,
+      "govtBacked": 21
+    },
+    {
+      "year": 2009,
+      "conventional": 74,
+      "govtBacked": 26
+    },
+    {
+      "year": 2010,
+      "conventional": 77,
+      "govtBacked": 23
+    }
+  ]
+}

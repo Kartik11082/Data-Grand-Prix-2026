@@ -1,0 +1,30 @@
+{
+  "dataset": {
+    "label": "HMDA",
+    "start_year": 2007,
+    "end_year": 2017,
+    "total_records": "155.1M"
+  },
+  "hero": {
+    "metric_value": 13,
+    "metric_unit": "percentage points",
+    "description": "The drop in approval rates from 2012 to 2008"
+  },
+  "chips": [
+    {
+      "value": "21.8M",
+      "label": "applications at the 2007 peak",
+      "year": 2007
+    },
+    {
+      "value": "7.2M",
+      "label": "originated in the 2008 floor",
+      "year": 2008
+    },
+    {
+      "value": "1",
+      "label": "years until recovery began",
+      "year": 2009
+    }
+  ]
+}
