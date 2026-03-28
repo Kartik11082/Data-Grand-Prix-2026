@@ -168,18 +168,18 @@ export function ActOne({ onPrev, onNext, story }: ActOneProps) {
             <div className="mt-6 grid gap-4 md:grid-cols-3">
               {(gapSeries.length > 0
                 ? gapSeries.slice(0, 3).map((point) => (
-                    <div key={point.year} className="rounded-[20px] border border-[var(--color-border)] bg-white/80 p-4">
-                      <p className="text-xs uppercase tracking-[0.24em] text-[var(--color-muted)]">{point.year}</p>
-                      <p className="mt-3 text-sm text-[var(--color-ink)]">{point.applications}M applications</p>
-                      <p className="mt-1 text-sm text-[var(--color-ink)]">{point.originations}M originations</p>
-                      <p className="mt-1 text-sm text-[var(--color-coral)]">{point.approvalRate ?? "X"}% approval rate</p>
-                    </div>
-                  ))
+                  <div key={point.year} className="rounded-[20px] border border-[var(--color-border)] bg-white/80 p-4">
+                    <p className="text-xs uppercase tracking-[0.24em] text-[var(--color-muted)]">{point.year}</p>
+                    <p className="mt-3 text-sm text-[var(--color-ink)]">{point.applications}M applications</p>
+                    <p className="mt-1 text-sm text-[var(--color-ink)]">{point.originations}M originations</p>
+                    <p className="mt-1 text-sm text-[var(--color-coral)]">{point.approvalRate ?? "X"}% approval rate</p>
+                  </div>
+                ))
                 : [
-                    <div key="gap-x-1" className="rounded-[20px] border border-[var(--color-border)] bg-white/80 p-4 text-sm text-[var(--color-muted)]">X</div>,
-                    <div key="gap-x-2" className="rounded-[20px] border border-[var(--color-border)] bg-white/80 p-4 text-sm text-[var(--color-muted)]">X</div>,
-                    <div key="gap-x-3" className="rounded-[20px] border border-[var(--color-border)] bg-white/80 p-4 text-sm text-[var(--color-muted)]">X</div>,
-                  ])}
+                  <div key="gap-x-1" className="rounded-[20px] border border-[var(--color-border)] bg-white/80 p-4 text-sm text-[var(--color-muted)]">X</div>,
+                  <div key="gap-x-2" className="rounded-[20px] border border-[var(--color-border)] bg-white/80 p-4 text-sm text-[var(--color-muted)]">X</div>,
+                  <div key="gap-x-3" className="rounded-[20px] border border-[var(--color-border)] bg-white/80 p-4 text-sm text-[var(--color-muted)]">X</div>,
+                ])}
             </div>
           </article>
 
@@ -230,18 +230,18 @@ export function ActOne({ onPrev, onNext, story }: ActOneProps) {
             <div className="mt-6 grid gap-4 md:grid-cols-4">
               {(loanTypeSeries.length > 0
                 ? loanTypeSeries.map((point) => (
-                    <div key={point.year} className="rounded-[20px] border border-[var(--color-border)] bg-white/80 p-4">
-                      <p className="text-xs uppercase tracking-[0.24em] text-[var(--color-muted)]">{point.year}</p>
-                      <p className="mt-2 text-sm text-[var(--color-accent)]">{point.conventional}% conventional</p>
-                      <p className="mt-1 text-sm text-[var(--color-mint)]">{point.govtBacked}% government-backed</p>
-                    </div>
-                  ))
+                  <div key={point.year} className="rounded-[20px] border border-[var(--color-border)] bg-white/80 p-4">
+                    <p className="text-xs uppercase tracking-[0.24em] text-[var(--color-muted)]">{point.year}</p>
+                    <p className="mt-2 text-sm text-[var(--color-accent)]">{point.conventional}% conventional</p>
+                    <p className="mt-1 text-sm text-[var(--color-mint)]">{point.govtBacked}% government-backed</p>
+                  </div>
+                ))
                 : [
-                    <div key="loan-x-1" className="rounded-[20px] border border-[var(--color-border)] bg-white/80 p-4 text-sm text-[var(--color-muted)]">X</div>,
-                    <div key="loan-x-2" className="rounded-[20px] border border-[var(--color-border)] bg-white/80 p-4 text-sm text-[var(--color-muted)]">X</div>,
-                    <div key="loan-x-3" className="rounded-[20px] border border-[var(--color-border)] bg-white/80 p-4 text-sm text-[var(--color-muted)]">X</div>,
-                    <div key="loan-x-4" className="rounded-[20px] border border-[var(--color-border)] bg-white/80 p-4 text-sm text-[var(--color-muted)]">X</div>,
-                  ])}
+                  <div key="loan-x-1" className="rounded-[20px] border border-[var(--color-border)] bg-white/80 p-4 text-sm text-[var(--color-muted)]">X</div>,
+                  <div key="loan-x-2" className="rounded-[20px] border border-[var(--color-border)] bg-white/80 p-4 text-sm text-[var(--color-muted)]">X</div>,
+                  <div key="loan-x-3" className="rounded-[20px] border border-[var(--color-border)] bg-white/80 p-4 text-sm text-[var(--color-muted)]">X</div>,
+                  <div key="loan-x-4" className="rounded-[20px] border border-[var(--color-border)] bg-white/80 p-4 text-sm text-[var(--color-muted)]">X</div>,
+                ])}
             </div>
           </article>
         </div>

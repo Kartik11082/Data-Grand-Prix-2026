@@ -7,7 +7,8 @@ import { ExecutiveSummary } from "./components/ExecutiveSummary";
 import { EMPTY_STORY_DATA, fetchStoryData } from "./dataService";
 import "./index.css";
 
-const pageLabels = ["Overview", "Collapse", "Recovery", "Behavior Shift", "Summary"];
+// const pageLabels = ["Overview", "Collapse", "Recovery", "Behavior Shift", "Summary"];
+const pageLabels = ["Collapse", "Recovery", "Behavior Shift", "Summary"];
 const navLabels = pageLabels.slice(1);
 
 export default function App() {
@@ -119,10 +120,10 @@ export default function App() {
               <p className="text-[11px] font-semibold uppercase tracking-[0.28em] text-[var(--color-muted)]">
                 Data Grand Prix 2026
               </p>
-            <h1 className="mt-1 text-xl text-[var(--color-ink)]" style={{ fontFamily: "var(--font-display)" }}>
-              HMDA mortgage story
-            </h1>
-          </div>
+              <h1 className="mt-1 text-xl text-[var(--color-ink)]" style={{ fontFamily: "var(--font-display)" }}>
+                HMDA mortgage story
+              </h1>
+            </div>
 
             <nav className="flex flex-wrap items-center justify-end gap-2">
               {navLabels.map((label, navIndex) => {
@@ -134,11 +135,10 @@ export default function App() {
                     key={label}
                     type="button"
                     onClick={() => setCurrentPage(pageIndex)}
-                    className={`rounded-full border px-4 py-2 text-sm transition ${
-                      isActive
+                    className={`rounded-full border px-4 py-2 text-sm transition ${isActive
                         ? "border-[var(--color-accent)] bg-[var(--color-accent)] text-white"
                         : "border-[var(--color-border)] bg-white/80 text-[var(--color-muted)] hover:border-[var(--color-accent)] hover:text-[var(--color-ink)]"
-                    }`}
+                      }`}
                   >
                     {label}
                   </button>

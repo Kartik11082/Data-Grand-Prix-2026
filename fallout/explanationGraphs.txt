@@ -1,62 +1,259 @@
-Here's the full spec, query logic included.
+HMDA Story - Judge Explanation Script (Page-wise)
+=================================================
 
----
+Use this format for each graph while presenting:
+1. What it is
+2. How we did it
+3. Why our approach works
+4. What the data indicates
+5. Technical query/formula
 
-## Page 1 — Fallout
 
-**Chart 1.1 — Gap Area Chart (2007–2010)**
+Page 1 - Overview
+-----------------
 
-Two series: total applications and total originations per year. For each year, `applications = COUNT(*)`, `originations = COUNT(*) WHERE action_taken = 1`. The red fill is the visual encoding of `applications − originations` — you never compute it explicitly, the chart just fills between the two lines. Derivation: `origination_rate = originations / applications`. Fields: `action_taken`, `as_of_year`.
+Graph: Landing hero + chips
+1. What it is:
+This is our opening snapshot of the mortgage market: timeline, total scale, and the key shock metric.
+2. How we did it:
+We used yearly aggregates from Q1, found the strongest and weakest approval periods, and built the hero number and supporting chips from those values.
+3. Why our approach works:
+It gives judges immediate context (scale + direction) before they see deeper charts, so the narrative starts with evidence, not assumptions.
+4. What the data indicates:
+We processed about 155.1M applications, with a 2007 peak (21.8M), a 2008 origination floor (7.2M), and a sharp approval-rate gap of 13 percentage points between best and worst periods.
+5. Technical query/formula:
+- Base aggregate (Q1):
+  - applications_y = COUNT(*) where action_taken != 6
+  - originations_y = COUNT(*) where action_taken = 1
+  - origination_rate_y = originations_y / applications_y
+- Landing hero:
+  - floor_year = argmin(origination_rate_y) for y in {2008,2009,2010}
+  - peak_year = argmax(origination_rate_y) for y in all years
+  - hero_metric = round(origination_rate_peak*100) - round(origination_rate_floor*100)
+- Chips:
+  - applications peak = argmax(applications_y)
+  - originations floor = argmin(originations_y) in crisis window
+  - years_to_recovery = first y > floor_year where origination_rate_y > floor_rate + 0.02
 
-**Chart 1.2 — 100% Stacked Area, Loan Type (2007–2010)**
 
-Originations only (`action_taken = 1`). For each year, count originations grouped by `loan_type` (1=conventional, 2=FHA, 3=VA, 4=FSA). Normalize: `share_k = count_k / SUM(count_all_types)` per year × 100. Output is four percentage columns that sum to 100 each year. Fields: `loan_type`, `action_taken`, `as_of_year`.
+Page 2 - Collapse
+-----------------
 
----
+Graph 2.1: Gap area chart (2007-2010)
+1. What it is:
+It shows the gap between loan applications and actual originations during the crisis years.
+2. How we did it:
+From Q1, we counted applications and originations per year and plotted both series in millions.
+3. Why our approach works:
+Using both lines together makes market stress visible instantly: demand stayed high while successful lending dropped.
+4. What the data indicates:
+The biggest shock is volume: applications fell from 21.82M (2007) to 14.47M (2008), while originations fell from 10.44M to 7.18M in the same step.
+5. Technical query/formula:
+- Pseudo SQL:
+  SELECT as_of_year,
+         COUNT(*) FILTER (WHERE action_taken != 6) AS applications,
+         COUNT(*) FILTER (WHERE action_taken = 1) AS originations,
+         COUNT(*) FILTER (WHERE action_taken = 3) AS denials
+  FROM hmda
+  WHERE as_of_year BETWEEN 2007 AND 2010
+  GROUP BY as_of_year;
+- approval_rate = originations / applications
+- denial_rate = denials / applications
+- display_millions = value / 1_000_000
 
-## Page 2 — Recovery
+Graph 2.2: Loan-type composition (2007-2010)
+1. What it is:
+It shows how the mix shifted from conventional loans toward government-backed loans during the downturn.
+2. How we did it:
+From Q2, we filtered to originated loans, calculated conventional share, and derived government-backed share as 100 minus conventional.
+3. Why our approach works:
+Percent composition removes scale noise and clearly highlights structural change in lender behavior.
+4. What the data indicates:
+Conventional share dropped from 94% (2007) to 74% (2009), while government-backed rose from 6% to 26%, showing a major underwriting regime shift.
+5. Technical query/formula:
+- Pseudo SQL:
+  SELECT as_of_year,
+         COUNT(*) FILTER (WHERE action_taken=1 AND loan_type=1) AS conventional_n,
+         COUNT(*) FILTER (WHERE action_taken=1 AND loan_type IN (2,3,4)) AS govt_n,
+         COUNT(*) FILTER (WHERE action_taken=1) AS total_n
+  FROM hmda
+  WHERE as_of_year BETWEEN 2007 AND 2010
+  GROUP BY as_of_year;
+- conventional_pct = conventional_n / total_n * 100
+- govt_backed_pct = govt_n / total_n * 100 = 100 - conventional_pct
 
-**Chart 2.1 — Gap Area Chart extended (2007–2017)**
 
-Identical query to Chart 1.1 — same logic, same fields, just `as_of_year` range extended to 2007–2017. No new computation. This is literally a superset of Chart 1.1's output. Run once, use for both.
+Page 3 - Recovery
+-----------------
 
-**Chart 2.2 — Refinancing Wave Area Chart (2010–2017)**
+Graph 3.1: Full-decade gap chart (2007-2017)
+1. What it is:
+It extends the collapse gap chart to show the full recovery path.
+2. How we did it:
+We reused Q1 yearly applications and originations across the full decade.
+3. Why our approach works:
+The same metric definition across all years enables fair trend comparison from shock to recovery.
+4. What the data indicates:
+There is partial recovery (for example 2012 rebound), but by 2017 both applications (12.2M) and originations (7.34M) are still below 2007 levels.
+5. Technical query/formula:
+- Same Q1 query as Page 2, but year range is 2007-2017.
+- applications_m = applications / 1_000_000
+- originations_m = originations / 1_000_000
 
-Originations only. For each year: `total = COUNT(*) WHERE action_taken = 1`, `refi = COUNT(*) WHERE action_taken = 1 AND loan_purpose = 3`. Compute `refi_share = refi / total × 100`. Single output column per year. Fields: `loan_purpose`, `action_taken`, `as_of_year`.
+Graph 3.2: Refinance wave chart (2010-2017)
+1. What it is:
+It shows how refinancing activity surged after policy and rate changes.
+2. How we did it:
+From Q3, we indexed yearly refinance volume to 2010 = 100.
+3. Why our approach works:
+Indexing normalizes raw counts and makes momentum easy to compare year by year.
+4. What the data indicates:
+Refinancing peaked at 133.9 in 2012 (+34% vs baseline), then cooled sharply, ending at 50.9 by 2017.
+5. Technical query/formula:
+- Pseudo SQL:
+  SELECT as_of_year,
+         COUNT(*) FILTER (WHERE action_taken=1) AS total_originations,
+         COUNT(*) FILTER (WHERE action_taken=1 AND loan_purpose=3) AS refi_n
+  FROM hmda
+  WHERE as_of_year BETWEEN 2010 AND 2017
+  GROUP BY as_of_year;
+- baseline_refi = refi_n(2010)
+- refiIndex_y = refi_n(y) / baseline_refi * 100
 
----
+Graph 3.3: Structural loan-type shift (2007-2017)
+1. What it is:
+It tracks whether the market returned to pre-crisis loan structure or settled into a new normal.
+2. How we did it:
+From Q2, we plotted yearly conventional vs government-backed shares.
+3. Why our approach works:
+Share-based tracking shows persistent structural change, not just temporary volume swings.
+4. What the data indicates:
+Government-backed share moved from 6% (2007) to 26% (2017), meaning the pre-crisis structure did not fully return.
+5. Technical query/formula:
+- Use yearly Q2 results.
+- govt_share_2007 = round(100 - conventional_pct_2007)
+- govt_share_2017 = round(100 - conventional_pct_2017)
 
-## Page 3 — Behavior Shift
 
-**Chart 3.1 — Borrower ID Card (2007 vs 2017, point-in-time comparison)**
+Page 4 - Behavior Shift
+-----------------------
 
-Filter to `as_of_year IN (2007, 2017)`. For each year compute independently:
-- `median_income = PERCENTILE(applicant_income_000s, 0.5)` where `action_taken = 1` and income is not null
-- `approval_rate = COUNT(action_taken = 1) / COUNT(*)`
-- `denial_rate = COUNT(action_taken = 3) / COUNT(*)`
-- `dominant_purpose = MODE(loan_purpose) WHERE action_taken = 1` → map to label
-- `dominant_loan_type = MODE(loan_type) WHERE action_taken = 1` → map to label
+Graph 4.1: Lender mix (2007 vs 2017)
+1. What it is:
+It compares lender risk posture before and after the crisis.
+2. How we did it:
+We used Q2 shares for conventional/government-backed and paired them with era-level second-mortgage context.
+3. Why our approach works:
+A side-by-side era view makes regime change obvious in one glance.
+4. What the data indicates:
+Lenders became more conservative: conventional fell from 94% to 74%, government-backed rose from 6% to 26%, and second-mortgage share dropped from 9% to 3%.
+5. Technical query/formula:
+- conventional_pct_y from Q2
+- govt_backed_pct_y = 100 - conventional_pct_y
+- second_mortgage_pct is an era reference value in export layer (2007=9%, 2017=3%)
 
-Output: 2 rows × 7 columns. Fields: `applicant_income_000s`, `action_taken`, `loan_purpose`, `loan_type`, `as_of_year`.
+Graph 4.2: Borrower profile card (2007 vs 2017)
+1. What it is:
+It summarizes who the typical approved borrower looked like in each era.
+2. How we did it:
+From Q4 and Q3, we computed median income, approval rate, dominant purpose, and dominant received loan type.
+3. Why our approach works:
+It combines access, income, and intent into one comparable borrower story.
+4. What the data indicates:
+Typical borrower income increased ($76K to $83K), approval rate improved (48% to 60%), and dominant purpose shifted from refinancing (46%) to purchase (58%).
+5. Technical query/formula:
+- median_income_k = percentile_approx(applicant_income_000s, 0.5)
+  where action_taken=1 and income valid
+- approval_rate = COUNT(action_taken=1) / COUNT(*)
+- dominant_purpose = mode(loan_purpose) among originated loans
+- dominant_purpose_pct = dominant_purpose_count / total_originations * 100
+- dominant_loan_type = mode(loan_type) among originated loans
 
-**Chart 3.2 — Dual-State Choropleth (2007 volume density vs 2017 recovery index)**
+Graph 4.3: Geography choropleth
+1. What it is:
+It maps state-level lending concentration (2007) and recovery strength (2017).
+2. How we did it:
+From Q5, we computed state volumes and recovery index (2017 volume divided by 2007 volume), then bucketed all states into low/medium/high using distribution-based terciles.
+3. Why our approach works:
+Using all states with consistent bucketing avoids cherry-picking and gives a complete national pattern.
+4. What the data indicates:
+Most states are still below 2007 volume by 2017; strongest states are near baseline (for example CO at -1%), while laggards like CT and NJ are around -47%.
+5. Technical query/formula:
+- Pseudo SQL:
+  SELECT as_of_year, state_code,
+         COUNT(*) FILTER (WHERE action_taken=1) AS vol
+  FROM hmda
+  WHERE as_of_year IN (2007, 2017)
+  GROUP BY as_of_year, state_code;
+- recovery_index_state = vol_2017_state / vol_2007_state
+- map_value_2017 = round(recovery_index_state * 100) + "%"
+- low_cut = quantile(recovery_index_all_states, 0.33)
+- high_cut = quantile(recovery_index_all_states, 0.67)
+- bucket = low/medium/high using these cuts
 
-Filter to `as_of_year IN (2007, 2017)`, `action_taken = 1`. Group by `(year, state_code)`, compute `vol = COUNT(*)`. Pivot to get `vol_2007` and `vol_2017` as columns. Derive: `recovery_index = vol_2017 / vol_2007`. Two color encodings used in JS — 2007 uses a sequential blue scale on raw `vol_2007`; 2017 maps `recovery_index` to a diverging red→green scale centered at 1.0. Fields: `state_code`, `action_taken`, `as_of_year`. Note: `state_code` is numeric FIPS — join a FIPS→abbreviation lookup before export.
+Graph 4.4: Top/Bottom state leaderboard
+1. What it is:
+It calls out the strongest and weakest states for fast interpretation.
+2. How we did it:
+We sorted the same state metric used in the map and selected top 3 and bottom 3.
+3. Why our approach works:
+It keeps ranking logic fully aligned with the map, so the story is consistent across visuals.
+4. What the data indicates:
+The top group (CO, ND, MN) is only slightly below baseline, while the bottom group (NM, CT, NJ) remains deeply below baseline.
+5. Technical query/formula:
+- Sort by recovery_index_state descending
+- top_states = first 3
+- bottom_states = last 3
+- display_delta_pct = round((recovery_index_state - 1) * 100)
 
-**Chart 3.3 — Dual Leaderboard (top/bottom 5 states, toggle 2007 volume vs 2017 recovery)**
 
-No new query. Derived entirely from Chart 3.2's output. In JS: sort the 50-row state DataFrame by `vol_2007` descending for the 2007 toggle view; sort by `recovery_index` for the 2017 toggle view. Take `slice(0,5)` for top, `slice(-5)` for bottom. Bar width = `value / max_value × 100%`. Value label = raw origination count (2007 view) or `(recovery_index − 1) × 100` formatted as `±N%` (2017 view).
+Page 5 - Summary
+----------------
 
----
+Graph 5.1: Crisis summary card
+1. What it is:
+It compresses the core crisis impact into one headline with a mini trend.
+2. How we did it:
+From Q1, we identified peak vs floor approval periods and plotted a sparkline of applications/originations.
+3. Why our approach works:
+It closes the loop between headline KPI and underlying time series.
+4. What the data indicates:
+The biggest breakdown happened around 2008, where applications were 14.5M and originations were 7.2M, reflecting a wide conversion gap.
+5. Technical query/formula:
+- floor_year = argmin(origination_rate_y) for y in {2008,2009,2010}
+- peak_year = argmax(origination_rate_y) for all y
+- gap_peak_pp = round(origination_rate_peak*100) - round(origination_rate_floor*100)
+- sparkline uses yearly applications_m and originations_m
 
-## Complete Query Map
+Graph 5.2: Structural shift donut/card
+1. What it is:
+It compares government-backed share in 2007 vs 2017.
+2. How we did it:
+From Q2, we derived government-backed share as 100 minus conventional for both anchor years.
+3. Why our approach works:
+Two-point structural comparison is simple, direct, and decision-friendly.
+4. What the data indicates:
+Government-backed participation rose from 6% to 26%, confirming a long-term structural shift, not just a short cycle.
+5. Technical query/formula:
+- govt_share_2007_pct = 100 - conventional_pct_2007
+- govt_share_2017_pct = 100 - conventional_pct_2017
 
-| ID | Scope | Core operation | Output rows |
-|----|-------|----------------|-------------|
-| Q1 | 2007–2017 | COUNT by year, split on `action_taken=1` vs total | 11 × 3 |
-| Q2 | 2007–2010 | COUNT by (year, loan_type) where `action_taken=1`, normalize to % | 4 × 5 |
-| Q3 | 2010–2017 | COUNT refi / total originations by year | 8 × 2 |
-| Q4 | 2007, 2017 | Median income, approval rate, denial rate, mode of purpose and type | 2 × 7 |
-| Q5 | 2007, 2017 | COUNT originations by (year, state), pivot, compute recovery index | 50 × 4 |
+Graph 5.3: Recovery map summary card
+1. What it is:
+It shows which states recovered faster or slower by 2017.
+2. How we did it:
+From Q5, we computed recovery index and delta percentage, then bucketed all states and highlighted top/bottom performers.
+3. Why our approach works:
+It combines national coverage with clear leader/laggard signals, which is ideal for executive storytelling.
+4. What the data indicates:
+Recovery is uneven across the country: no top state is clearly above baseline, and several large states remain far below pre-crisis lending levels.
+5. Technical query/formula:
+- recovery_index_state = vol_2017_state / vol_2007_state
+- delta_pct_state = round((recovery_index_state - 1) * 100)
+- full-state bucket = terciles on recovery_index_state
+- top/bottom labels from sorted delta_pct_state
 
-Q1 feeds charts 1.1 and 2.1. Q5 feeds charts 3.2 and 3.3. Every summary page KPI is a scalar derived from one of these five outputs — no sixth query needed.
+
+One-line close for judges
+-------------------------
+All visuals come from one consistent pipeline (Q1-Q5), so every chart, KPI, and summary point is reproducible, comparable, and traceable back to the same data logic.
