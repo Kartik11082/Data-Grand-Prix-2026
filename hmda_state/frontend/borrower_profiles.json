@@ -1,0 +1,11 @@
+{
+  "2017": {
+    "approval_rate_pct": 51.37,
+    "denial_rate_pct": 14.07,
+    "median_income_k": 83.0,
+    "dominant_purpose_code": 1,
+    "dominant_purpose": "Purchase",
+    "dominant_loan_type_code": 1,
+    "dominant_loan_type": "Conventional"
+  }
+}

@@ -1,0 +1,308 @@
+[
+  {
+    "state_abbr": "AK",
+    "vol_2007": null,
+    "vol_2017": 14430,
+    "recovery_index": null
+  },
+  {
+    "state_abbr": "AL",
+    "vol_2007": null,
+    "vol_2017": 103096,
+    "recovery_index": null
+  },
+  {
+    "state_abbr": "AR",
+    "vol_2007": null,
+    "vol_2017": 62259,
+    "recovery_index": null
+  },
+  {
+    "state_abbr": "AZ",
+    "vol_2007": null,
+    "vol_2017": 213547,
+    "recovery_index": null
+  },
+  {
+    "state_abbr": "CA",
+    "vol_2007": null,
+    "vol_2017": 877753,
+    "recovery_index": null
+  },
+  {
+    "state_abbr": "CO",
+    "vol_2007": null,
+    "vol_2017": 216848,
+    "recovery_index": null
+  },
+  {
+    "state_abbr": "CT",
+    "vol_2007": null,
+    "vol_2017": 67000,
+    "recovery_index": null
+  },
+  {
+    "state_abbr": "DC",
+    "vol_2007": null,
+    "vol_2017": 15414,
+    "recovery_index": null
+  },
+  {
+    "state_abbr": "DE",
+    "vol_2007": null,
+    "vol_2017": 24719,
+    "recovery_index": null
+  },
+  {
+    "state_abbr": "FL",
+    "vol_2007": null,
+    "vol_2017": 492702,
+    "recovery_index": null
+  },
+  {
+    "state_abbr": "GA",
+    "vol_2007": null,
+    "vol_2017": 244731,
+    "recovery_index": null
+  },
+  {
+    "state_abbr": "HI",
+    "vol_2007": null,
+    "vol_2017": 26553,
+    "recovery_index": null
+  },
+  {
+    "state_abbr": "IA",
+    "vol_2007": null,
+    "vol_2017": 79977,
+    "recovery_index": null
+  },
+  {
+    "state_abbr": "ID",
+    "vol_2007": null,
+    "vol_2017": 54102,
+    "recovery_index": null
+  },
+  {
+    "state_abbr": "IL",
+    "vol_2007": null,
+    "vol_2017": 265490,
+    "recovery_index": null
+  },
+  {
+    "state_abbr": "IN",
+    "vol_2007": null,
+    "vol_2017": 158693,
+    "recovery_index": null
+  },
+  {
+    "state_abbr": "KS",
+    "vol_2007": null,
+    "vol_2017": 61197,
+    "recovery_index": null
+  },
+  {
+    "state_abbr": "KY",
+    "vol_2007": null,
+    "vol_2017": 91096,
+    "recovery_index": null
+  },
+  {
+    "state_abbr": "LA",
+    "vol_2007": null,
+    "vol_2017": 83323,
+    "recovery_index": null
+  },
+  {
+    "state_abbr": "MA",
+    "vol_2007": null,
+    "vol_2017": 162474,
+    "recovery_index": null
+  },
+  {
+    "state_abbr": "MD",
+    "vol_2007": null,
+    "vol_2017": 144610,
+    "recovery_index": null
+  },
+  {
+    "state_abbr": "ME",
+    "vol_2007": null,
+    "vol_2017": 31503,
+    "recovery_index": null
+  },
+  {
+    "state_abbr": "MI",
+    "vol_2007": null,
+    "vol_2017": 241945,
+    "recovery_index": null
+  },
+  {
+    "state_abbr": "MN",
+    "vol_2007": null,
+    "vol_2017": 154164,
+    "recovery_index": null
+  },
+  {
+    "state_abbr": "MO",
+    "vol_2007": null,
+    "vol_2017": 145419,
+    "recovery_index": null
+  },
+  {
+    "state_abbr": "MS",
+    "vol_2007": null,
+    "vol_2017": 51038,
+    "recovery_index": null
+  },
+  {
+    "state_abbr": "MT",
+    "vol_2007": null,
+    "vol_2017": 24577,
+    "recovery_index": null
+  },
+  {
+    "state_abbr": "NC",
+    "vol_2007": null,
+    "vol_2017": 240128,
+    "recovery_index": null
+  },
+  {
+    "state_abbr": "ND",
+    "vol_2007": null,
+    "vol_2017": 16016,
+    "recovery_index": null
+  },
+  {
+    "state_abbr": "NE",
+    "vol_2007": null,
+    "vol_2017": 43786,
+    "recovery_index": null
+  },
+  {
+    "state_abbr": "NH",
+    "vol_2007": null,
+    "vol_2017": 34290,
+    "recovery_index": null
+  },
+  {
+    "state_abbr": "NJ",
+    "vol_2007": null,
+    "vol_2017": 169196,
+    "recovery_index": null
+  },
+  {
+    "state_abbr": "NM",
+    "vol_2007": null,
+    "vol_2017": 37465,
+    "recovery_index": null
+  },
+  {
+    "state_abbr": "NV",
+    "vol_2007": null,
+    "vol_2017": 91540,
+    "recovery_index": null
+  },
+  {
+    "state_abbr": "NY",
+    "vol_2007": null,
+    "vol_2017": 236499,
+    "recovery_index": null
+  },
+  {
+    "state_abbr": "OH",
+    "vol_2007": null,
+    "vol_2017": 241167,
+    "recovery_index": null
+  },
+  {
+    "state_abbr": "OK",
+    "vol_2007": null,
+    "vol_2017": 78302,
+    "recovery_index": null
+  },
+  {
+    "state_abbr": "OR",
+    "vol_2007": null,
+    "vol_2017": 116700,
+    "recovery_index": null
+  },
+  {
+    "state_abbr": "PA",
+    "vol_2007": null,
+    "vol_2017": 249620,
+    "recovery_index": null
+  },
+  {
+    "state_abbr": "RI",
+    "vol_2007": null,
+    "vol_2017": 24598,
+    "recovery_index": null
+  },
+  {
+    "state_abbr": "SC",
+    "vol_2007": null,
+    "vol_2017": 123971,
+    "recovery_index": null
+  },
+  {
+    "state_abbr": "SD",
+    "vol_2007": null,
+    "vol_2017": 18871,
+    "recovery_index": null
+  },
+  {
+    "state_abbr": "TN",
+    "vol_2007": null,
+    "vol_2017": 164577,
+    "recovery_index": null
+  },
+  {
+    "state_abbr": "TX",
+    "vol_2007": null,
+    "vol_2017": 559492,
+    "recovery_index": null
+  },
+  {
+    "state_abbr": "UT",
+    "vol_2007": null,
+    "vol_2017": 108018,
+    "recovery_index": null
+  },
+  {
+    "state_abbr": "VA",
+    "vol_2007": null,
+    "vol_2017": 211218,
+    "recovery_index": null
+  },
+  {
+    "state_abbr": "VT",
+    "vol_2007": null,
+    "vol_2017": 13325,
+    "recovery_index": null
+  },
+  {
+    "state_abbr": "WA",
+    "vol_2007": null,
+    "vol_2017": 230076,
+    "recovery_index": null
+  },
+  {
+    "state_abbr": "WI",
+    "vol_2007": null,
+    "vol_2017": 146251,
+    "recovery_index": null
+  },
+  {
+    "state_abbr": "WV",
+    "vol_2007": null,
+    "vol_2017": 29490,
+    "recovery_index": null
+  },
+  {
+    "state_abbr": "WY",
+    "vol_2007": null,
+    "vol_2017": 13702,
+    "recovery_index": null
+  }
+]
