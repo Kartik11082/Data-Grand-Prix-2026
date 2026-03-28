@@ -55,6 +55,7 @@ def serve_story_json(filename: str) -> FileResponse:
 
 # ── system ────────────────────────────────────────────────────────────────────
 
+
 @app.get("/", tags=["system"])
 async def root() -> dict:
     """API index — lists all active endpoints."""
@@ -79,6 +80,7 @@ async def root() -> dict:
 
 
 # ── chart endpoints (legacy) ──────────────────────────────────────────────────
+
 
 @app.get("/chart1", response_class=FileResponse, tags=["charts"])
 async def get_chart1() -> FileResponse:
@@ -116,6 +118,7 @@ async def get_chart5() -> FileResponse:
 
 
 # ── story endpoints ───────────────────────────────────────────────────────────
+
 
 @app.get("/story/landing", response_class=FileResponse, tags=["story"])
 async def get_story_landing() -> FileResponse:
