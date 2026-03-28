@@ -103,7 +103,6 @@ def save_json(data, output_path):
         json.dump(data, f, indent=2)
     print(f"Data successfully exported to {output_path}")
 
-
     """Generates a 100% stacked area chart from the JSON payload using Plotly."""
     years = [row["year"] for row in json_data]
     conventional = [row["conventional"] for row in json_data]
@@ -174,7 +173,7 @@ def main():
     script_dir = os.path.dirname(os.path.abspath(__file__))
     project_root = os.path.dirname(script_dir)
     data_dir = os.path.join(project_root, "data")
-    output_file = os.path.join(script_dir, "output", "loan_type_composition.json")
+    output_file = os.path.join(script_dir, "../output", "loan_type_composition.json")
 
     print(f"Initializing stream extraction pipeline from: {data_dir}")
 

@@ -141,7 +141,7 @@ if __name__ == "__main__":
     payload = process_gap_chart(spark, data_dir, 2007, 2017)
 
     # Export cleanly to gap_chart.json for React frontend
-    output_dir = os.path.join(script_dir, "output")
+    output_dir = os.path.join(script_dir, "../output")
     os.makedirs(output_dir, exist_ok=True)
     out_path = os.path.join(output_dir, "gap_chart.json")
 

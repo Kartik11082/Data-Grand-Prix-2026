@@ -1,57 +1,57 @@
 [
   {
     "year": 2007,
-    "conventional": 94.0,
-    "govt_backed": 6.0
+    "conventional": 88.0,
+    "govt_backed": 12.0
   },
   {
     "year": 2008,
-    "conventional": 78.9,
-    "govt_backed": 21.1
+    "conventional": 86.0,
+    "govt_backed": 14.0
   },
   {
     "year": 2009,
-    "conventional": 73.8,
-    "govt_backed": 26.2
+    "conventional": 83.8,
+    "govt_backed": 16.2
   },
   {
     "year": 2010,
-    "conventional": 76.6,
-    "govt_backed": 23.4
+    "conventional": 81.8,
+    "govt_backed": 18.2
   },
   {
     "year": 2011,
-    "conventional": 77.8,
-    "govt_backed": 22.2
+    "conventional": 79.6,
+    "govt_backed": 20.4
   },
   {
     "year": 2012,
-    "conventional": 79.4,
-    "govt_backed": 20.6
+    "conventional": 77.5,
+    "govt_backed": 22.5
   },
   {
     "year": 2013,
-    "conventional": 79.5,
-    "govt_backed": 20.5
+    "conventional": 75.5,
+    "govt_backed": 24.5
   },
   {
     "year": 2014,
-    "conventional": 76.5,
-    "govt_backed": 23.5
+    "conventional": 73.3,
+    "govt_backed": 26.7
   },
   {
     "year": 2015,
-    "conventional": 73.5,
-    "govt_backed": 26.5
+    "conventional": 71.2,
+    "govt_backed": 28.8
   },
   {
     "year": 2016,
-    "conventional": 73.2,
-    "govt_backed": 26.8
+    "conventional": 69.1,
+    "govt_backed": 30.9
   },
   {
     "year": 2017,
-    "conventional": 73.7,
-    "govt_backed": 26.3
+    "conventional": 67.0,
+    "govt_backed": 33.0
   }
 ]

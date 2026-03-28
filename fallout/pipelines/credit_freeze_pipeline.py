@@ -112,7 +112,7 @@ results.append(
 )
 
 # Output JSON
-output_dir = os.path.join(script_dir, "output")
+output_dir = os.path.join(script_dir, "../output")
 os.makedirs(output_dir, exist_ok=True)
 out_path = os.path.join(output_dir, "credit_freeze_analysis.json")
 with open(out_path, "w") as f:

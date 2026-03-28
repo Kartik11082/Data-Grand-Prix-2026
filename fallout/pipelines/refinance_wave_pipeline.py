@@ -181,8 +181,8 @@ def main():
     script_dir = os.path.dirname(os.path.abspath(__file__))
     project_root = os.path.dirname(script_dir)
     data_dir = os.path.join(project_root, "data")
-    out_json = os.path.join(script_dir, "output", "refi_wave.json")
-    out_img = os.path.join(script_dir, "output", "refi_wave_chart.png")
+    out_json = os.path.join(script_dir, "../output", "refi_wave.json")
+    out_img = os.path.join(script_dir, "../output", "refi_wave_chart.png")
 
     print(
         f"Initiating PySpark Refinance Indexing Pipeline (2010-2017) from {data_dir}..."
