@@ -44,8 +44,24 @@ export function ActTwo({ onPrev, onNext, story }: ActTwoProps) {
 
         <div className="space-y-6">
           <article className="rounded-[32px] border border-[var(--color-border)] bg-[var(--color-surface)] p-6 shadow-[var(--shadow-soft)] md:p-8">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-[var(--color-muted)]">Beat 1</p>
-            <h3 className="mt-2 text-2xl font-semibold text-[var(--color-ink)]">The approval gap finally started to close after 2012.</h3>
+            <h3 className="text-2xl font-semibold text-[var(--color-ink)]">The approval gap finally started to close after 2012.</h3>
+            <p className="mt-3 text-sm leading-6 text-[var(--color-muted)]">
+              X-axis: year. Y-axis: loan volume in millions, with applications above originations and the fill showing the gap.
+            </p>
+            <div className="mt-6 flex flex-wrap gap-3 text-sm text-[var(--color-ink)]">
+              <div className="inline-flex items-center gap-2 rounded-full border border-[var(--color-border)] bg-white/80 px-3 py-2">
+                <span className="h-2.5 w-2.5 rounded-full bg-[var(--color-accent)]" />
+                <span>Applications</span>
+              </div>
+              <div className="inline-flex items-center gap-2 rounded-full border border-[var(--color-border)] bg-white/80 px-3 py-2">
+                <span className="h-2.5 w-2.5 rounded-full bg-[var(--color-mint)]" />
+                <span>Originations</span>
+              </div>
+              <div className="inline-flex items-center gap-2 rounded-full border border-[var(--color-border)] bg-white/80 px-3 py-2">
+                <span className="h-2.5 w-2.5 rounded-full bg-[var(--color-coral-soft)]" />
+                <span>Gap between applications and originations</span>
+              </div>
+            </div>
             <div className="mt-6 h-[320px] rounded-[24px] border border-[var(--color-border)] bg-[var(--color-page)] p-4">
               {gapSeries.length > 0 ? (
                 <ResponsiveContainer width="100%" height="100%">
@@ -86,8 +102,20 @@ export function ActTwo({ onPrev, onNext, story }: ActTwoProps) {
           </article>
 
           <article className="rounded-[32px] border border-[var(--color-border)] bg-[var(--color-surface)] p-6 shadow-[var(--shadow-soft)] md:p-8">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-[var(--color-muted)]">Beat 2</p>
-            <h3 className="mt-2 text-2xl font-semibold text-[var(--color-ink)]">Rate cuts sent refinancing volume sharply higher.</h3>
+            <h3 className="text-2xl font-semibold text-[var(--color-ink)]">Rate cuts sent refinancing volume sharply higher.</h3>
+            <p className="mt-3 text-sm leading-6 text-[var(--color-muted)]">
+              X-axis: year. Y-axis: refinance index, where the dashed line marks the 2010 baseline level of 100.
+            </p>
+            <div className="mt-6 flex flex-wrap gap-3 text-sm text-[var(--color-ink)]">
+              <div className="inline-flex items-center gap-2 rounded-full border border-[var(--color-border)] bg-white/80 px-3 py-2">
+                <span className="h-2.5 w-2.5 rounded-full bg-[var(--color-amber)]" />
+                <span>Refinance index</span>
+              </div>
+              <div className="inline-flex items-center gap-2 rounded-full border border-[var(--color-border)] bg-white/80 px-3 py-2">
+                <span className="h-2.5 w-2.5 rounded-full border border-[var(--color-muted)] bg-transparent" />
+                <span>2010 baseline = 100</span>
+              </div>
+            </div>
             <div className="mt-6 h-[300px] rounded-[24px] border border-[var(--color-border)] bg-[var(--color-page)] p-4">
               {refiSeries.length > 0 ? (
                 <ResponsiveContainer width="100%" height="100%">
@@ -110,8 +138,20 @@ export function ActTwo({ onPrev, onNext, story }: ActTwoProps) {
           </article>
 
           <article className="rounded-[32px] border border-[var(--color-border)] bg-[var(--color-surface)] p-6 shadow-[var(--shadow-soft)] md:p-8">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-[var(--color-muted)]">Beat 3</p>
-            <h3 className="mt-2 text-2xl font-semibold text-[var(--color-ink)]">Government-backed lending stayed elevated well after the recovery.</h3>
+            <h3 className="text-2xl font-semibold text-[var(--color-ink)]">Government-backed lending stayed elevated well after the recovery.</h3>
+            <p className="mt-3 text-sm leading-6 text-[var(--color-muted)]">
+              X-axis: year. Y-axis: share of originated loans, split between conventional and government-backed lending.
+            </p>
+            <div className="mt-6 flex flex-wrap gap-3 text-sm text-[var(--color-ink)]">
+              <div className="inline-flex items-center gap-2 rounded-full border border-[var(--color-border)] bg-white/80 px-3 py-2">
+                <span className="h-2.5 w-2.5 rounded-full bg-[var(--color-accent)]" />
+                <span>Conventional share</span>
+              </div>
+              <div className="inline-flex items-center gap-2 rounded-full border border-[var(--color-border)] bg-white/80 px-3 py-2">
+                <span className="h-2.5 w-2.5 rounded-full bg-[var(--color-mint)]" />
+                <span>Government-backed share</span>
+              </div>
+            </div>
             <div className="mt-6 h-[320px] rounded-[24px] border border-[var(--color-border)] bg-[var(--color-page)] p-4">
               {loanTypeSeries.length > 0 ? (
                 <ResponsiveContainer width="100%" height="100%">

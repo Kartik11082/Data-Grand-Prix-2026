@@ -52,13 +52,30 @@ export function ActOne({ onPrev, onNext, story }: ActOneProps) {
           <article className="rounded-[32px] border border-[var(--color-border)] bg-[var(--color-surface)] p-6 shadow-[var(--shadow-soft)] md:p-8">
             <div className="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
               <div>
-                <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-[var(--color-muted)]">Beat 1</p>
-                <h3 className="mt-2 text-2xl font-semibold text-[var(--color-ink)]">
+                <h3 className="text-2xl font-semibold text-[var(--color-ink)]">
                   Mortgage approvals broke sharply between 2007 and 2009.
                 </h3>
+                <p className="mt-3 text-sm leading-6 text-[var(--color-muted)]">
+                  X-axis: year. Y-axis: loan volume in millions, with applications above originations.
+                </p>
               </div>
               <div className="rounded-full bg-[var(--color-coral-soft)] px-4 py-2 text-sm text-[var(--color-coral)]">
                 Marker year: {story.approvalShift.floorYear}
+              </div>
+            </div>
+
+            <div className="mt-6 flex flex-wrap gap-3 text-sm text-[var(--color-ink)]">
+              <div className="inline-flex items-center gap-2 rounded-full border border-[var(--color-border)] bg-white/80 px-3 py-2">
+                <span className="h-2.5 w-2.5 rounded-full bg-[var(--color-accent)]" />
+                <span>Applications</span>
+              </div>
+              <div className="inline-flex items-center gap-2 rounded-full border border-[var(--color-border)] bg-white/80 px-3 py-2">
+                <span className="h-2.5 w-2.5 rounded-full bg-[var(--color-mint)]" />
+                <span>Originations</span>
+              </div>
+              <div className="inline-flex items-center gap-2 rounded-full border border-[var(--color-border)] bg-white/80 px-3 py-2">
+                <span className="h-2.5 w-2.5 rounded-full bg-[var(--color-coral-soft)]" />
+                <span>Gap between applications and originations</span>
               </div>
             </div>
 
@@ -102,13 +119,26 @@ export function ActOne({ onPrev, onNext, story }: ActOneProps) {
           <article className="rounded-[32px] border border-[var(--color-border)] bg-[var(--color-surface)] p-6 shadow-[var(--shadow-soft)] md:p-8">
             <div className="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
               <div>
-                <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-[var(--color-muted)]">Beat 2</p>
-                <h3 className="mt-2 text-2xl font-semibold text-[var(--color-ink)]">
+                <h3 className="text-2xl font-semibold text-[var(--color-ink)]">
                   Private lending gave ground to government-backed production.
                 </h3>
+                <p className="mt-3 text-sm leading-6 text-[var(--color-muted)]">
+                  X-axis: year. Y-axis: share of originated loans, split between conventional and government-backed lending.
+                </p>
               </div>
               <div className="rounded-full bg-[var(--color-mint-soft)] px-4 py-2 text-sm text-[var(--color-mint)]">
                 2009 mix: {mix2009 ? `${mix2009.conventional}% conventional / ${mix2009.govtBacked}% government-backed` : "X"}
+              </div>
+            </div>
+
+            <div className="mt-6 flex flex-wrap gap-3 text-sm text-[var(--color-ink)]">
+              <div className="inline-flex items-center gap-2 rounded-full border border-[var(--color-border)] bg-white/80 px-3 py-2">
+                <span className="h-2.5 w-2.5 rounded-full bg-[var(--color-accent)]" />
+                <span>Conventional share</span>
+              </div>
+              <div className="inline-flex items-center gap-2 rounded-full border border-[var(--color-border)] bg-white/80 px-3 py-2">
+                <span className="h-2.5 w-2.5 rounded-full bg-[var(--color-mint)]" />
+                <span>Government-backed share</span>
               </div>
             </div>
 
