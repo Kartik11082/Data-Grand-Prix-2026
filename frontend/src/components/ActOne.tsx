@@ -48,10 +48,7 @@ function ApprovalCollapseCard({ story }: ApprovalCollapseCardProps) {
       <div ref={frontMeasureRef} className="pointer-events-none absolute inset-x-0 top-0 -z-10 opacity-0">
         <div className="rounded-[28px] border border-[var(--color-border)] bg-[var(--color-coral-soft)] p-5">
           <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-[var(--color-muted)]">Approval collapse</p>
-          <p className="mt-4 text-5xl font-semibold text-[var(--color-coral)]">{story.approvalShift.dropPp}</p>
-          <p className="mt-3 text-sm leading-6 text-[var(--color-ink)]">
-            From {story.approvalShift.basePct} in {story.approvalShift.baseYear} to {story.approvalShift.floorPct} in {story.approvalShift.floorYear}.
-          </p>
+          <p className="mt-4 text-5xl font-semibold text-[var(--color-coral)]">-31 pp</p>
         </div>
       </div>
 
@@ -67,10 +64,7 @@ function ApprovalCollapseCard({ story }: ApprovalCollapseCardProps) {
       <div className="flip-card-inner">
         <div className="flip-face rounded-[28px] border border-[var(--color-border)] bg-[var(--color-coral-soft)] p-5">
           <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-[var(--color-muted)]">Approval collapse</p>
-          <p className="mt-4 text-5xl font-semibold text-[var(--color-coral)]">{story.approvalShift.dropPp}</p>
-          <p className="mt-3 text-sm leading-6 text-[var(--color-ink)]">
-            From {story.approvalShift.basePct} in {story.approvalShift.baseYear} to {story.approvalShift.floorPct} in {story.approvalShift.floorYear}.
-          </p>
+          <p className="mt-4 text-5xl font-semibold text-[var(--color-coral)]">-31 pp</p>
         </div>
 
         <div className="flip-face flip-face-back rounded-[28px] border border-[var(--color-border)] bg-[var(--color-ink)] p-5 text-white">
