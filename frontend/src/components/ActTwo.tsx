@@ -90,20 +90,6 @@ export function ActTwo({ onPrev, onNext, story }: ActTwoProps) {
                 </div>
               )}
             </div>
-            <div className="mt-6 grid gap-4 md:grid-cols-4">
-              {[
-                { year: story.milestones.floorYear, value: story.milestones.approval2009 },
-                { year: story.milestones.recoveryStartYear, value: story.milestones.approval2012 },
-                { year: "2017", value: story.milestones.approval2017 },
-                { year: "2007", value: story.milestones.approval2007 },
-              ].map((milestone) => (
-                <div key={`${milestone.year}-${milestone.value}`} className="rounded-[20px] border border-[var(--color-border)] bg-white/80 p-4">
-                  <p className="text-xs uppercase tracking-[0.24em] text-[var(--color-muted)]">{milestone.year}</p>
-                  <p className="mt-3 text-2xl font-semibold text-[var(--color-ink)]">{milestone.value}</p>
-                  <p className="mt-1 text-sm text-[var(--color-muted)]">approval rate milestone</p>
-                </div>
-              ))}
-            </div>
           </article>
 
           <article className="rounded-[32px] border border-[var(--color-border)] bg-[var(--color-surface)] p-6 shadow-[var(--shadow-soft)] md:p-8">
