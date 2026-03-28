@@ -333,7 +333,6 @@ const defaultStateRows = (): StateRankPoint[] => [
 ];
 
 const defaultNarrativeArc = (): string[] => [
-  "Overview",
   "Collapse",
   "Recovery",
   "Behavior Shift",
@@ -509,7 +508,8 @@ const normalizeNarrativeArc = (value: unknown): string[] => {
       const normalized = toText(candidate);
       return normalized === PLACEHOLDER_VALUE ? null : normalized;
     })
-    .filter((step): step is string => step !== null);
+    .filter((step): step is string => step !== null)
+    .filter((step) => step.toLowerCase() !== "overview");
 
   return arc.length > 0 ? arc : defaultNarrativeArc();
 };

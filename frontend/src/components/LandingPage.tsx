@@ -24,9 +24,8 @@ export function LandingPage({ onBegin, story, isTransitioning }: LandingPageProp
         className="w-full max-w-[980px]"
       >
         <div className="mx-auto flex max-w-[760px] flex-col items-center text-center">
-          <p className="text-[11px] font-semibold uppercase tracking-[0.28em] text-[var(--color-muted)]">The Reality</p>
           <h2
-            className="mt-6 max-w-[13ch] text-4xl leading-tight text-[var(--color-ink)] md:text-6xl"
+            className="max-w-[13ch] text-4xl leading-tight text-[var(--color-ink)] md:text-6xl"
             style={{ fontFamily: "var(--font-display)" }}
           >
             Post-Crisis Lending Landscape
