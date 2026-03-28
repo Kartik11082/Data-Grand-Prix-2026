@@ -1,3 +1,4 @@
+import { useLayoutEffect, useRef, useState } from "react";
 import { Area, AreaChart, ReferenceLine, ResponsiveContainer, XAxis, YAxis } from "recharts";
 import type { CollapseData } from "../dataService";
 
@@ -5,6 +6,86 @@ interface ActOneProps {
   onPrev: () => void;
   onNext: () => void;
   story: CollapseData;
+}
+
+interface ApprovalCollapseCardProps {
+  story: CollapseData;
+}
+
+function ApprovalCollapseCard({ story }: ApprovalCollapseCardProps) {
+  const [isFlipped, setIsFlipped] = useState(false);
+  const [frontHeight, setFrontHeight] = useState(188);
+  const [backHeight, setBackHeight] = useState(188);
+  const frontMeasureRef = useRef<HTMLDivElement | null>(null);
+  const backMeasureRef = useRef<HTMLDivElement | null>(null);
+
+  useLayoutEffect(() => {
+    const measureHeights = () => {
+      const nextFrontHeight = frontMeasureRef.current?.offsetHeight ?? 188;
+      const nextBackHeight = backMeasureRef.current?.offsetHeight ?? nextFrontHeight;
+      setFrontHeight(nextFrontHeight);
+      setBackHeight(nextBackHeight);
+    };
+
+    measureHeights();
+    window.addEventListener("resize", measureHeights);
+
+    return () => {
+      window.removeEventListener("resize", measureHeights);
+    };
+  }, [story]);
+
+  return (
+    <div
+      className="flip-card mt-8"
+      style={{ height: `${isFlipped ? backHeight : frontHeight}px` }}
+      onMouseEnter={() => setIsFlipped(true)}
+      onMouseLeave={() => setIsFlipped(false)}
+      onFocus={() => setIsFlipped(true)}
+      onBlur={() => setIsFlipped(false)}
+      tabIndex={0}
+    >
+      <div ref={frontMeasureRef} className="pointer-events-none absolute inset-x-0 top-0 -z-10 opacity-0">
+        <div className="rounded-[28px] border border-[var(--color-border)] bg-[var(--color-coral-soft)] p-5">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-[var(--color-muted)]">Approval collapse</p>
+          <p className="mt-4 text-5xl font-semibold text-[var(--color-coral)]">{story.approvalShift.dropPp}</p>
+          <p className="mt-3 text-sm leading-6 text-[var(--color-ink)]">
+            From {story.approvalShift.basePct} in {story.approvalShift.baseYear} to {story.approvalShift.floorPct} in {story.approvalShift.floorYear}.
+          </p>
+        </div>
+      </div>
+
+      <div ref={backMeasureRef} className="pointer-events-none absolute inset-x-0 top-0 -z-10 opacity-0">
+        <div className="rounded-[28px] border border-[var(--color-border)] bg-[var(--color-ink)] p-5 text-white">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-white/65">What this shows</p>
+          <p className="mt-4 text-base leading-7">
+            This card captures how sharply approvals fell once credit conditions tightened. The drop matters because it marks the moment demand was still there, but lenders stopped converting applications into loans.
+          </p>
+        </div>
+      </div>
+
+      <div className="flip-card-inner">
+        <div className="flip-face rounded-[28px] border border-[var(--color-border)] bg-[var(--color-coral-soft)] p-5">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-[var(--color-muted)]">Approval collapse</p>
+          <p className="mt-4 text-5xl font-semibold text-[var(--color-coral)]">{story.approvalShift.dropPp}</p>
+          <p className="mt-3 text-sm leading-6 text-[var(--color-ink)]">
+            From {story.approvalShift.basePct} in {story.approvalShift.baseYear} to {story.approvalShift.floorPct} in {story.approvalShift.floorYear}.
+          </p>
+        </div>
+
+        <div className="flip-face flip-face-back rounded-[28px] border border-[var(--color-border)] bg-[var(--color-ink)] p-5 text-white">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-white/65">What this shows</p>
+          <p className="mt-4 text-base leading-7">
+            This card captures how sharply approvals fell once credit conditions tightened. The drop matters because it marks the moment demand was still there, but lenders stopped converting applications into loans.
+          </p>
+        </div>
+      </div>
+
+      <div className="mt-4 rounded-[22px] border border-[var(--color-border)] bg-white/80 p-4 text-sm leading-6 text-[var(--color-ink)] md:hidden">
+        This card captures how sharply approvals fell once credit conditions tightened, which is why it anchors the collapse story.
+      </div>
+    </div>
+  );
 }
 
 export function ActOne({ onPrev, onNext, story }: ActOneProps) {
@@ -23,17 +104,9 @@ export function ActOne({ onPrev, onNext, story }: ActOneProps) {
           <h2 className="mt-4 text-4xl leading-tight text-[var(--color-ink)]" style={{ fontFamily: "var(--font-display)" }}>
             The collapse
           </h2>
-          <p className="mt-5 text-base leading-7 text-[var(--color-ink)]">
-            The market froze fast, then lending standards shifted. Missing API fields are shown as X.
-          </p>
+          <p className="mt-5 text-base leading-7 text-[var(--color-ink)]">The market froze fast, then lending standards shifted.</p>
 
-          <div className="mt-8 rounded-[28px] border border-[var(--color-border)] bg-[var(--color-coral-soft)] p-5">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-[var(--color-muted)]">Approval collapse</p>
-            <p className="mt-4 text-5xl font-semibold text-[var(--color-coral)]">{story.approvalShift.dropPp}</p>
-            <p className="mt-3 text-sm leading-6 text-[var(--color-ink)]">
-              From {story.approvalShift.basePct} in {story.approvalShift.baseYear} to {story.approvalShift.floorPct} in {story.approvalShift.floorYear}.
-            </p>
-          </div>
+          <ApprovalCollapseCard story={story} />
 
           <div className="mt-6 space-y-3">
             {[

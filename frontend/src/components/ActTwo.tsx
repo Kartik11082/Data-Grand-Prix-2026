@@ -21,8 +21,13 @@ export function ActTwo({ onPrev, onNext, story }: ActTwoProps) {
             The climb back
           </h2>
           <p className="mt-5 text-base leading-7 text-[var(--color-ink)]">
-            Recovery appears in three beats: the gap starts closing, refinancing surges, and government-backed lending stays elevated.
+            Recovery appears in three graphs that track how lending normalized, where demand re-entered, and what permanently changed.
           </p>
+          <ol className="mt-6 space-y-2 text-sm leading-6 text-[var(--color-ink)]">
+            <li>1. Approval gap recovery</li>
+            <li>2. Refinance wave</li>
+            <li>3. Government-backed share shift</li>
+          </ol>
 
           <div className="mt-8 space-y-4">
             <div className="rounded-[24px] border border-[var(--color-border)] bg-[var(--color-mint-soft)] p-5">
@@ -133,7 +138,7 @@ export function ActTwo({ onPrev, onNext, story }: ActTwoProps) {
               )}
             </div>
             <div className="mt-6 rounded-[24px] border border-[var(--color-border)] bg-[var(--color-amber-soft)] p-5 text-sm leading-7 text-[var(--color-ink)]">
-              Refinance peak: {story.refiPeak.deltaFromBaseline} in {story.refiPeak.year}. Missing response fields are shown as X.
+              Refinance peak: {story.refiPeak.deltaFromBaseline} in {story.refiPeak.year}.
             </div>
           </article>
 

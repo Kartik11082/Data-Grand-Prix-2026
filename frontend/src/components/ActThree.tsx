@@ -39,9 +39,7 @@ export function ActThree({ onPrev, onNext, story }: ActThreeProps) {
             <h2 className="mt-4 text-4xl leading-tight text-[var(--color-ink)]" style={{ fontFamily: "var(--font-display)" }}>
               The behavior shift
             </h2>
-            <p className="mt-5 max-w-[42rem] text-base leading-7 text-[var(--color-ink)]">
-              Compare the pre-crisis and post-recovery market. Missing API values appear as X.
-            </p>
+            <p className="mt-5 max-w-[42rem] text-base leading-7 text-[var(--color-ink)]">Compare the pre-crisis and post-recovery market.</p>
           </div>
 
           <div className="flex items-center gap-3">
@@ -94,20 +92,19 @@ export function ActThree({ onPrev, onNext, story }: ActThreeProps) {
                 </div>
               </div>
             </div>
-            <div className="mt-8 rounded-[20px] border border-[var(--color-border)] bg-white/85 p-4 text-sm leading-6 text-[var(--color-ink)]">
+            <div className="mt-8 rounded-[20px] border border-[var(--color-border)] bg-white/85 p-4 text-center text-sm leading-6 text-[var(--color-ink)]">
               {era === "2007" ? story.comparison.lender2007 : story.comparison.lender2017}
             </div>
           </article>
 
           <article className="rounded-[28px] border border-[var(--color-border)] bg-[var(--color-page)] p-6">
-            <div className="flex items-center justify-between gap-4">
+            <div>
               <div>
                 <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-[var(--color-muted)]">Geography</p>
                 <h3 className="mt-2 text-xl font-semibold text-[var(--color-ink)]">
                   {era === "2007" ? "Loan volume concentration" : "Recovery index dispersion"}
                 </h3>
               </div>
-              <div className="rounded-full border border-[var(--color-border)] bg-white/80 px-4 py-2 text-xs text-[var(--color-muted)]">API-backed</div>
             </div>
 
             <div className="mt-6 rounded-[24px] border border-[var(--color-border)] bg-white/80 p-4">
@@ -187,7 +184,7 @@ export function ActThree({ onPrev, onNext, story }: ActThreeProps) {
                 <p className="mt-2 text-lg font-semibold text-[var(--color-ink)]">{eraData.borrowerProfile.receivedLoanType}</p>
               </div>
             </div>
-            <div className="mt-8 rounded-[20px] border border-[var(--color-border)] bg-[var(--color-accent-soft)] p-4 text-sm leading-6 text-[var(--color-ink)]">
+            <div className="mt-8 rounded-[20px] border border-[var(--color-border)] bg-[var(--color-accent-soft)] p-4 text-center text-sm leading-6 text-[var(--color-ink)]">
               {era === "2007" ? story.comparison.borrower2007 : story.comparison.borrower2017}
             </div>
           </article>

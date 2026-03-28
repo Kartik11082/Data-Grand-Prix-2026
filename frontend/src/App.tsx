@@ -13,7 +13,6 @@ const navLabels = pageLabels.slice(1);
 export default function App() {
   const [currentPage, setCurrentPage] = useState(0);
   const [storyData, setStoryData] = useState(EMPTY_STORY_DATA);
-  const [isLoadingData, setIsLoadingData] = useState(true);
   const [isIntroTransitioning, setIsIntroTransitioning] = useState(false);
 
   const beginStory = () => {
@@ -79,15 +78,9 @@ export default function App() {
     let isCancelled = false;
 
     const loadData = async () => {
-      try {
-        const data = await fetchStoryData();
-        if (!isCancelled) {
-          setStoryData(data);
-        }
-      } finally {
-        if (!isCancelled) {
-          setIsLoadingData(false);
-        }
+      const data = await fetchStoryData();
+      if (!isCancelled) {
+        setStoryData(data);
       }
     };
 
@@ -109,7 +102,7 @@ export default function App() {
       case 3:
         return <ActThree onNext={goNext} onPrev={goPrev} story={storyData.behaviorShift} />;
       case 4:
-        return <ExecutiveSummary onPrev={goPrev} story={storyData.summary} />;
+        return <ExecutiveSummary story={storyData.summary} />;
       default:
         return <LandingPage onBegin={beginStory} story={storyData.landing} isTransitioning={isIntroTransitioning} />;
     }
@@ -126,13 +119,10 @@ export default function App() {
               <p className="text-[11px] font-semibold uppercase tracking-[0.28em] text-[var(--color-muted)]">
                 Data Grand Prix 2026
               </p>
-              <h1 className="mt-1 text-xl text-[var(--color-ink)]" style={{ fontFamily: "var(--font-display)" }}>
-                HMDA mortgage story
-              </h1>
-              <p className="mt-1 text-xs text-[var(--color-muted)]">
-                {isLoadingData ? "Syncing API data..." : "API data synced"}
-              </p>
-            </div>
+            <h1 className="mt-1 text-xl text-[var(--color-ink)]" style={{ fontFamily: "var(--font-display)" }}>
+              HMDA mortgage story
+            </h1>
+          </div>
 
             <nav className="flex flex-wrap items-center justify-end gap-2">
               {navLabels.map((label, navIndex) => {
