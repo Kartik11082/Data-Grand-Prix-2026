@@ -70,18 +70,243 @@
     "states": [
       {
         "state": "Colorado",
-        "bucket": "medium",
+        "bucket": "high",
         "value": "-1%"
       },
       {
         "state": "North Dakota",
-        "bucket": "medium",
+        "bucket": "high",
         "value": "-9%"
       },
       {
         "state": "Minnesota",
-        "bucket": "medium",
+        "bucket": "high",
         "value": "-10%"
+      },
+      {
+        "state": "Iowa",
+        "bucket": "high",
+        "value": "-14%"
+      },
+      {
+        "state": "Texas",
+        "bucket": "high",
+        "value": "-14%"
+      },
+      {
+        "state": "Nebraska",
+        "bucket": "high",
+        "value": "-16%"
+      },
+      {
+        "state": "Michigan",
+        "bucket": "high",
+        "value": "-18%"
+      },
+      {
+        "state": "Nevada",
+        "bucket": "high",
+        "value": "-19%"
+      },
+      {
+        "state": "Indiana",
+        "bucket": "high",
+        "value": "-20%"
+      },
+      {
+        "state": "Idaho",
+        "bucket": "high",
+        "value": "-20%"
+      },
+      {
+        "state": "Utah",
+        "bucket": "high",
+        "value": "-21%"
+      },
+      {
+        "state": "South Dakota",
+        "bucket": "high",
+        "value": "-22%"
+      },
+      {
+        "state": "Oregon",
+        "bucket": "high",
+        "value": "-23%"
+      },
+      {
+        "state": "Ohio",
+        "bucket": "high",
+        "value": "-23%"
+      },
+      {
+        "state": "Montana",
+        "bucket": "high",
+        "value": "-23%"
+      },
+      {
+        "state": "South Carolina",
+        "bucket": "high",
+        "value": "-23%"
+      },
+      {
+        "state": "Massachusetts",
+        "bucket": "high",
+        "value": "-24%"
+      },
+      {
+        "state": "Tennessee",
+        "bucket": "high",
+        "value": "-24%"
+      },
+      {
+        "state": "Arkansas",
+        "bucket": "medium",
+        "value": "-25%"
+      },
+      {
+        "state": "Kentucky",
+        "bucket": "medium",
+        "value": "-25%"
+      },
+      {
+        "state": "Washington",
+        "bucket": "medium",
+        "value": "-26%"
+      },
+      {
+        "state": "New Hampshire",
+        "bucket": "medium",
+        "value": "-26%"
+      },
+      {
+        "state": "Arizona",
+        "bucket": "medium",
+        "value": "-27%"
+      },
+      {
+        "state": "Oklahoma",
+        "bucket": "medium",
+        "value": "-27%"
+      },
+      {
+        "state": "North Carolina",
+        "bucket": "medium",
+        "value": "-29%"
+      },
+      {
+        "state": "Maine",
+        "bucket": "medium",
+        "value": "-29%"
+      },
+      {
+        "state": "California",
+        "bucket": "medium",
+        "value": "-29%"
+      },
+      {
+        "state": "Kansas",
+        "bucket": "medium",
+        "value": "-29%"
+      },
+      {
+        "state": "Wisconsin",
+        "bucket": "medium",
+        "value": "-31%"
+      },
+      {
+        "state": "Georgia",
+        "bucket": "medium",
+        "value": "-31%"
+      },
+      {
+        "state": "Hawaii",
+        "bucket": "medium",
+        "value": "-32%"
+      },
+      {
+        "state": "Alaska",
+        "bucket": "medium",
+        "value": "-32%"
+      },
+      {
+        "state": "Mississippi",
+        "bucket": "medium",
+        "value": "-33%"
+      },
+      {
+        "state": "Rhode Island",
+        "bucket": "medium",
+        "value": "-33%"
+      },
+      {
+        "state": "Missouri",
+        "bucket": "medium",
+        "value": "-33%"
+      },
+      {
+        "state": "Florida",
+        "bucket": "medium",
+        "value": "-33%"
+      },
+      {
+        "state": "Alabama",
+        "bucket": "medium",
+        "value": "-33%"
+      },
+      {
+        "state": "Louisiana",
+        "bucket": "low",
+        "value": "-34%"
+      },
+      {
+        "state": "Wyoming",
+        "bucket": "low",
+        "value": "-35%"
+      },
+      {
+        "state": "Virginia",
+        "bucket": "low",
+        "value": "-36%"
+      },
+      {
+        "state": "District of Columbia",
+        "bucket": "low",
+        "value": "-36%"
+      },
+      {
+        "state": "Vermont",
+        "bucket": "low",
+        "value": "-36%"
+      },
+      {
+        "state": "Delaware",
+        "bucket": "low",
+        "value": "-38%"
+      },
+      {
+        "state": "New York",
+        "bucket": "low",
+        "value": "-41%"
+      },
+      {
+        "state": "West Virginia",
+        "bucket": "low",
+        "value": "-41%"
+      },
+      {
+        "state": "Pennsylvania",
+        "bucket": "low",
+        "value": "-42%"
+      },
+      {
+        "state": "Illinois",
+        "bucket": "low",
+        "value": "-44%"
+      },
+      {
+        "state": "Maryland",
+        "bucket": "low",
+        "value": "-45%"
       },
       {
         "state": "New Mexico",
@@ -89,12 +314,12 @@
         "value": "-46%"
       },
       {
-        "state": "New Jersey",
+        "state": "Connecticut",
         "bucket": "low",
         "value": "-47%"
       },
       {
-        "state": "Connecticut",
+        "state": "New Jersey",
         "bucket": "low",
         "value": "-47%"
       }
@@ -102,15 +327,15 @@
     "top_states": [
       {
         "state": "CO",
-        "value": "+-1%"
+        "value": "-1%"
       },
       {
         "state": "ND",
-        "value": "+-9%"
+        "value": "-9%"
       },
       {
         "state": "MN",
-        "value": "+-10%"
+        "value": "-10%"
       }
     ],
     "bottom_states": [
@@ -119,15 +344,15 @@
         "value": "-46%"
       },
       {
-        "state": "NJ",
+        "state": "CT",
         "value": "-47%"
       },
       {
-        "state": "CT",
+        "state": "NJ",
         "value": "-47%"
       }
     ],
-    "summary_sentence": "CO, ND, MN were leading the recovery while NJ and CT were still below baseline by 2017."
+    "summary_sentence": "CO, ND, MN were leading the recovery while CT and NJ were still below baseline by 2017."
   },
   "footer": {
     "headline": "The crisis lasted 2 years. The structural change it caused lasted a decade.",

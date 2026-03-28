@@ -46,7 +46,7 @@ export function ExecutiveSummary({ story }: ExecutiveSummaryProps) {
         <div>
           <p className="text-[11px] font-semibold uppercase tracking-[0.26em] text-[var(--color-muted)]">Executive summary</p>
           <h2 className="mt-4 text-4xl leading-tight text-[var(--color-ink)]" style={{ fontFamily: "var(--font-display)" }}>
-            A sponsor-ready close
+            Closing Insights
           </h2>
         </div>
 

@@ -41,6 +41,211 @@
             "bucket": "high"
           },
           {
+            "state": "New York",
+            "value": "398K",
+            "bucket": "high"
+          },
+          {
+            "state": "Georgia",
+            "value": "352K",
+            "bucket": "high"
+          },
+          {
+            "state": "North Carolina",
+            "value": "337K",
+            "bucket": "high"
+          },
+          {
+            "state": "Virginia",
+            "value": "327K",
+            "bucket": "high"
+          },
+          {
+            "state": "New Jersey",
+            "value": "317K",
+            "bucket": "high"
+          },
+          {
+            "state": "Ohio",
+            "value": "313K",
+            "bucket": "high"
+          },
+          {
+            "state": "Washington",
+            "value": "310K",
+            "bucket": "high"
+          },
+          {
+            "state": "Michigan",
+            "value": "294K",
+            "bucket": "high"
+          },
+          {
+            "state": "Arizona",
+            "value": "292K",
+            "bucket": "high"
+          },
+          {
+            "state": "Maryland",
+            "value": "261K",
+            "bucket": "high"
+          },
+          {
+            "state": "Colorado",
+            "value": "218K",
+            "bucket": "high"
+          },
+          {
+            "state": "Missouri",
+            "value": "218K",
+            "bucket": "high"
+          },
+          {
+            "state": "Tennessee",
+            "value": "217K",
+            "bucket": "medium"
+          },
+          {
+            "state": "Massachusetts",
+            "value": "214K",
+            "bucket": "medium"
+          },
+          {
+            "state": "Wisconsin",
+            "value": "211K",
+            "bucket": "medium"
+          },
+          {
+            "state": "Indiana",
+            "value": "199K",
+            "bucket": "medium"
+          },
+          {
+            "state": "Minnesota",
+            "value": "171K",
+            "bucket": "medium"
+          },
+          {
+            "state": "South Carolina",
+            "value": "161K",
+            "bucket": "medium"
+          },
+          {
+            "state": "Alabama",
+            "value": "153K",
+            "bucket": "medium"
+          },
+          {
+            "state": "Oregon",
+            "value": "151K",
+            "bucket": "medium"
+          },
+          {
+            "state": "Utah",
+            "value": "136K",
+            "bucket": "medium"
+          },
+          {
+            "state": "Louisiana",
+            "value": "126K",
+            "bucket": "medium"
+          },
+          {
+            "state": "Connecticut",
+            "value": "126K",
+            "bucket": "medium"
+          },
+          {
+            "state": "Kentucky",
+            "value": "121K",
+            "bucket": "medium"
+          },
+          {
+            "state": "Nevada",
+            "value": "113K",
+            "bucket": "medium"
+          },
+          {
+            "state": "Oklahoma",
+            "value": "107K",
+            "bucket": "medium"
+          },
+          {
+            "state": "Iowa",
+            "value": "93K",
+            "bucket": "medium"
+          },
+          {
+            "state": "Kansas",
+            "value": "86K",
+            "bucket": "medium"
+          },
+          {
+            "state": "Arkansas",
+            "value": "83K",
+            "bucket": "medium"
+          },
+          {
+            "state": "Mississippi",
+            "value": "75K",
+            "bucket": "medium"
+          },
+          {
+            "state": "New Mexico",
+            "value": "69K",
+            "bucket": "low"
+          },
+          {
+            "state": "Idaho",
+            "value": "67K",
+            "bucket": "low"
+          },
+          {
+            "state": "Nebraska",
+            "value": "51K",
+            "bucket": "low"
+          },
+          {
+            "state": "West Virginia",
+            "value": "49K",
+            "bucket": "low"
+          },
+          {
+            "state": "New Hampshire",
+            "value": "46K",
+            "bucket": "low"
+          },
+          {
+            "state": "Maine",
+            "value": "44K",
+            "bucket": "low"
+          },
+          {
+            "state": "Delaware",
+            "value": "40K",
+            "bucket": "low"
+          },
+          {
+            "state": "Hawaii",
+            "value": "39K",
+            "bucket": "low"
+          },
+          {
+            "state": "Rhode Island",
+            "value": "36K",
+            "bucket": "low"
+          },
+          {
+            "state": "Montana",
+            "value": "31K",
+            "bucket": "low"
+          },
+          {
+            "state": "South Dakota",
+            "value": "24K",
+            "bucket": "low"
+          },
+          {
             "state": "District of Columbia",
             "value": "23K",
             "bucket": "low"
@@ -119,86 +324,291 @@
         "states": [
           {
             "state": "Colorado",
-            "value": "0.99",
-            "bucket": "medium"
+            "value": "99%",
+            "bucket": "high"
           },
           {
             "state": "North Dakota",
-            "value": "0.91",
-            "bucket": "medium"
+            "value": "91%",
+            "bucket": "high"
           },
           {
             "state": "Minnesota",
-            "value": "0.9",
-            "bucket": "medium"
-          },
-          {
-            "state": "Texas",
-            "value": "0.86",
-            "bucket": "medium"
+            "value": "90%",
+            "bucket": "high"
           },
           {
             "state": "Iowa",
-            "value": "0.86",
+            "value": "86%",
+            "bucket": "high"
+          },
+          {
+            "state": "Texas",
+            "value": "86%",
+            "bucket": "high"
+          },
+          {
+            "state": "Nebraska",
+            "value": "84%",
+            "bucket": "high"
+          },
+          {
+            "state": "Michigan",
+            "value": "82%",
+            "bucket": "high"
+          },
+          {
+            "state": "Nevada",
+            "value": "81%",
+            "bucket": "high"
+          },
+          {
+            "state": "Indiana",
+            "value": "80%",
+            "bucket": "high"
+          },
+          {
+            "state": "Idaho",
+            "value": "80%",
+            "bucket": "high"
+          },
+          {
+            "state": "Utah",
+            "value": "79%",
+            "bucket": "high"
+          },
+          {
+            "state": "South Dakota",
+            "value": "78%",
+            "bucket": "high"
+          },
+          {
+            "state": "Oregon",
+            "value": "77%",
+            "bucket": "high"
+          },
+          {
+            "state": "Ohio",
+            "value": "77%",
+            "bucket": "high"
+          },
+          {
+            "state": "Montana",
+            "value": "77%",
+            "bucket": "high"
+          },
+          {
+            "state": "South Carolina",
+            "value": "77%",
+            "bucket": "high"
+          },
+          {
+            "state": "Massachusetts",
+            "value": "76%",
+            "bucket": "high"
+          },
+          {
+            "state": "Tennessee",
+            "value": "76%",
+            "bucket": "high"
+          },
+          {
+            "state": "Arkansas",
+            "value": "75%",
             "bucket": "medium"
           },
           {
+            "state": "Kentucky",
+            "value": "75%",
+            "bucket": "medium"
+          },
+          {
+            "state": "Washington",
+            "value": "74%",
+            "bucket": "medium"
+          },
+          {
+            "state": "New Hampshire",
+            "value": "74%",
+            "bucket": "medium"
+          },
+          {
+            "state": "Arizona",
+            "value": "73%",
+            "bucket": "medium"
+          },
+          {
+            "state": "Oklahoma",
+            "value": "73%",
+            "bucket": "medium"
+          },
+          {
+            "state": "North Carolina",
+            "value": "71%",
+            "bucket": "medium"
+          },
+          {
+            "state": "Maine",
+            "value": "71%",
+            "bucket": "medium"
+          },
+          {
+            "state": "California",
+            "value": "71%",
+            "bucket": "medium"
+          },
+          {
+            "state": "Kansas",
+            "value": "71%",
+            "bucket": "medium"
+          },
+          {
+            "state": "Wisconsin",
+            "value": "69%",
+            "bucket": "medium"
+          },
+          {
+            "state": "Georgia",
+            "value": "69%",
+            "bucket": "medium"
+          },
+          {
+            "state": "Hawaii",
+            "value": "68%",
+            "bucket": "medium"
+          },
+          {
+            "state": "Alaska",
+            "value": "68%",
+            "bucket": "medium"
+          },
+          {
+            "state": "Mississippi",
+            "value": "67%",
+            "bucket": "medium"
+          },
+          {
+            "state": "Rhode Island",
+            "value": "67%",
+            "bucket": "medium"
+          },
+          {
+            "state": "Missouri",
+            "value": "67%",
+            "bucket": "medium"
+          },
+          {
+            "state": "Florida",
+            "value": "67%",
+            "bucket": "medium"
+          },
+          {
+            "state": "Alabama",
+            "value": "67%",
+            "bucket": "medium"
+          },
+          {
+            "state": "Louisiana",
+            "value": "66%",
+            "bucket": "low"
+          },
+          {
+            "state": "Wyoming",
+            "value": "65%",
+            "bucket": "low"
+          },
+          {
+            "state": "Virginia",
+            "value": "64%",
+            "bucket": "low"
+          },
+          {
+            "state": "District of Columbia",
+            "value": "64%",
+            "bucket": "low"
+          },
+          {
+            "state": "Vermont",
+            "value": "64%",
+            "bucket": "low"
+          },
+          {
+            "state": "Delaware",
+            "value": "62%",
+            "bucket": "low"
+          },
+          {
+            "state": "New York",
+            "value": "59%",
+            "bucket": "low"
+          },
+          {
+            "state": "West Virginia",
+            "value": "59%",
+            "bucket": "low"
+          },
+          {
+            "state": "Pennsylvania",
+            "value": "58%",
+            "bucket": "low"
+          },
+          {
             "state": "Illinois",
-            "value": "0.56",
+            "value": "56%",
             "bucket": "low"
           },
           {
             "state": "Maryland",
-            "value": "0.55",
+            "value": "55%",
             "bucket": "low"
           },
           {
             "state": "New Mexico",
-            "value": "0.54",
+            "value": "54%",
             "bucket": "low"
           },
           {
             "state": "Connecticut",
-            "value": "0.53",
+            "value": "53%",
             "bucket": "low"
           },
           {
             "state": "New Jersey",
-            "value": "0.53",
+            "value": "53%",
             "bucket": "low"
           }
         ],
         "top_states": [
           {
             "state": "CO",
-            "value": "0.99",
+            "value": "-1%",
             "label": "Fast recovery index"
           },
           {
             "state": "ND",
-            "value": "0.91",
+            "value": "-9%",
             "label": "Fast recovery index"
           },
           {
             "state": "MN",
-            "value": "0.9",
+            "value": "-10%",
             "label": "Fast recovery index"
           }
         ],
         "bottom_states": [
           {
             "state": "NM",
-            "value": "0.54",
+            "value": "-46%",
             "label": "Still below baseline"
           },
           {
             "state": "CT",
-            "value": "0.53",
+            "value": "-47%",
             "label": "Still below baseline"
           },
           {
             "state": "NJ",
-            "value": "0.53",
+            "value": "-47%",
             "label": "Still below baseline"
           }
         ]

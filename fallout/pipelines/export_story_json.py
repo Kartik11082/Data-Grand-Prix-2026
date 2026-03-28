@@ -136,6 +136,37 @@ def bucket_for_volume(vol: int, p75: float, p25: float) -> str:
     return "low"
 
 
+def quantile_threshold(values: list[float], q: float) -> float:
+    """Return a simple nearest-rank quantile threshold from a numeric list."""
+    if not values:
+        return 0.0
+    ordered = sorted(values)
+    idx = int(round((len(ordered) - 1) * q))
+    idx = max(0, min(idx, len(ordered) - 1))
+    return float(ordered[idx])
+
+
+def bucket_from_terciles(value: float, low_cut: float, high_cut: float) -> str:
+    """Bucket a numeric value into low/medium/high based on tercile thresholds."""
+    if value >= high_cut:
+        return "high"
+    if value >= low_cut:
+        return "medium"
+    return "low"
+
+
+def pct_of_baseline(ri: float) -> str:
+    """Format recovery index as percent of 2007 baseline, e.g. 0.99 -> '99%'."""
+    return f"{round(ri * 100)}%"
+
+
+def signed_pct(delta: float) -> str:
+    """Format a signed percentage delta, e.g. -1.2 -> '-1%'."""
+    rounded = round(delta)
+    sign = "+" if rounded >= 0 else ""
+    return f"{sign}{rounded}%"
+
+
 # ── 1. /story/landing ─────────────────────────────────────────────────────────
 
 
@@ -420,30 +451,20 @@ def build_behavior_shift(state: dict) -> dict:
 
         # Geography
         if year_str == "2007":
-            # 2007: bucket by raw volume
+            # 2007: bucket all states by raw volume terciles
             sorted_states = sorted(vol.items(), key=lambda x: x[1], reverse=True)
             volumes = [v for _, v in sorted_states]
-            p75 = volumes[len(volumes) // 4] if volumes else 0
-            p25 = volumes[3 * len(volumes) // 4] if volumes else 0
+            low_cut = quantile_threshold([float(v) for v in volumes], 0.33)
+            high_cut = quantile_threshold([float(v) for v in volumes], 0.67)
 
-            geo_states = []
-            for abbr, v in sorted_states[:5]:
-                geo_states.append(
-                    {
-                        "state": ABBR_TO_NAME.get(abbr, abbr),
-                        "value": fmt_millions(v),
-                        "bucket": bucket_for_volume(v, p75, p25),
-                    }
-                )
-            # Add bottom 5
-            for abbr, v in sorted_states[-5:]:
-                geo_states.append(
-                    {
-                        "state": ABBR_TO_NAME.get(abbr, abbr),
-                        "value": fmt_millions(v),
-                        "bucket": "low",
-                    }
-                )
+            geo_states = [
+                {
+                    "state": ABBR_TO_NAME.get(abbr, abbr),
+                    "value": fmt_millions(v),
+                    "bucket": bucket_from_terciles(float(v), low_cut, high_cut),
+                }
+                for abbr, v in sorted_states
+            ]
 
             top_states = [
                 {
@@ -462,38 +483,40 @@ def build_behavior_shift(state: dict) -> dict:
                 for abbr, v in sorted_states[-3:]
             ]
         else:
-            # 2017: bucket by recovery index
+            # 2017: bucket all states by recovery-index terciles
             ri_items = []
-            for abbr in vol_2017:
+            for abbr in set(vol_2007.keys()) & set(vol_2017.keys()):
                 ri = recovery_index(vol_2007, vol_2017, abbr)
                 if ri is not None:
                     ri_items.append((abbr, ri))
             ri_items.sort(key=lambda x: x[1], reverse=True)
 
-            geo_states = []
-            for abbr, ri in ri_items[:5]:
-                geo_states.append(
-                    {
-                        "state": ABBR_TO_NAME.get(abbr, abbr),
-                        "value": str(ri),
-                        "bucket": bucket_for_recovery(ri),
-                    }
-                )
-            for abbr, ri in ri_items[-5:]:
-                geo_states.append(
-                    {
-                        "state": ABBR_TO_NAME.get(abbr, abbr),
-                        "value": str(ri),
-                        "bucket": bucket_for_recovery(ri),
-                    }
-                )
+            low_cut = quantile_threshold([ri for _, ri in ri_items], 0.33)
+            high_cut = quantile_threshold([ri for _, ri in ri_items], 0.67)
+
+            geo_states = [
+                {
+                    "state": ABBR_TO_NAME.get(abbr, abbr),
+                    "value": pct_of_baseline(ri),
+                    "bucket": bucket_from_terciles(ri, low_cut, high_cut),
+                }
+                for abbr, ri in ri_items
+            ]
 
             top_states = [
-                {"state": abbr, "value": str(ri), "label": "Fast recovery index"}
+                {
+                    "state": abbr,
+                    "value": signed_pct((ri - 1) * 100),
+                    "label": "Fast recovery index",
+                }
                 for abbr, ri in ri_items[:3]
             ]
             bottom_states = [
-                {"state": abbr, "value": str(ri), "label": "Still below baseline"}
+                {
+                    "state": abbr,
+                    "value": signed_pct((ri - 1) * 100),
+                    "label": "Still below baseline",
+                }
                 for abbr, ri in ri_items[-3:]
             ]
 
@@ -588,20 +611,23 @@ def build_summary(state: dict) -> dict:
             ri_items.append((abbr, ri, delta_pct))
     ri_items.sort(key=lambda x: x[1], reverse=True)
 
+    ri_values = [ri for _, ri, _ in ri_items]
+    low_cut = quantile_threshold(ri_values, 0.33)
+    high_cut = quantile_threshold(ri_values, 0.67)
+
     def state_entry(abbr: str, ri: float, delta: int) -> dict:
-        sign = "+" if delta >= 0 else ""
         return {
             "state": ABBR_TO_NAME.get(abbr, abbr),
-            "bucket": bucket_for_recovery(ri),
-            "value": f"{sign}{delta}%",
+            "bucket": bucket_from_terciles(ri, low_cut, high_cut),
+            "value": signed_pct(delta),
         }
 
     top_3 = ri_items[:3]
     bottom_3 = ri_items[-3:]
 
-    recovery_states = [state_entry(a, r, d) for a, r, d in top_3 + bottom_3]
-    top_states_list = [{"state": a, "value": f"+{d}%"} for a, _, d in top_3]
-    bottom_states_list = [{"state": a, "value": f"{d}%"} for a, _, d in bottom_3]
+    recovery_states = [state_entry(a, r, d) for a, r, d in ri_items]
+    top_states_list = [{"state": a, "value": signed_pct(d)} for a, _, d in top_3]
+    bottom_states_list = [{"state": a, "value": signed_pct(d)} for a, _, d in bottom_3]
 
     # Generate summary sentence
     top_names = ", ".join(a for a, _, _ in top_3)
