@@ -1,5 +1,20 @@
 [
   {
+    "year": 2007,
+    "conventional": 94.0,
+    "govt_backed": 6.0
+  },
+  {
+    "year": 2008,
+    "conventional": 78.9,
+    "govt_backed": 21.1
+  },
+  {
+    "year": 2009,
+    "conventional": 73.8,
+    "govt_backed": 26.2
+  },
+  {
     "year": 2010,
     "conventional": 76.6,
     "govt_backed": 23.4

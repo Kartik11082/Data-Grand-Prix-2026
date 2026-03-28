@@ -1,4 +1,13 @@
 {
+  "2007": {
+    "approval_rate_pct": 39.25,
+    "denial_rate_pct": 22.37,
+    "median_income_k": 76.0,
+    "dominant_purpose_code": 3,
+    "dominant_purpose": "Refinancing",
+    "dominant_loan_type_code": 1,
+    "dominant_loan_type": "Conventional"
+  },
   "2017": {
     "approval_rate_pct": 51.37,
     "denial_rate_pct": 14.07,

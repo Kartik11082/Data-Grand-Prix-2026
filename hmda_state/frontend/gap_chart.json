@@ -1,5 +1,20 @@
 [
   {
+    "year": 2007,
+    "applications": 21.82,
+    "originations": 10.44
+  },
+  {
+    "year": 2008,
+    "applications": 14.47,
+    "originations": 7.18
+  },
+  {
+    "year": 2009,
+    "applications": 15.2,
+    "originations": 8.95
+  },
+  {
     "year": 2010,
     "applications": 13.12,
     "originations": 7.86

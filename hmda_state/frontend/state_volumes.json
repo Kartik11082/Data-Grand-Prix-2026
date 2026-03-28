@@ -1,308 +1,308 @@
 [
   {
     "state_abbr": "AK",
-    "vol_2007": null,
+    "vol_2007": 21167,
     "vol_2017": 14430,
-    "recovery_index": null
+    "recovery_index": 0.6817
   },
   {
     "state_abbr": "AL",
-    "vol_2007": null,
+    "vol_2007": 153334,
     "vol_2017": 103096,
-    "recovery_index": null
+    "recovery_index": 0.6724
   },
   {
     "state_abbr": "AR",
-    "vol_2007": null,
+    "vol_2007": 83327,
     "vol_2017": 62259,
-    "recovery_index": null
+    "recovery_index": 0.7472
   },
   {
     "state_abbr": "AZ",
-    "vol_2007": null,
+    "vol_2007": 292272,
     "vol_2017": 213547,
-    "recovery_index": null
+    "recovery_index": 0.7306
   },
   {
     "state_abbr": "CA",
-    "vol_2007": null,
+    "vol_2007": 1233502,
     "vol_2017": 877753,
-    "recovery_index": null
+    "recovery_index": 0.7116
   },
   {
     "state_abbr": "CO",
-    "vol_2007": null,
+    "vol_2007": 218842,
     "vol_2017": 216848,
-    "recovery_index": null
+    "recovery_index": 0.9909
   },
   {
     "state_abbr": "CT",
-    "vol_2007": null,
+    "vol_2007": 126259,
     "vol_2017": 67000,
-    "recovery_index": null
+    "recovery_index": 0.5307
   },
   {
     "state_abbr": "DC",
-    "vol_2007": null,
+    "vol_2007": 23948,
     "vol_2017": 15414,
-    "recovery_index": null
+    "recovery_index": 0.6436
   },
   {
     "state_abbr": "DE",
-    "vol_2007": null,
+    "vol_2007": 40053,
     "vol_2017": 24719,
-    "recovery_index": null
+    "recovery_index": 0.6172
   },
   {
     "state_abbr": "FL",
-    "vol_2007": null,
+    "vol_2007": 735174,
     "vol_2017": 492702,
-    "recovery_index": null
+    "recovery_index": 0.6702
   },
   {
     "state_abbr": "GA",
-    "vol_2007": null,
+    "vol_2007": 352181,
     "vol_2017": 244731,
-    "recovery_index": null
+    "recovery_index": 0.6949
   },
   {
     "state_abbr": "HI",
-    "vol_2007": null,
+    "vol_2007": 39270,
     "vol_2017": 26553,
-    "recovery_index": null
+    "recovery_index": 0.6762
   },
   {
     "state_abbr": "IA",
-    "vol_2007": null,
+    "vol_2007": 93343,
     "vol_2017": 79977,
-    "recovery_index": null
+    "recovery_index": 0.8568
   },
   {
     "state_abbr": "ID",
-    "vol_2007": null,
+    "vol_2007": 67396,
     "vol_2017": 54102,
-    "recovery_index": null
+    "recovery_index": 0.8027
   },
   {
     "state_abbr": "IL",
-    "vol_2007": null,
+    "vol_2007": 470592,
     "vol_2017": 265490,
-    "recovery_index": null
+    "recovery_index": 0.5642
   },
   {
     "state_abbr": "IN",
-    "vol_2007": null,
+    "vol_2007": 199213,
     "vol_2017": 158693,
-    "recovery_index": null
+    "recovery_index": 0.7966
   },
   {
     "state_abbr": "KS",
-    "vol_2007": null,
+    "vol_2007": 86578,
     "vol_2017": 61197,
-    "recovery_index": null
+    "recovery_index": 0.7068
   },
   {
     "state_abbr": "KY",
-    "vol_2007": null,
+    "vol_2007": 121278,
     "vol_2017": 91096,
-    "recovery_index": null
+    "recovery_index": 0.7511
   },
   {
     "state_abbr": "LA",
-    "vol_2007": null,
+    "vol_2007": 126278,
     "vol_2017": 83323,
-    "recovery_index": null
+    "recovery_index": 0.6598
   },
   {
     "state_abbr": "MA",
-    "vol_2007": null,
+    "vol_2007": 214170,
     "vol_2017": 162474,
-    "recovery_index": null
+    "recovery_index": 0.7586
   },
   {
     "state_abbr": "MD",
-    "vol_2007": null,
+    "vol_2007": 261984,
     "vol_2017": 144610,
-    "recovery_index": null
+    "recovery_index": 0.552
   },
   {
     "state_abbr": "ME",
-    "vol_2007": null,
+    "vol_2007": 44333,
     "vol_2017": 31503,
-    "recovery_index": null
+    "recovery_index": 0.7106
   },
   {
     "state_abbr": "MI",
-    "vol_2007": null,
+    "vol_2007": 294627,
     "vol_2017": 241945,
-    "recovery_index": null
+    "recovery_index": 0.8212
   },
   {
     "state_abbr": "MN",
-    "vol_2007": null,
+    "vol_2007": 171217,
     "vol_2017": 154164,
-    "recovery_index": null
+    "recovery_index": 0.9004
   },
   {
     "state_abbr": "MO",
-    "vol_2007": null,
+    "vol_2007": 218490,
     "vol_2017": 145419,
-    "recovery_index": null
+    "recovery_index": 0.6656
   },
   {
     "state_abbr": "MS",
-    "vol_2007": null,
+    "vol_2007": 75757,
     "vol_2017": 51038,
-    "recovery_index": null
+    "recovery_index": 0.6737
   },
   {
     "state_abbr": "MT",
-    "vol_2007": null,
+    "vol_2007": 31811,
     "vol_2017": 24577,
-    "recovery_index": null
+    "recovery_index": 0.7726
   },
   {
     "state_abbr": "NC",
-    "vol_2007": null,
+    "vol_2007": 337640,
     "vol_2017": 240128,
-    "recovery_index": null
+    "recovery_index": 0.7112
   },
   {
     "state_abbr": "ND",
-    "vol_2007": null,
+    "vol_2007": 17673,
     "vol_2017": 16016,
-    "recovery_index": null
+    "recovery_index": 0.9062
   },
   {
     "state_abbr": "NE",
-    "vol_2007": null,
+    "vol_2007": 51923,
     "vol_2017": 43786,
-    "recovery_index": null
+    "recovery_index": 0.8433
   },
   {
     "state_abbr": "NH",
-    "vol_2007": null,
+    "vol_2007": 46139,
     "vol_2017": 34290,
-    "recovery_index": null
+    "recovery_index": 0.7432
   },
   {
     "state_abbr": "NJ",
-    "vol_2007": null,
+    "vol_2007": 317276,
     "vol_2017": 169196,
-    "recovery_index": null
+    "recovery_index": 0.5333
   },
   {
     "state_abbr": "NM",
-    "vol_2007": null,
+    "vol_2007": 69876,
     "vol_2017": 37465,
-    "recovery_index": null
+    "recovery_index": 0.5362
   },
   {
     "state_abbr": "NV",
-    "vol_2007": null,
+    "vol_2007": 113248,
     "vol_2017": 91540,
-    "recovery_index": null
+    "recovery_index": 0.8083
   },
   {
     "state_abbr": "NY",
-    "vol_2007": null,
+    "vol_2007": 398639,
     "vol_2017": 236499,
-    "recovery_index": null
+    "recovery_index": 0.5933
   },
   {
     "state_abbr": "OH",
-    "vol_2007": null,
+    "vol_2007": 313279,
     "vol_2017": 241167,
-    "recovery_index": null
+    "recovery_index": 0.7698
   },
   {
     "state_abbr": "OK",
-    "vol_2007": null,
+    "vol_2007": 107739,
     "vol_2017": 78302,
-    "recovery_index": null
+    "recovery_index": 0.7268
   },
   {
     "state_abbr": "OR",
-    "vol_2007": null,
+    "vol_2007": 151933,
     "vol_2017": 116700,
-    "recovery_index": null
+    "recovery_index": 0.7681
   },
   {
     "state_abbr": "PA",
-    "vol_2007": null,
+    "vol_2007": 427955,
     "vol_2017": 249620,
-    "recovery_index": null
+    "recovery_index": 0.5833
   },
   {
     "state_abbr": "RI",
-    "vol_2007": null,
+    "vol_2007": 36923,
     "vol_2017": 24598,
-    "recovery_index": null
+    "recovery_index": 0.6662
   },
   {
     "state_abbr": "SC",
-    "vol_2007": null,
+    "vol_2007": 161777,
     "vol_2017": 123971,
-    "recovery_index": null
+    "recovery_index": 0.7663
   },
   {
     "state_abbr": "SD",
-    "vol_2007": null,
+    "vol_2007": 24091,
     "vol_2017": 18871,
-    "recovery_index": null
+    "recovery_index": 0.7833
   },
   {
     "state_abbr": "TN",
-    "vol_2007": null,
+    "vol_2007": 217392,
     "vol_2017": 164577,
-    "recovery_index": null
+    "recovery_index": 0.7571
   },
   {
     "state_abbr": "TX",
-    "vol_2007": null,
+    "vol_2007": 653817,
     "vol_2017": 559492,
-    "recovery_index": null
+    "recovery_index": 0.8557
   },
   {
     "state_abbr": "UT",
-    "vol_2007": null,
+    "vol_2007": 136628,
     "vol_2017": 108018,
-    "recovery_index": null
+    "recovery_index": 0.7906
   },
   {
     "state_abbr": "VA",
-    "vol_2007": null,
+    "vol_2007": 327766,
     "vol_2017": 211218,
-    "recovery_index": null
+    "recovery_index": 0.6444
   },
   {
     "state_abbr": "VT",
-    "vol_2007": null,
+    "vol_2007": 20755,
     "vol_2017": 13325,
-    "recovery_index": null
+    "recovery_index": 0.642
   },
   {
     "state_abbr": "WA",
-    "vol_2007": null,
+    "vol_2007": 310267,
     "vol_2017": 230076,
-    "recovery_index": null
+    "recovery_index": 0.7415
   },
   {
     "state_abbr": "WI",
-    "vol_2007": null,
+    "vol_2007": 211916,
     "vol_2017": 146251,
-    "recovery_index": null
+    "recovery_index": 0.6901
   },
   {
     "state_abbr": "WV",
-    "vol_2007": null,
+    "vol_2007": 49942,
     "vol_2017": 29490,
-    "recovery_index": null
+    "recovery_index": 0.5905
   },
   {
     "state_abbr": "WY",
-    "vol_2007": null,
+    "vol_2007": 21052,
     "vol_2017": 13702,
-    "recovery_index": null
+    "recovery_index": 0.6509
   }
 ]
