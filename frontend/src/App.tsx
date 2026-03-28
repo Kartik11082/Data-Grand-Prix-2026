@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { LandingPage as Landing } from './components/LandingPage';
 import { ActOne as Fallout } from './components/ActOne';
+import { ActOnePartTwo as LendersFled } from './components/ActOnePartTwo';
 import { ActTwo as Recovery } from './components/ActTwo';
 import { ActThree as BehaviorShift } from './components/ActThree';
 import { ExecutiveSummary as Summary } from './components/ExecutiveSummary';
@@ -10,7 +11,7 @@ export default function App() {
   const [currentPage, setCurrentPage] = useState<number>(0);
 
   const goNext = () => {
-    setCurrentPage((prev) => Math.min(prev + 1, 4));
+    setCurrentPage((prev) => Math.min(prev + 1, 5));
   };
 
   const goPrev = () => {
@@ -41,10 +42,12 @@ export default function App() {
       case 1:
         return <Fallout onNext={goNext} />;
       case 2:
-        return <Recovery onNext={goNext} />;
+        return <LendersFled onNext={goNext} />;
       case 3:
-        return <BehaviorShift onNext={goNext} />;
+        return <Recovery onNext={goNext} />;
       case 4:
+        return <BehaviorShift onNext={goNext} />;
+      case 5:
         return <Summary />;
       default:
         return <Landing onBegin={goNext} />;
@@ -56,7 +59,7 @@ export default function App() {
       
       {/* Progress Indicator */}
       <div className="absolute top-8 right-8 z-50 flex gap-4">
-        {[0, 1, 2, 3, 4].map((index) => {
+        {[0, 1, 2, 3, 4, 5].map((index) => {
           const isActive = index === currentPage;
           return (
             <button

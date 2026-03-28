@@ -1,21 +1,23 @@
 import React, { useState, useEffect } from 'react';
-import { XAxis, YAxis, ResponsiveContainer, ComposedChart, ReferenceLine, Area } from 'recharts';
+import { AreaChart, Area, XAxis, YAxis, ResponsiveContainer, ReferenceLine } from 'recharts';
 import { motion } from 'framer-motion';
 
-interface ActOneProps {
+interface ActOnePartTwoProps {
   onNext: () => void;
 }
 
-const beat1Data = [
-  { year: 2007, applications: 6.82, originations: 5.74, gap_fill: 6.82 },
-  { year: 2008, applications: 5.93, originations: 4.13, gap_fill: 5.93 },
-  { year: 2009, applications: 4.21, originations: 2.31, gap_fill: 4.21 },
-  { year: 2010, applications: 4.48, originations: 2.52, gap_fill: 4.48 },
+const beat2Data = [
+  { year: 2007, conventional: 88, govt_backed: 12 },
+  { year: 2008, conventional: 72, govt_backed: 28 },
+  { year: 2009, conventional: 54, govt_backed: 46 },
+  { year: 2010, conventional: 56, govt_backed: 44 },
+  { year: 2011, conventional: 60, govt_backed: 40 },
+  { year: 2012, conventional: 62, govt_backed: 38 },
 ];
 
-export const ActOne: React.FC<ActOneProps> = ({ onNext }) => {
+export const ActOnePartTwo: React.FC<ActOnePartTwoProps> = ({ onNext }) => {
   const [kpiStyle, setKpiStyle] = useState({ opacity: 0, transform: 'translateY(-4px)' });
-
+  
   useEffect(() => {
     setKpiStyle({ opacity: 0, transform: 'translateY(-4px)' });
     const timer = setTimeout(() => {
@@ -24,7 +26,7 @@ export const ActOne: React.FC<ActOneProps> = ({ onNext }) => {
     return () => clearTimeout(timer);
   }, []);
 
-  const currentKPI = { label: "Origination rate", value: "55%", delta: "↓ 29pp from 2007", deltaColor: "#E24B4A" };
+  const currentKPI = { label: "Gov-backed share", value: "46%", delta: "↑ 34pp from baseline", deltaColor: "#639922" };
 
   return (
     <div className="flex w-full min-h-screen bg-[#111] text-white font-sans overflow-x-hidden">
@@ -60,28 +62,21 @@ export const ActOne: React.FC<ActOneProps> = ({ onNext }) => {
         </div>
       </div>
 
+      {/* Right Column: Content */}
       <div className="w-[65%] min-h-screen p-12 bg-[#0a0a0a]">
-        {/* Beat 1 Section */}
-        <section className="min-h-[80vh] mb-32 flex flex-col justify-center translate-y-20">
+        <section className="min-h-[80vh] flex flex-col justify-center translate-y-20">
           <div className="mb-4">
-            <h3 className="text-[18px] text-white font-[400] mb-1">Credit froze overnight</h3>
-            <p className="text-[13px] text-[#666] m-0">Gap between loan applications and approvals, 2007–2010</p>
+            <h3 className="text-[18px] text-white font-[400] mb-1">Private lenders fled. Government stepped in.</h3>
+            <p className="text-[13px] text-[#666] m-0">Share of originated loans by type, 2007–2012</p>
           </div>
 
-          <div className="bg-[#1a1a1a] rounded-lg p-4 w-full h-[320px] relative">
+          <div className="bg-[#1a1a1a] rounded-lg p-4 w-full h-[300px] relative">
             <ResponsiveContainer width="100%" height="100%">
-              <ComposedChart data={beat1Data}>
-                <XAxis
-                  dataKey="year"
-                  stroke="#666"
-                  fontSize={11}
-                  tickLine={false}
-                  axisLine={false}
-                />
+              <AreaChart data={beat2Data} stackOffset="expand">
+                <XAxis dataKey="year" stroke="#666" fontSize={11} tickLine={false} axisLine={false} />
                 <YAxis
-                  domain={[0, 8]}
-                  ticks={[0, 2, 4, 6, 8]}
-                  label={{ value: 'Millions', angle: -90, position: 'insideLeft', fill: '#666', fontSize: 11 }}
+                  tickFormatter={(tick) => `${Math.round(tick * 100)}%`}
+                  ticks={[0, 0.25, 0.5, 0.75, 1]}
                   stroke="#666"
                   fontSize={11}
                   tickLine={false}
@@ -89,81 +84,80 @@ export const ActOne: React.FC<ActOneProps> = ({ onNext }) => {
                 />
                 <ReferenceLine
                   x={2009}
-                  stroke="#E24B4A"
+                  stroke="#fff"
                   strokeDasharray="3 3"
-                  strokeOpacity={0.6}
-                  label={{ position: 'top', value: 'The floor', fill: '#E24B4A', fontSize: 11 }}
+                  strokeOpacity={0.3}
+                  label={{ position: 'top', value: 'FHA/VA surges to 46%', fill: '#639922', fontSize: 11 }}
                 />
                 <Area
                   type="monotone"
-                  dataKey="gap_fill"
+                  dataKey="conventional"
+                  stackId="1"
                   stroke="none"
-                  fill="#E24B4A"
-                  fillOpacity={0.3}
-                  isAnimationActive={true}
-                />
-                <Area
-                  type="monotone"
-                  dataKey="originations"
-                  stroke="none"
-                  fill="#1a1a1a"
-                  fillOpacity={1}
-                  isAnimationActive={false}
-                  activeDot={false}
-                />
-                <Area
-                  type="monotone"
-                  dataKey="applications"
-                  stroke="#378ADD"
-                  strokeWidth={2}
                   fill="#378ADD"
-                  fillOpacity={0.15}
+                  fillOpacity={0.85}
                   isAnimationActive={true}
                 />
                 <Area
                   type="monotone"
-                  dataKey="originations"
-                  stroke="#639922"
-                  strokeWidth={2}
+                  dataKey="govt_backed"
+                  stackId="1"
+                  stroke="none"
                   fill="#639922"
-                  fillOpacity={0.15}
+                  fillOpacity={0.85}
                   isAnimationActive={true}
-                  dot={(props: any) => {
-                    if (props.payload.year === 2009) {
-                      return (
-                        <g key="custom-dot">
-                          <circle cx={props.cx} cy={props.cy} r={6} stroke="#E24B4A" strokeWidth={2} fill="#111" />
-                          <text x={props.cx} y={props.cy - 15} fill="#E24B4A" fontSize={11} textAnchor="middle">2.31M loans originated</text>
-                        </g>
-                      );
-                    }
-                    return <g key={props.payload.year}></g>;
-                  }}
                 />
-              </ComposedChart>
+              </AreaChart>
             </ResponsiveContainer>
           </div>
 
           {/* Manual Legend */}
           <div className="flex gap-6 mt-6 items-center flex-wrap">
             <div className="flex items-center gap-2">
-              <div className="w-3 h-3 rounded-full bg-[#378ADD]"></div>
-              <span className="text-[12px] text-white/80">Applications</span>
+              <div className="w-3 h-3 bg-[#378ADD]"></div>
+              <span className="text-[12px] text-white/80">Conventional</span>
             </div>
             <div className="flex items-center gap-2">
-              <div className="w-3 h-3 rounded-full bg-[#639922]"></div>
-              <span className="text-[12px] text-white/80">Originations</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <div className="w-3 h-3 rounded-full bg-[#E24B4A]"></div>
-              <span className="text-[12px] text-white/80">Denial gap</span>
+              <div className="w-3 h-3 bg-[#639922]"></div>
+              <span className="text-[12px] text-white/80">Gov-backed (FHA/VA/FSA)</span>
             </div>
           </div>
+
+          {/* Stat Pills */}
+          <div className="mt-8 flex flex-col">
+            <div className="flex items-center gap-4 mb-2">
+              <div className="bg-[#1f2937] px-4 py-2 rounded-full inline-flex items-center gap-2">
+                <span className="text-[12px] text-white/60">Conventional 2007</span>
+                <span className="text-[12px] font-bold text-[#378ADD]">88%</span>
+              </div>
+              <span className="text-white/40">→</span>
+              <div className="bg-[#1f2937] px-4 py-2 rounded-full inline-flex items-center gap-2">
+                <span className="text-[12px] text-white/60">Conventional 2009</span>
+                <span className="text-[12px] font-bold text-[#378ADD]">54%</span>
+              </div>
+            </div>
+            <p className="text-[12px] text-[#666] m-0 max-w-[480px]">
+              By 2010 they're nearly equal — something that had never happened before in the dataset. This is the lender risk appetite story told in one shape.
+            </p>
+          </div>
         </section>
+
         {/* Bottom Page Transition */}
         <div className="w-full flex flex-col items-center justify-center py-[48px] mt-20">
+          <style>{`
+            @keyframes dotFade {
+              0%, 100% { opacity: 0; }
+              50% { opacity: 1; }
+            }
+            .dot-1 { animation: dotFade 1.5s infinite 0s; }
+            .dot-2 { animation: dotFade 1.5s infinite 0.5s; }
+            .dot-3 { animation: dotFade 1.5s infinite 1.0s; }
+          `}</style>
           <div className="text-[24px] font-[300] text-[#666] italic flex items-center justify-center text-center">
-            Private lenders fled the market...
+            Then, slowly, something changed
+            <span className="inline-flex tracking-widest ml-1 text-white">
+              <span className="dot-1">.</span><span className="dot-2">.</span><span className="dot-3">.</span>
+            </span>
           </div>
           <motion.button
             onClick={onNext}
