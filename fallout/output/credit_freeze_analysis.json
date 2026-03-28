@@ -1,0 +1,261 @@
+[
+  {
+    "segment": "Total Market",
+    "data": [
+      {
+        "year": 2007.0,
+        "applications": 21824281,
+        "originations": 10441545,
+        "denials": 5952530,
+        "approval_rate": 0.4784,
+        "denial_rate": 0.2727
+      },
+      {
+        "year": 2008.0,
+        "applications": 14469749,
+        "originations": 7177262,
+        "denials": 3944602,
+        "approval_rate": 0.496,
+        "denial_rate": 0.2726
+      },
+      {
+        "year": 2009.0,
+        "applications": 15198963,
+        "originations": 8950936,
+        "denials": 3012967,
+        "approval_rate": 0.5889,
+        "denial_rate": 0.1982
+      },
+      {
+        "year": 2010.0,
+        "applications": 13119547,
+        "originations": 7863337,
+        "denials": 2556789,
+        "approval_rate": 0.5994,
+        "denial_rate": 0.1949
+      }
+    ]
+  },
+  {
+    "segment": "Conventional",
+    "data": [
+      {
+        "year": 2007.0,
+        "applications": 20792922,
+        "originations": 9811278,
+        "denials": 5756799,
+        "approval_rate": 0.4719,
+        "denial_rate": 0.2769
+      },
+      {
+        "year": 2008.0,
+        "applications": 11694956,
+        "originations": 5662283,
+        "denials": 3308457,
+        "approval_rate": 0.4842,
+        "denial_rate": 0.2829
+      },
+      {
+        "year": 2009.0,
+        "applications": 11141612,
+        "originations": 6608776,
+        "denials": 2232437,
+        "approval_rate": 0.5932,
+        "denial_rate": 0.2004
+      },
+      {
+        "year": 2010.0,
+        "applications": 9857960,
+        "originations": 6020648,
+        "denials": 1928590,
+        "approval_rate": 0.6107,
+        "denial_rate": 0.1956
+      }
+    ]
+  },
+  {
+    "segment": "Government-backed",
+    "data": [
+      {
+        "year": 2007.0,
+        "applications": 1031359,
+        "originations": 630267,
+        "denials": 195731,
+        "approval_rate": 0.6111,
+        "denial_rate": 0.1898
+      },
+      {
+        "year": 2008.0,
+        "applications": 2774793,
+        "originations": 1514979,
+        "denials": 636145,
+        "approval_rate": 0.546,
+        "denial_rate": 0.2293
+      },
+      {
+        "year": 2009.0,
+        "applications": 4057351,
+        "originations": 2342160,
+        "denials": 780530,
+        "approval_rate": 0.5773,
+        "denial_rate": 0.1924
+      },
+      {
+        "year": 2010.0,
+        "applications": 3261587,
+        "originations": 1842689,
+        "denials": 628199,
+        "approval_rate": 0.565,
+        "denial_rate": 0.1926
+      }
+    ]
+  },
+  {
+    "segment": "Home Purchase",
+    "data": [
+      {
+        "year": 2007.0,
+        "applications": 8048211,
+        "originations": 4669762,
+        "denials": 1410873,
+        "approval_rate": 0.5802,
+        "denial_rate": 0.1753
+      },
+      {
+        "year": 2008.0,
+        "applications": 5308273,
+        "originations": 3130160,
+        "denials": 905955,
+        "approval_rate": 0.5897,
+        "denial_rate": 0.1707
+      },
+      {
+        "year": 2009.0,
+        "applications": 4418788,
+        "originations": 2791216,
+        "denials": 675878,
+        "approval_rate": 0.6317,
+        "denial_rate": 0.153
+      },
+      {
+        "year": 2010.0,
+        "applications": 4012536,
+        "originations": 2548478,
+        "denials": 615168,
+        "approval_rate": 0.6351,
+        "denial_rate": 0.1533
+      }
+    ]
+  },
+  {
+    "segment": "Refinance",
+    "data": [
+      {
+        "year": 2007.0,
+        "applications": 11552461,
+        "originations": 4809944,
+        "denials": 3674772,
+        "approval_rate": 0.4164,
+        "denial_rate": 0.3181
+      },
+      {
+        "year": 2008.0,
+        "applications": 7753631,
+        "originations": 3475808,
+        "denials": 2437924,
+        "approval_rate": 0.4483,
+        "denial_rate": 0.3144
+      },
+      {
+        "year": 2009.0,
+        "applications": 9950501,
+        "originations": 5769693,
+        "denials": 2039056,
+        "approval_rate": 0.5798,
+        "denial_rate": 0.2049
+      },
+      {
+        "year": 2010.0,
+        "applications": 8435487,
+        "originations": 4972333,
+        "denials": 1696941,
+        "approval_rate": 0.5895,
+        "denial_rate": 0.2012
+      }
+    ]
+  },
+  {
+    "segment": "First Lien",
+    "data": [
+      {
+        "year": 2007.0,
+        "applications": 17905559,
+        "originations": 8565417,
+        "denials": 4744366,
+        "approval_rate": 0.4784,
+        "denial_rate": 0.265
+      },
+      {
+        "year": 2008.0,
+        "applications": 12941193,
+        "originations": 6497076,
+        "denials": 3358163,
+        "approval_rate": 0.502,
+        "denial_rate": 0.2595
+      },
+      {
+        "year": 2009.0,
+        "applications": 14463381,
+        "originations": 8588059,
+        "denials": 2753664,
+        "approval_rate": 0.5938,
+        "denial_rate": 0.1904
+      },
+      {
+        "year": 2010.0,
+        "applications": 12495047,
+        "originations": 7544465,
+        "denials": 2323586,
+        "approval_rate": 0.6038,
+        "denial_rate": 0.186
+      }
+    ]
+  },
+  {
+    "segment": "High-Income Borrowers",
+    "data": [
+      {
+        "year": 2007.0,
+        "applications": 6524187,
+        "originations": 3408989,
+        "denials": 1472565,
+        "approval_rate": 0.5225,
+        "denial_rate": 0.2257
+      },
+      {
+        "year": 2008.0,
+        "applications": 4062724,
+        "originations": 2200615,
+        "denials": 854489,
+        "approval_rate": 0.5417,
+        "denial_rate": 0.2103
+      },
+      {
+        "year": 2009.0,
+        "applications": 4581779,
+        "originations": 2917133,
+        "denials": 708529,
+        "approval_rate": 0.6367,
+        "denial_rate": 0.1546
+      },
+      {
+        "year": 2010.0,
+        "applications": 4361367,
+        "originations": 2851724,
+        "denials": 634756,
+        "approval_rate": 0.6539,
+        "denial_rate": 0.1455
+      }
+    ]
+  }
+]
