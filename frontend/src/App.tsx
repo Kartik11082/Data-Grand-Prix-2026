@@ -3,6 +3,8 @@ import { LandingPage as Landing } from './components/LandingPage';
 import { ActOne as Fallout } from './components/ActOne';
 import { ActOnePartTwo as LendersFled } from './components/ActOnePartTwo';
 import { ActTwo as Recovery } from './components/ActTwo';
+import { ActTwoPartTwo as RefiWave } from './components/ActTwoPartTwo';
+import { ActTwoPartThree as GovShift } from './components/ActTwoPartThree';
 import { ActThree as BehaviorShift } from './components/ActThree';
 import { ExecutiveSummary as Summary } from './components/ExecutiveSummary';
 import './index.css';
@@ -11,7 +13,7 @@ export default function App() {
   const [currentPage, setCurrentPage] = useState<number>(0);
 
   const goNext = () => {
-    setCurrentPage((prev) => Math.min(prev + 1, 5));
+    setCurrentPage((prev) => Math.min(prev + 1, 7));
   };
 
   const goPrev = () => {
@@ -46,8 +48,12 @@ export default function App() {
       case 3:
         return <Recovery onNext={goNext} />;
       case 4:
-        return <BehaviorShift onNext={goNext} />;
+        return <RefiWave onNext={goNext} />;
       case 5:
+        return <GovShift onNext={goNext} />;
+      case 6:
+        return <BehaviorShift onNext={goNext} />;
+      case 7:
         return <Summary />;
       default:
         return <Landing onBegin={goNext} />;
@@ -59,7 +65,7 @@ export default function App() {
       
       {/* Progress Indicator */}
       <div className="absolute top-8 right-8 z-50 flex gap-4">
-        {[0, 1, 2, 3, 4, 5].map((index) => {
+        {[0, 1, 2, 3, 4, 5, 6, 7].map((index) => {
           const isActive = index === currentPage;
           return (
             <button
