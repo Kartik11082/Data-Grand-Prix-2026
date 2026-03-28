@@ -51,7 +51,7 @@ export function LandingPage({ onBegin, story, isTransitioning }: LandingPageProp
             disabled={isTransitioning}
             className="mt-10 rounded-full bg-[var(--color-accent)] px-6 py-3 text-sm font-semibold text-white transition hover:bg-[var(--color-ink)] disabled:cursor-default disabled:opacity-80"
           >
-            {isTransitioning ? "Entering story..." : "Start story"}
+            {isTransitioning ? "Entering story..." : "Begin"}
           </button>
         </div>
       </motion.section>
