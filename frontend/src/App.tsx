@@ -8,11 +8,21 @@ import { EMPTY_STORY_DATA, fetchStoryData } from "./dataService";
 import "./index.css";
 
 const pageLabels = ["Overview", "Collapse", "Recovery", "Behavior Shift", "Summary"];
+const navLabels = pageLabels.slice(1);
 
 export default function App() {
   const [currentPage, setCurrentPage] = useState(0);
   const [storyData, setStoryData] = useState(EMPTY_STORY_DATA);
   const [isLoadingData, setIsLoadingData] = useState(true);
+  const [isIntroTransitioning, setIsIntroTransitioning] = useState(false);
+
+  const beginStory = () => {
+    if (isIntroTransitioning) {
+      return;
+    }
+
+    setIsIntroTransitioning(true);
+  };
 
   const goNext = () => {
     setCurrentPage((previousPage) => Math.min(previousPage + 1, pageLabels.length - 1));
@@ -23,7 +33,33 @@ export default function App() {
   };
 
   useEffect(() => {
+    if (!isIntroTransitioning) {
+      return;
+    }
+
+    const timeoutId = window.setTimeout(() => {
+      setCurrentPage(1);
+      setIsIntroTransitioning(false);
+    }, 950);
+
+    return () => window.clearTimeout(timeoutId);
+  }, [isIntroTransitioning]);
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "auto" });
+  }, [currentPage]);
+
+  useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
+      if (currentPage === 0) {
+        if ((event.code === "Space" || event.key === "ArrowRight") && !isIntroTransitioning) {
+          event.preventDefault();
+          beginStory();
+        }
+
+        return;
+      }
+
       if (event.code === "Space" || event.key === "ArrowRight") {
         event.preventDefault();
         goNext();
@@ -37,7 +73,7 @@ export default function App() {
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, []);
+  }, [currentPage, isIntroTransitioning]);
 
   useEffect(() => {
     let isCancelled = false;
@@ -65,7 +101,7 @@ export default function App() {
   const renderPage = () => {
     switch (currentPage) {
       case 0:
-        return <LandingPage onBegin={goNext} story={storyData.landing} />;
+        return <LandingPage onBegin={beginStory} story={storyData.landing} isTransitioning={isIntroTransitioning} />;
       case 1:
         return <ActOne onNext={goNext} onPrev={goPrev} story={storyData.collapse} />;
       case 2:
@@ -75,50 +111,55 @@ export default function App() {
       case 4:
         return <ExecutiveSummary onPrev={goPrev} story={storyData.summary} />;
       default:
-        return <LandingPage onBegin={goNext} story={storyData.landing} />;
+        return <LandingPage onBegin={beginStory} story={storyData.landing} isTransitioning={isIntroTransitioning} />;
     }
   };
 
+  const showHeader = currentPage > 0;
+
   return (
-    <div className="min-h-screen bg-[var(--color-page)] text-[var(--color-ink)]">
-      <header className="sticky top-0 z-50 border-b border-[var(--color-border)] bg-[color:rgba(247,244,237,0.88)] backdrop-blur">
-        <div className="mx-auto flex max-w-[1400px] items-center justify-between gap-6 px-4 py-4 md:px-8">
-          <div>
-            <p className="text-[11px] font-semibold uppercase tracking-[0.28em] text-[var(--color-muted)]">
-              Data Grand Prix 2026
-            </p>
-            <h1 className="mt-1 text-xl text-[var(--color-ink)]" style={{ fontFamily: "var(--font-display)" }}>
-              HMDA mortgage story
-            </h1>
-            <p className="mt-1 text-xs text-[var(--color-muted)]">
-              {isLoadingData ? "Syncing API data..." : "API data synced"}
-            </p>
+    <div className="min-h-screen text-[var(--color-ink)]">
+      {showHeader ? (
+        <header className="sticky top-0 z-50 border-b border-[var(--color-border)] bg-[color:rgba(247,246,241,0.88)] backdrop-blur">
+          <div className="mx-auto flex max-w-[1400px] items-center justify-between gap-6 px-4 py-4 md:px-8">
+            <div>
+              <p className="text-[11px] font-semibold uppercase tracking-[0.28em] text-[var(--color-muted)]">
+                Data Grand Prix 2026
+              </p>
+              <h1 className="mt-1 text-xl text-[var(--color-ink)]" style={{ fontFamily: "var(--font-display)" }}>
+                HMDA mortgage story
+              </h1>
+              <p className="mt-1 text-xs text-[var(--color-muted)]">
+                {isLoadingData ? "Syncing API data..." : "API data synced"}
+              </p>
+            </div>
+
+            <nav className="flex flex-wrap items-center justify-end gap-2">
+              {navLabels.map((label, navIndex) => {
+                const pageIndex = navIndex + 1;
+                const isActive = pageIndex === currentPage;
+
+                return (
+                  <button
+                    key={label}
+                    type="button"
+                    onClick={() => setCurrentPage(pageIndex)}
+                    className={`rounded-full border px-4 py-2 text-sm transition ${
+                      isActive
+                        ? "border-[var(--color-accent)] bg-[var(--color-accent)] text-white"
+                        : "border-[var(--color-border)] bg-white/80 text-[var(--color-muted)] hover:border-[var(--color-accent)] hover:text-[var(--color-ink)]"
+                    }`}
+                  >
+                    {label}
+                  </button>
+                );
+              })}
+            </nav>
           </div>
+        </header>
+      ) : null}
 
-          <nav className="flex flex-wrap items-center justify-end gap-2">
-            {pageLabels.map((label, index) => {
-              const isActive = index === currentPage;
-
-              return (
-                <button
-                  key={label}
-                  type="button"
-                  onClick={() => setCurrentPage(index)}
-                  className={`rounded-full border px-4 py-2 text-sm transition ${
-                    isActive
-                      ? "border-[var(--color-ink)] bg-[var(--color-ink)] text-white"
-                      : "border-[var(--color-border)] bg-white/80 text-[var(--color-muted)] hover:border-[var(--color-accent)] hover:text-[var(--color-ink)]"
-                  }`}
-                >
-                  {label}
-                </button>
-              );
-            })}
-          </nav>
-        </div>
-      </header>
-
-      <main key={currentPage} className="animate-fade-in">
+      <main key={currentPage} className={showHeader ? "animate-fade-in" : undefined}>
         {renderPage()}
       </main>
     </div>

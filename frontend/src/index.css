@@ -1,24 +1,23 @@
-@import url("https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Manrope:wght@400;500;600;700&display=swap");
 @import "tailwindcss";
 
 :root {
-  --color-page: #f7f4ed;
-  --color-surface: #fffdf8;
+  --color-page: #f7f6f1;
+  --color-surface: #fffdfa;
   --color-sand: #f1eadf;
-  --color-border: #dfd4c3;
-  --color-ink: #23313a;
-  --color-muted: #6d7a83;
-  --color-accent: #1d6f8f;
-  --color-accent-soft: #d8edf6;
-  --color-mint: #6c9b67;
-  --color-mint-soft: #e4f1df;
-  --color-amber: #ca8a2a;
-  --color-amber-soft: #fff1d8;
-  --color-coral: #d86d5c;
-  --color-coral-soft: #fce3de;
-  --shadow-soft: 0 20px 50px rgba(35, 49, 58, 0.08);
-  --font-body: "Manrope", system-ui, sans-serif;
-  --font-display: "Fraunces", Georgia, serif;
+  --color-border: #ddd6c9;
+  --color-ink: #22313a;
+  --color-muted: #6f7a81;
+  --color-accent: #4f86a6;
+  --color-accent-soft: #dcecf5;
+  --color-mint: #6d9683;
+  --color-mint-soft: #e3efe9;
+  --color-amber: #c79a4a;
+  --color-amber-soft: #f7eddc;
+  --color-coral: #c97b66;
+  --color-coral-soft: #f6e3dd;
+  --shadow-soft: 0 20px 50px rgba(34, 49, 58, 0.08);
+  --font-body: "Noah", "Avenir Next", "Segoe UI", sans-serif;
+  --font-display: "Noah", "Avenir Next", "Segoe UI", sans-serif;
   color: var(--color-ink);
   background: var(--color-page);
   font-family: var(--font-body);
@@ -27,13 +26,41 @@
 }
 
 body {
+  position: relative;
   margin: 0;
   min-width: 320px;
   min-height: 100vh;
   background:
-    radial-gradient(circle at top left, rgba(216, 237, 246, 0.8), transparent 28%),
-    radial-gradient(circle at bottom right, rgba(228, 241, 223, 0.7), transparent 24%),
+    linear-gradient(90deg, rgba(79, 134, 166, 0) 0%, rgba(79, 134, 166, 0.035) 58%, rgba(34, 49, 58, 0.08) 100%),
+    radial-gradient(circle at top left, rgba(220, 236, 245, 0.95), transparent 30%),
+    radial-gradient(circle at 82% 18%, rgba(247, 237, 220, 0.42), transparent 20%),
+    radial-gradient(circle at bottom right, rgba(176, 194, 204, 0.32), transparent 28%),
     var(--color-page);
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.38;
+  background:
+    linear-gradient(90deg, rgba(79, 134, 166, 0.02) 0%, rgba(79, 134, 166, 0.065) 62%, rgba(34, 49, 58, 0.13) 100%),
+    repeating-conic-gradient(from 45deg at 50% 50%, #dce3ec 0deg 90deg, transparent 90deg 180deg);
+  background-size: 100% 100%, 32px 32px;
+  animation: backgroundDrift 40s linear infinite;
+  will-change: background-position;
+}
+
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.22;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.03) 52%, rgba(34, 49, 58, 0.07) 100%);
 }
 
 button {
@@ -41,6 +68,8 @@ button {
 }
 
 #root {
+  position: relative;
+  z-index: 1;
   width: 100%;
 }
 
@@ -58,4 +87,26 @@ button {
 
 .animate-fade-in {
   animation: fadeIn 280ms ease-out forwards;
+}
+
+@keyframes backgroundDrift {
+  0% {
+    background-position: 0 0, 0 0;
+  }
+
+  100% {
+    background-position: 0 0, 48px 36px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body::before,
+  body::after,
+  .animate-fade-in {
+    animation: none !important;
+  }
+
+  body::after {
+    opacity: 0.22;
+  }
 }

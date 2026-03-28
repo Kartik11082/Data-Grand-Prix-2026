@@ -52,7 +52,7 @@ export function ActThree({ onPrev, onNext, story }: ActThreeProps) {
                 onClick={() => setEra(year)}
                 className={`rounded-full border px-5 py-3 text-sm font-semibold transition ${
                   era === year
-                    ? "border-[var(--color-ink)] bg-[var(--color-ink)] text-white"
+                    ? "border-[var(--color-accent)] bg-[var(--color-accent)] text-white"
                     : "border-[var(--color-border)] bg-white text-[var(--color-muted)] hover:border-[var(--color-accent)] hover:text-[var(--color-ink)]"
                 }`}
               >
@@ -205,7 +205,7 @@ export function ActThree({ onPrev, onNext, story }: ActThreeProps) {
         <button
           type="button"
           onClick={onNext}
-          className="rounded-full bg-[var(--color-ink)] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[var(--color-accent)]"
+          className="rounded-full bg-[var(--color-accent)] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[var(--color-ink)]"
         >
           Continue to summary
         </button>

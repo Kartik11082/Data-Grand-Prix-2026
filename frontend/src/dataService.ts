@@ -32,14 +32,8 @@ export interface StateRankPoint {
 }
 
 export interface LandingData {
-  datasetLabel: string;
-  startYear: string;
-  endYear: string;
+  narrativeArc: string[];
   totalRecords: string;
-  heroMetricValue: string;
-  heroMetricUnit: string;
-  heroDescription: string;
-  chips: Array<{ label: string; value: string; year: string }>;
 }
 
 export interface CollapseData {
@@ -338,20 +332,18 @@ const defaultStateRows = (): StateRankPoint[] => [
   { state: PLACEHOLDER_VALUE, value: PLACEHOLDER_VALUE },
 ];
 
+const defaultNarrativeArc = (): string[] => [
+  "Overview",
+  "Collapse",
+  "Recovery",
+  "Behavior Shift",
+  "Summary",
+];
+
 const createPlaceholderStoryData = (): StoryData => ({
   landing: {
-    datasetLabel: PLACEHOLDER_VALUE,
-    startYear: PLACEHOLDER_VALUE,
-    endYear: PLACEHOLDER_VALUE,
+    narrativeArc: defaultNarrativeArc(),
     totalRecords: PLACEHOLDER_VALUE,
-    heroMetricValue: PLACEHOLDER_VALUE,
-    heroMetricUnit: PLACEHOLDER_VALUE,
-    heroDescription: PLACEHOLDER_VALUE,
-    chips: [
-      { label: PLACEHOLDER_VALUE, value: PLACEHOLDER_VALUE, year: PLACEHOLDER_VALUE },
-      { label: PLACEHOLDER_VALUE, value: PLACEHOLDER_VALUE, year: PLACEHOLDER_VALUE },
-      { label: PLACEHOLDER_VALUE, value: PLACEHOLDER_VALUE, year: PLACEHOLDER_VALUE },
-    ],
   },
   collapse: {
     approvalShift: {
@@ -500,44 +492,36 @@ const mergeApprovalRates = (primary: GapSeriesPoint[], supplemental: GapSeriesPo
   }));
 };
 
-const normalizeLandingChips = (value: unknown): LandingData["chips"] => {
-  const chips = asArray(value)
-    .map((chip) => {
-      const row = asRecord(chip);
+const normalizeNarrativeArc = (value: unknown): string[] => {
+  const arc = asArray(value)
+    .map((step) => {
+      if (typeof step === "string") {
+        const trimmed = step.trim();
+        return trimmed.length > 0 ? trimmed : null;
+      }
+
+      const row = asRecord(step);
       if (!row) {
         return null;
       }
 
-      return {
-        label: toText(row.label),
-        value: toText(row.value),
-        year: toYearText(row.year),
-      };
+      const candidate = firstDefined(row.title, row.label, row.step, row.text);
+      const normalized = toText(candidate);
+      return normalized === PLACEHOLDER_VALUE ? null : normalized;
     })
-    .filter((chip): chip is { label: string; value: string; year: string } => chip !== null);
+    .filter((step): step is string => step !== null);
 
-  while (chips.length < 3) {
-    chips.push({ label: PLACEHOLDER_VALUE, value: PLACEHOLDER_VALUE, year: PLACEHOLDER_VALUE });
-  }
-
-  return chips.slice(0, 3);
+  return arc.length > 0 ? arc : defaultNarrativeArc();
 };
 
 const buildLanding = (landingApi: unknown): LandingData => {
   const fallback = EMPTY_STORY_DATA.landing;
   const landingRecord = asRecord(landingApi);
   const dataset = asRecord(landingRecord?.dataset);
-  const hero = asRecord(landingRecord?.hero);
 
   return {
-    datasetLabel: toText(firstDefined(dataset?.label, fallback.datasetLabel)),
-    startYear: toYearText(firstDefined(dataset?.start_year, fallback.startYear)),
-    endYear: toYearText(firstDefined(dataset?.end_year, fallback.endYear)),
-    totalRecords: toText(firstDefined(dataset?.total_records, fallback.totalRecords)),
-    heroMetricValue: toText(firstDefined(hero?.metric_value, fallback.heroMetricValue)),
-    heroMetricUnit: toText(firstDefined(hero?.metric_unit, fallback.heroMetricUnit)),
-    heroDescription: toText(firstDefined(hero?.description, fallback.heroDescription)),
-    chips: normalizeLandingChips(landingRecord?.chips),
+    narrativeArc: normalizeNarrativeArc(landingRecord?.narrative_arc),
+    totalRecords: toText(firstDefined(landingRecord?.total_records, dataset?.total_records, fallback.totalRecords)),
   };
 };
 

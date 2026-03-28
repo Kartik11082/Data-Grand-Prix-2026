@@ -153,7 +153,7 @@ export function ActTwo({ onPrev, onNext, story }: ActTwoProps) {
         <button
           type="button"
           onClick={onNext}
-          className="rounded-full bg-[var(--color-ink)] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[var(--color-accent)]"
+          className="rounded-full bg-[var(--color-accent)] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[var(--color-ink)]"
         >
           Continue to behavior shift
         </button>
