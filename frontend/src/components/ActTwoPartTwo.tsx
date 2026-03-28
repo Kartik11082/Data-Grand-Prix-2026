@@ -4,20 +4,10 @@ import { motion } from 'framer-motion';
 
 interface ActTwoPartTwoProps {
   onNext: () => void;
+  chartData: any;
 }
 
-const beat2Data = [
-  { year: 2010, refi_index: 100 },
-  { year: 2011, refi_index: 145 },
-  { year: 2012, refi_index: 340 },
-  { year: 2013, refi_index: 310 },
-  { year: 2014, refi_index: 180 },
-  { year: 2015, refi_index: 160 },
-  { year: 2016, refi_index: 140 },
-  { year: 2017, refi_index: 120 },
-];
-
-export const ActTwoPartTwo: React.FC<ActTwoPartTwoProps> = ({ onNext }) => {
+export const ActTwoPartTwo: React.FC<ActTwoPartTwoProps> = ({ onNext, chartData }) => {
   const [kpiStyle, setKpiStyle] = useState({ opacity: 0, transform: 'translateY(-4px)' });
 
   useEffect(() => {
@@ -26,9 +16,22 @@ export const ActTwoPartTwo: React.FC<ActTwoPartTwoProps> = ({ onNext }) => {
       setKpiStyle({ opacity: 1, transform: 'translateY(0)' });
     }, 20);
     return () => clearTimeout(timer);
-  }, []);
+  }, [chartData]);
 
-  const currentKPI = { label: "Refi volume peak", value: "+240%", delta: "2012 vs 2010 baseline", deltaColor: "#EF9F27" };
+  const refiData = chartData?.chart4 ?? [];
+  const beat2Data = refiData;
+
+  const refiPeak = refiData.reduce((max: any, d: any) => 
+    d.refi_index > max.refi_index ? d : max, refiData[0] ?? { refi_index: 0, year: 2010 });
+
+  const peakIndex = Math.round(refiPeak.refi_index - 100);
+
+  const currentKPI = { 
+    label: "Refi volume peak", 
+    value: `+${peakIndex}%`, 
+    delta: `${refiPeak.year} vs 2010 baseline`, 
+    deltaColor: "#EF9F27" 
+  };
 
   return (
     <div className="flex w-full min-h-screen bg-[#111] text-white font-sans overflow-x-hidden">
@@ -72,6 +75,11 @@ export const ActTwoPartTwo: React.FC<ActTwoPartTwoProps> = ({ onNext }) => {
           </div>
           
           <div className="bg-[#1a1a1a] rounded-lg p-4 w-full h-[300px] relative">
+            {!beat2Data || beat2Data.length === 0 ? (
+              <div className="w-full h-full bg-[#1a1a1a] rounded-[8px] flex items-center justify-center text-[#666]">
+                —
+              </div>
+            ) : (
             <ResponsiveContainer width="100%" height="100%">
               <AreaChart data={beat2Data}>
                 <XAxis dataKey="year" stroke="#666" fontSize={11} tickLine={false} axisLine={false} />
@@ -114,13 +122,14 @@ export const ActTwoPartTwo: React.FC<ActTwoPartTwoProps> = ({ onNext }) => {
                 />
               </AreaChart>
             </ResponsiveContainer>
+            )}
           </div>
           
           <div className="mt-8 flex flex-col items-start">
             <div className="bg-[#1f2937] px-4 py-2 rounded-full inline-flex items-center gap-1 mb-3">
               <span className="text-[12px] text-white/60">Refi volume</span>
-              <span className="text-[12px] font-bold text-[#EF9F27] ml-1">+240%</span>
-              <span className="text-[12px] text-white/60 ml-1">from 2010 to 2013 peak</span>
+              <span className="text-[12px] font-bold text-[#EF9F27] ml-1">+{peakIndex}%</span>
+              <span className="text-[12px] text-white/60 ml-1">from 2010 to {refiPeak.year} peak</span>
             </div>
             <p className="text-[12px] text-[#555] italic max-w-[480px] m-0">When the Federal Reserve cut rates to near zero, millions of homeowners rushed to refinance existing mortgages at lower rates.</p>
           </div>

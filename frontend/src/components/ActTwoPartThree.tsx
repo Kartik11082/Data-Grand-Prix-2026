@@ -4,23 +4,10 @@ import { motion } from 'framer-motion';
 
 interface ActTwoPartThreeProps {
   onNext: () => void;
+  chartData: any;
 }
 
-const beat3Data = [
-  { year: 2007, conventional: 88, govt_backed: 12 },
-  { year: 2008, conventional: 72, govt_backed: 28 },
-  { year: 2009, conventional: 54, govt_backed: 46 },
-  { year: 2010, conventional: 56, govt_backed: 44 },
-  { year: 2011, conventional: 60, govt_backed: 40 },
-  { year: 2012, conventional: 62, govt_backed: 38 },
-  { year: 2013, conventional: 63, govt_backed: 37 },
-  { year: 2014, conventional: 65, govt_backed: 35 },
-  { year: 2015, conventional: 66, govt_backed: 34 },
-  { year: 2016, conventional: 67, govt_backed: 33 },
-  { year: 2017, conventional: 67, govt_backed: 33 },
-];
-
-export const ActTwoPartThree: React.FC<ActTwoPartThreeProps> = ({ onNext }) => {
+export const ActTwoPartThree: React.FC<ActTwoPartThreeProps> = ({ onNext, chartData }) => {
   const [kpiStyle, setKpiStyle] = useState({ opacity: 0, transform: 'translateY(-4px)' });
 
   useEffect(() => {
@@ -29,9 +16,22 @@ export const ActTwoPartThree: React.FC<ActTwoPartThreeProps> = ({ onNext }) => {
       setKpiStyle({ opacity: 1, transform: 'translateY(0)' });
     }, 20);
     return () => clearTimeout(timer);
-  }, []);
+  }, [chartData]);
 
-  const currentKPI = { label: "Gov-backed 2017", value: "33%", delta: "New structural normal", deltaColor: "#639922" };
+  const loanTypeDataFull = chartData?.chart2 ?? [];
+  const beat3Data = loanTypeDataFull;
+
+  const row2017LoanType = loanTypeDataFull.find((d: any) => d.year === 2017);
+  const govBacked2017 = row2017LoanType
+    ? Math.round(row2017LoanType.govt_backed)
+    : 33;
+
+  const currentKPI = { 
+    label: "Gov-backed 2017", 
+    value: `${govBacked2017}%`, 
+    delta: "Was 12% in 2007 — new structural normal", 
+    deltaColor: "#639922" 
+  };
 
   return (
     <div className="flex w-full min-h-screen bg-[#111] text-white font-sans overflow-x-hidden">
@@ -75,6 +75,11 @@ export const ActTwoPartThree: React.FC<ActTwoPartThreeProps> = ({ onNext }) => {
           </div>
           
           <div className="bg-[#1a1a1a] rounded-lg p-4 w-full h-[320px] relative">
+            {!beat3Data || beat3Data.length === 0 ? (
+              <div className="w-full h-full bg-[#1a1a1a] rounded-[8px] flex items-center justify-center text-[#666]">
+                —
+              </div>
+            ) : (
             <ResponsiveContainer width="100%" height="100%">
               <AreaChart data={beat3Data} stackOffset="expand">
                 <XAxis dataKey="year" stroke="#666" fontSize={11} tickLine={false} axisLine={false} />
@@ -127,10 +132,11 @@ export const ActTwoPartThree: React.FC<ActTwoPartThreeProps> = ({ onNext }) => {
                   x={2015} 
                   y={0.84} 
                   r={0} 
-                  label={{ position: 'center', value: 'New normal: ~33%', fill: 'white', fontSize: 11, fontWeight: 500 }} 
+                  label={{ position: 'center', value: `New normal: ~${govBacked2017}%`, fill: 'white', fontSize: 11, fontWeight: 500 }} 
                 />
               </AreaChart>
             </ResponsiveContainer>
+            )}
           </div>
           
           <div className="mt-8 border-l-[3px] border-[#639922] bg-[#0f1f0f] p-[12px_16px] rounded-r text-[13px] text-[#9ca3af] leading-[1.6]">

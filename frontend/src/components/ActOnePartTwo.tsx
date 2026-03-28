@@ -4,18 +4,10 @@ import { motion } from 'framer-motion';
 
 interface ActOnePartTwoProps {
   onNext: () => void;
+  chartData: any;
 }
 
-const beat2Data = [
-  { year: 2007, conventional: 88, govt_backed: 12 },
-  { year: 2008, conventional: 72, govt_backed: 28 },
-  { year: 2009, conventional: 54, govt_backed: 46 },
-  { year: 2010, conventional: 56, govt_backed: 44 },
-  { year: 2011, conventional: 60, govt_backed: 40 },
-  { year: 2012, conventional: 62, govt_backed: 38 },
-];
-
-export const ActOnePartTwo: React.FC<ActOnePartTwoProps> = ({ onNext }) => {
+export const ActOnePartTwo: React.FC<ActOnePartTwoProps> = ({ onNext, chartData }) => {
   const [kpiStyle, setKpiStyle] = useState({ opacity: 0, transform: 'translateY(-4px)' });
   
   useEffect(() => {
@@ -24,9 +16,20 @@ export const ActOnePartTwo: React.FC<ActOnePartTwoProps> = ({ onNext }) => {
       setKpiStyle({ opacity: 1, transform: 'translateY(0)' });
     }, 20);
     return () => clearTimeout(timer);
-  }, []);
+  }, [chartData]);
 
-  const currentKPI = { label: "Gov-backed share", value: "46%", delta: "↑ 34pp from baseline", deltaColor: "#639922" };
+  const loanTypeDataFull = chartData?.chart2 ?? [];
+  const beat2Data = loanTypeDataFull.filter((d: any) => d.year <= 2010);
+
+  const peakGovt = loanTypeDataFull.reduce((max: any, d: any) => 
+    d.govt_backed > max.govt_backed ? d : max, loanTypeDataFull[0] ?? { govt_backed: 0 });
+
+  const currentKPI = { 
+    label: "Gov-backed share", 
+    value: `${Math.round(peakGovt.govt_backed)}%`, 
+    delta: `↑ ${Math.round(peakGovt.govt_backed - 12)}pp from baseline`, 
+    deltaColor: "#639922" 
+  };
 
   return (
     <div className="flex w-full min-h-screen bg-[#111] text-white font-sans overflow-x-hidden">
@@ -71,6 +74,11 @@ export const ActOnePartTwo: React.FC<ActOnePartTwoProps> = ({ onNext }) => {
           </div>
 
           <div className="bg-[#1a1a1a] rounded-lg p-4 w-full h-[300px] relative">
+            {!beat2Data || beat2Data.length === 0 ? (
+              <div className="w-full h-full bg-[#1a1a1a] rounded-[8px] flex items-center justify-center text-[#666]">
+                —
+              </div>
+            ) : (
             <ResponsiveContainer width="100%" height="100%">
               <AreaChart data={beat2Data} stackOffset="expand">
                 <XAxis dataKey="year" stroke="#666" fontSize={11} tickLine={false} axisLine={false} />
@@ -109,6 +117,7 @@ export const ActOnePartTwo: React.FC<ActOnePartTwoProps> = ({ onNext }) => {
                 />
               </AreaChart>
             </ResponsiveContainer>
+            )}
           </div>
 
           {/* Manual Legend */}
@@ -128,12 +137,12 @@ export const ActOnePartTwo: React.FC<ActOnePartTwoProps> = ({ onNext }) => {
             <div className="flex items-center gap-4 mb-2">
               <div className="bg-[#1f2937] px-4 py-2 rounded-full inline-flex items-center gap-2">
                 <span className="text-[12px] text-white/60">Conventional 2007</span>
-                <span className="text-[12px] font-bold text-[#378ADD]">88%</span>
+                <span className="text-[12px] font-bold text-[#378ADD]">{Math.round(beat2Data.find((d: any) => d.year === 2007)?.conventional ?? 88)}%</span>
               </div>
               <span className="text-white/40">→</span>
               <div className="bg-[#1f2937] px-4 py-2 rounded-full inline-flex items-center gap-2">
                 <span className="text-[12px] text-white/60">Conventional 2009</span>
-                <span className="text-[12px] font-bold text-[#378ADD]">54%</span>
+                <span className="text-[12px] font-bold text-[#378ADD]">{Math.round(beat2Data.find((d: any) => d.year === 2009)?.conventional ?? 54)}%</span>
               </div>
             </div>
             <p className="text-[12px] text-[#666] m-0 max-w-[480px]">

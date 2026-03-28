@@ -1,178 +1,282 @@
-import React, { useState, useEffect } from 'react';
-import { XAxis, YAxis, ResponsiveContainer, ComposedChart, ReferenceLine, Area } from 'recharts';
-import { motion } from 'framer-motion';
+import React, { useState, useEffect, useRef } from 'react';
+import { AreaChart, Area, XAxis, YAxis, ResponsiveContainer, ComposedChart, ReferenceLine } from 'recharts';
+import { motion, AnimatePresence } from 'framer-motion';
 
 interface ActOneProps {
+  onPrev: () => void;
   onNext: () => void;
+  chartData: any;
 }
 
-const beat1Data = [
-  { year: 2007, applications: 6.82, originations: 5.74, gap_fill: 6.82 },
-  { year: 2008, applications: 5.93, originations: 4.13, gap_fill: 5.93 },
-  { year: 2009, applications: 4.21, originations: 2.31, gap_fill: 4.21 },
-  { year: 2010, applications: 4.48, originations: 2.52, gap_fill: 4.48 },
-];
-
-export const ActOne: React.FC<ActOneProps> = ({ onNext }) => {
-  const [kpiStyle, setKpiStyle] = useState({ opacity: 0, transform: 'translateY(-4px)' });
+export const ActOne: React.FC<ActOneProps> = ({ onPrev, onNext, chartData }) => {
+  const section1Ref = useRef<HTMLElement>(null);
+  const section2Ref = useRef<HTMLElement>(null);
+  const [activeBeat, setActiveBeat] = useState<number>(1);
+  const [showTooltip, setShowTooltip] = useState(false);
 
   useEffect(() => {
-    setKpiStyle({ opacity: 0, transform: 'translateY(-4px)' });
-    const timer = setTimeout(() => {
-      setKpiStyle({ opacity: 1, transform: 'translateY(0)' });
-    }, 20);
-    return () => clearTimeout(timer);
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            if (entry.target.id === 'beat-1') setActiveBeat(1);
+            if (entry.target.id === 'beat-2') setActiveBeat(2);
+          }
+        });
+      },
+      { threshold: 0.5 }
+    );
+
+    if (section1Ref.current) observer.observe(section1Ref.current);
+    if (section2Ref.current) observer.observe(section2Ref.current);
+
+    return () => observer.disconnect();
   }, []);
 
-  const currentKPI = { label: "Origination rate", value: "55%", delta: "↓ 29pp from 2007", deltaColor: "#E24B4A" };
+  // Compute Data
+  const gapDataFull = chartData?.chart1 ?? [];
+  const gapData = gapDataFull
+    .filter((d: any) => d.year <= 2010)
+    .map((d: any) => ({ ...d, gap_fill: d.applications }));
+
+  const loanTypeDataFull = chartData?.chart2 ?? [];
+  const beat2Data = loanTypeDataFull.filter((d: any) => d.year <= 2010);
+
+  // Dynamic Left Column Logic
+  const gaugeFillHeight = activeBeat === 1 ? '65%' : '80%';
+  const gaugeValue = activeBeat === 1 ? '55%' : '46%';
+  const gaugeSubLabel = activeBeat === 1 ? 'loans originated' : 'govt-backed';
+  const provQuestion = activeBeat === 1 
+    ? "What happens when a bank stops trusting its customers?" 
+    : "Who lends when private banks won't?";
 
   return (
     <div className="flex w-full min-h-screen bg-[#111] text-white font-sans overflow-x-hidden">
+      
       {/* Left Column: Fixed/Sticky */}
-      <div className="w-[35%] h-screen sticky top-0 p-12 flex flex-col justify-center border-r border-white/5 bg-[#111] z-20">
-        <label className="text-[10px] font-bold uppercase tracking-[2px] text-white/50 mb-2">
-          ACT I — THE COLLAPSE
-        </label>
-        <div className="inline-flex items-center">
-          <span className="bg-[#E24B4A] text-white text-[12px] font-bold px-3 py-1 rounded-full mb-6">
-            2008 – 2010
-          </span>
-        </div>
-        <h2 className="text-2xl font-light mb-6 leading-relaxed">
-          In 2008, the mortgage market didn't slow down — it seized. Here's what that looks like in data.
-        </h2>
-
-        {/* Dynamic KPI Card */}
-        <div style={{ background: '#1a1a1a', borderRadius: 8, padding: '16px 20px' }} className="border border-white/5 shadow-2xl relative overflow-hidden">
-          <div style={{ ...kpiStyle, transition: 'opacity 0.3s ease, transform 0.3s ease' }}>
-            <div style={{ fontSize: 11, color: '#666', textTransform: 'uppercase', letterSpacing: '0.07em', marginBottom: 6 }}>
-              {currentKPI.label}
+      <div className="w-[35%] h-screen sticky top-0 px-12 py-16 flex flex-col border-r border-white/5 bg-[#111] z-20">
+        
+        {/* Pressure Gauge */}
+        <div className="flex flex-col mb-12">
+          <label className="text-[11px] text-[#444] mb-3 uppercase tracking-wider">Crisis severity</label>
+          <div className="flex gap-6 items-end">
+            <div className="w-[40px] h-[200px] rounded-full bg-[#1a1a1a] border border-[#222] relative overflow-hidden flex flex-col justify-end">
+              <div 
+                className="w-full bg-[#E24B4A] transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] rounded-full"
+                style={{ height: gaugeFillHeight }}
+              />
             </div>
-            <div style={{ fontSize: 36, fontWeight: 300, color: 'white', lineHeight: 1, marginBottom: 6 }}>
-              {currentKPI.value}
-            </div>
-            <div style={{ fontSize: 13, color: currentKPI.deltaColor }}>
-              {currentKPI.delta}
+            <div className="flex flex-col pb-2">
+              <span className="text-[48px] font-light text-white leading-none tracking-tight">{gaugeValue}</span>
+              <span className="text-[13px] text-[#888] mt-1">{gaugeSubLabel}</span>
             </div>
           </div>
-          {/* Subtle background glow */}
-          <div className="absolute -right-4 -bottom-4 w-24 h-24 blur-[60px]" style={{ backgroundColor: currentKPI.deltaColor, opacity: 0.2 }}></div>
+        </div>
+
+        {/* You Are Here */}
+        <div className="flex flex-col mb-8">
+          <div className="flex gap-1 mb-3">
+            <div className="h-[2px] w-[24px] bg-white rounded-full transition-colors duration-300"></div>
+            <div className="h-[2px] w-[12px] bg-[#333] rounded-full transition-colors duration-300"></div>
+            <div className="h-[2px] w-[12px] bg-[#333] rounded-full transition-colors duration-300"></div>
+          </div>
+          <div className="text-[13px] text-[#888]">The Collapse · 2008–2010</div>
+        </div>
+
+        {/* Filler */}
+        <div className="flex-1"></div>
+
+        {/* Provocative Question */}
+        <div 
+          className="text-[13px] text-[#555] italic max-w-[160px] mb-8 transition-opacity duration-300"
+          key={activeBeat}
+        >
+          {provQuestion}
+        </div>
+
+        {/* Footer Nav */}
+        <div className="flex items-center gap-6 mt-auto border-t border-white/5 pt-6">
+          <button 
+            onClick={onPrev}
+            className="text-[13px] text-[#555] hover:text-white transition-colors cursor-pointer bg-transparent border-none p-0"
+          >
+            &larr; Before
+          </button>
+          <span className="text-[12px] text-[#333]">2 of 5</span>
+          <button 
+            onClick={onNext}
+            className="text-[13px] text-[#555] hover:text-white transition-colors cursor-pointer bg-transparent border-none p-0"
+          >
+            After &rarr;
+          </button>
         </div>
       </div>
 
-      <div className="w-[65%] min-h-screen p-12 bg-[#0a0a0a]">
+      {/* Right Column: Scrollable Pages */}
+      <div className="w-[65%] min-h-screen bg-[#0a0a0a]">
+        
         {/* Beat 1 Section */}
-        <section className="min-h-[80vh] mb-32 flex flex-col justify-center translate-y-20">
-          <div className="mb-4">
-            <h3 className="text-[18px] text-white font-[400] mb-1">Credit froze overnight</h3>
-            <p className="text-[13px] text-[#666] m-0">Gap between loan applications and approvals, 2007–2010</p>
+        <section id="beat-1" ref={section1Ref} className="min-h-screen px-12 py-32 flex flex-col justify-center">
+          
+          {/* Moment Card */}
+          <div className="w-full bg-[#0f0f0f] border-l-[3px] border-[#E24B4A] p-[20px_24px] mb-12">
+            <div className="inline-block bg-[#E24B4A]/10 text-[#E24B4A] text-[11px] font-bold px-2 py-0.5 rounded-full mb-4 uppercase tracking-wider">
+              2008
+            </div>
+            <div className="text-[16px] text-white font-light mb-1">
+              Banks approved 84 of every 100 applications in 2007.
+            </div>
+            <div className="text-[16px] text-[#E24B4A] font-light">
+              By 2009, that number was 55.
+            </div>
           </div>
 
           <div className="bg-[#1a1a1a] rounded-lg p-4 w-full h-[320px] relative">
+            
+            {/* Tooltip Button */}
+            <div className="absolute top-4 right-4 z-10">
+              <button 
+                className="w-6 h-6 rounded-full bg-[#222] border border-[#333] flex items-center justify-center text-[#888] text-[12px] hover:text-white hover:bg-[#333] transition-colors cursor-pointer"
+                onClick={() => setShowTooltip(!showTooltip)}
+              >
+                ?
+              </button>
+              
+              <AnimatePresence>
+                {showTooltip && (
+                  <>
+                    <div 
+                      className="fixed inset-0 z-40" 
+                      onClick={() => setShowTooltip(false)} 
+                    />
+                    <motion.div 
+                      initial={{ opacity: 0, y: 5 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: 5 }}
+                      className="absolute top-8 right-0 w-[240px] bg-[#111] border border-[#333] rounded-md p-4 shadow-xl z-50 text-[12px] text-[#aaa] leading-relaxed"
+                    >
+                      Blue line = everyone who applied for a mortgage.<br/><br/>
+                      Green line = everyone who actually got one.<br/><br/>
+                      <span className="text-[#E24B4A]">Red zone = people who got denied.</span>
+                    </motion.div>
+                  </>
+                )}
+              </AnimatePresence>
+            </div>
+
+            {/* Gap Chart */}
+            {!gapData || gapData.length === 0 ? (
+              <div className="w-full h-full flex items-center justify-center text-[#666]">—</div>
+            ) : (
             <ResponsiveContainer width="100%" height="100%">
-              <ComposedChart data={beat1Data}>
-                <XAxis
-                  dataKey="year"
-                  stroke="#666"
-                  fontSize={11}
-                  tickLine={false}
-                  axisLine={false}
-                />
-                <YAxis
-                  domain={[0, 8]}
-                  ticks={[0, 2, 4, 6, 8]}
-                  label={{ value: 'Millions', angle: -90, position: 'insideLeft', fill: '#666', fontSize: 11 }}
-                  stroke="#666"
-                  fontSize={11}
-                  tickLine={false}
-                  axisLine={false}
-                />
-                <ReferenceLine
-                  x={2009}
-                  stroke="#E24B4A"
-                  strokeDasharray="3 3"
-                  strokeOpacity={0.6}
-                  label={{ position: 'top', value: 'The floor', fill: '#E24B4A', fontSize: 11 }}
-                />
-                <Area
-                  type="monotone"
-                  dataKey="gap_fill"
-                  stroke="none"
-                  fill="#E24B4A"
-                  fillOpacity={0.3}
-                  isAnimationActive={true}
-                />
-                <Area
-                  type="monotone"
-                  dataKey="originations"
-                  stroke="none"
-                  fill="#1a1a1a"
-                  fillOpacity={1}
-                  isAnimationActive={false}
-                  activeDot={false}
-                />
-                <Area
-                  type="monotone"
-                  dataKey="applications"
-                  stroke="#378ADD"
-                  strokeWidth={2}
-                  fill="#378ADD"
-                  fillOpacity={0.15}
-                  isAnimationActive={true}
-                />
-                <Area
-                  type="monotone"
-                  dataKey="originations"
-                  stroke="#639922"
-                  strokeWidth={2}
-                  fill="#639922"
-                  fillOpacity={0.15}
-                  isAnimationActive={true}
-                  dot={(props: any) => {
-                    if (props.payload.year === 2009) {
-                      return (
-                        <g key="custom-dot">
-                          <circle cx={props.cx} cy={props.cy} r={6} stroke="#E24B4A" strokeWidth={2} fill="#111" />
-                          <text x={props.cx} y={props.cy - 15} fill="#E24B4A" fontSize={11} textAnchor="middle">2.31M loans originated</text>
-                        </g>
-                      );
-                    }
-                    return <g key={props.payload.year}></g>;
-                  }}
-                />
+              <ComposedChart data={gapData}>
+                <XAxis dataKey="year" stroke="#666" fontSize={11} tickLine={false} axisLine={false} />
+                <YAxis domain={[0, 8]} ticks={[0, 2, 4, 6, 8]} stroke="#666" fontSize={11} tickLine={false} axisLine={false} />
+                <ReferenceLine x={2009} stroke="#E24B4A" strokeDasharray="3 3" strokeOpacity={0.6} />
+                <Area type="monotone" dataKey="gap_fill" stroke="none" fill="#E24B4A" fillOpacity={0.3} isAnimationActive={true} />
+                <Area type="monotone" dataKey="originations" stroke="none" fill="#1a1a1a" fillOpacity={1} isAnimationActive={false} activeDot={false} />
+                <Area type="monotone" dataKey="applications" stroke="#378ADD" strokeWidth={2} fill="#378ADD" fillOpacity={0.15} isAnimationActive={true} />
+                <Area type="monotone" dataKey="originations" stroke="#639922" strokeWidth={2} fill="#639922" fillOpacity={0.15} isAnimationActive={true} />
               </ComposedChart>
             </ResponsiveContainer>
+            )}
           </div>
 
-          {/* Manual Legend */}
-          <div className="flex gap-6 mt-6 items-center flex-wrap">
-            <div className="flex items-center gap-2">
-              <div className="w-3 h-3 rounded-full bg-[#378ADD]"></div>
-              <span className="text-[12px] text-white/80">Applications</span>
+          {/* Key Insight Strip */}
+          <div className="w-full bg-[#0a0a0a] py-6 mt-12 flex items-center justify-start">
+            <div className="flex flex-col pr-8 border-r border-[#222]">
+              <span className="text-[24px] text-white font-light">6.8M</span>
+              <span className="text-[11px] text-[#555] uppercase tracking-wider mt-1">Applications, 2007</span>
             </div>
-            <div className="flex items-center gap-2">
-              <div className="w-3 h-3 rounded-full bg-[#639922]"></div>
-              <span className="text-[12px] text-white/80">Originations</span>
+            <div className="flex flex-col px-8 border-r border-[#222]">
+              <span className="text-[24px] text-white font-light">2.3M</span>
+              <span className="text-[11px] text-[#555] uppercase tracking-wider mt-1">Originated, 2009</span>
             </div>
-            <div className="flex items-center gap-2">
-              <div className="w-3 h-3 rounded-full bg-[#E24B4A]"></div>
-              <span className="text-[12px] text-white/80">Denial gap</span>
+            <div className="flex flex-col pl-8">
+              <span className="text-[24px] text-white font-light">&minus;66%</span>
+              <span className="text-[11px] text-[#555] uppercase tracking-wider mt-1">Drop in approvals</span>
             </div>
           </div>
         </section>
-        {/* Bottom Page Transition */}
-        <div className="w-full flex flex-col items-center justify-center py-[48px] mt-20">
-          <div className="text-[24px] font-[300] text-[#666] italic flex items-center justify-center text-center">
-            Private lenders fled the market...
+
+        {/* Beat 2 Section */}
+        <section id="beat-2" ref={section2Ref} className="min-h-screen px-12 py-32 flex flex-col justify-center border-t border-[#111]">
+          
+          {/* Moment Card */}
+          <div className="w-full bg-[#0f0f0f] border-l-[3px] border-[#639922] p-[20px_24px] mb-12">
+            <div className="inline-block bg-[#639922]/10 text-[#639922] text-[11px] font-bold px-2 py-0.5 rounded-full mb-4 uppercase tracking-wider">
+              2009
+            </div>
+            <div className="text-[16px] text-white font-light mb-1">
+              Private lenders had two choices: lend and risk losses,
+            </div>
+            <div className="text-[16px] text-[#639922] font-light">
+              or let the government do it instead.
+            </div>
           </div>
-          <motion.button
-            onClick={onNext}
-            className="mt-12 px-10 py-4 bg-white text-[#111] font-bold rounded-lg hover:bg-white/90 transition-all cursor-pointer shadow-white/10 shadow-lg"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            CONTINUE
-          </motion.button>
+
+          <div className="bg-[#1a1a1a] rounded-lg p-4 w-full h-[320px] relative">
+            {!beat2Data || beat2Data.length === 0 ? (
+              <div className="w-full h-full flex items-center justify-center text-[#666]">—</div>
+            ) : (
+            <ResponsiveContainer width="100%" height="100%">
+              <AreaChart data={beat2Data} stackOffset="expand">
+                <XAxis dataKey="year" stroke="#666" fontSize={11} tickLine={false} axisLine={false} />
+                <YAxis tickFormatter={(tick) => `${Math.round(tick * 100)}%`} ticks={[0, 0.25, 0.5, 0.75, 1]} stroke="#666" fontSize={11} tickLine={false} axisLine={false} />
+                <ReferenceLine x={2009} stroke="#fff" strokeDasharray="3 3" strokeOpacity={0.3} />
+                <Area type="monotone" dataKey="conventional" stackId="1" stroke="none" fill="#378ADD" fillOpacity={0.85} isAnimationActive={true} />
+                <Area type="monotone" dataKey="govt_backed" stackId="1" stroke="none" fill="#639922" fillOpacity={0.85} isAnimationActive={true} />
+              </AreaChart>
+            </ResponsiveContainer>
+            )}
+          </div>
+
+          {/* Shift Visualizer */}
+          <div className="w-full mt-16 mb-12 flex flex-col items-center">
+            <div className="flex items-center justify-center gap-12 w-full">
+              <div className="flex flex-col items-center">
+                <span className="text-[#378ADD] text-[48px] font-[200] leading-none mb-2">88%</span>
+                <span className="text-[#555] text-[12px] uppercase tracking-wider">Conventional</span>
+                <span className="text-[#333] text-[11px] mt-1 font-bold">2007</span>
+              </div>
+              <div className="text-[#333] text-[32px] font-light">&rarr;</div>
+              <div className="flex flex-col items-center">
+                <span className="text-[#378ADD] text-[48px] font-[200] leading-none mb-2">54%</span>
+                <span className="text-[#555] text-[12px] uppercase tracking-wider">Conventional</span>
+                <span className="text-[#E24B4A] text-[11px] mt-1 font-bold">2009</span>
+              </div>
+            </div>
+            <div className="text-[#555] text-[12px] mt-8 tracking-wide">
+              34 point collapse in two years
+            </div>
+          </div>
+        </section>
+
+        {/* Bridge Section */}
+        <div className="w-full h-[180px] flex flex-col items-center justify-center pb-12 relative" 
+             style={{ background: 'linear-gradient(to bottom, #0a0a0a, #050505)' }}>
+          <div className="text-[32px] text-white font-[200]">
+            Then the floor held.
+          </div>
+          <div className="text-[14px] text-[#333] mt-2 font-bold tracking-wider">
+            2010
+          </div>
+          <div className="w-[60px] h-[1px] bg-[#222] mt-6 mb-6" />
+          <div className="text-[12px] text-[#444] tracking-wide relative">
+            <style>{`
+              @keyframes chevron-bob {
+                0%, 100% { transform: translateY(0); }
+                50% { transform: translateY(4px); }
+              }
+              .animate-chevron { animation: chevron-bob 2s ease-in-out infinite; }
+            `}</style>
+            Scroll to see the recovery
+          </div>
+          <div className="text-[#444] mt-3 animate-chevron">
+            <svg width="12" height="8" viewBox="0 0 12 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M1 1L6 6L11 1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </div>
         </div>
       </div>
     </div>
