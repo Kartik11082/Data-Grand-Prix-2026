@@ -1,14 +1,12 @@
 import { motion } from "framer-motion";
-import { BackendRequirementsPanel } from "./BackendRequirementsPanel";
-import { backendRequirements, storySeed } from "../storySeed";
+import type { LandingData } from "../dataService";
 
 interface LandingPageProps {
   onBegin: () => void;
+  story: LandingData;
 }
 
-export function LandingPage({ onBegin }: LandingPageProps) {
-  const landing = storySeed.landing;
-
+export function LandingPage({ onBegin, story }: LandingPageProps) {
   return (
     <div className="mx-auto flex min-h-[calc(100vh-81px)] w-full max-w-[1400px] flex-col gap-10 px-4 py-8 md:px-8 md:py-10">
       <section className="grid gap-6 lg:grid-cols-[1.2fr_0.8fr]">
@@ -18,7 +16,7 @@ export function LandingPage({ onBegin }: LandingPageProps) {
           className="overflow-hidden rounded-[32px] border border-[var(--color-border)] bg-[var(--color-surface)] p-8 shadow-[var(--shadow-soft)] md:p-12"
         >
           <div className="inline-flex rounded-full border border-[var(--color-border)] bg-[var(--color-sand)] px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.24em] text-[var(--color-muted)]">
-            {landing.datasetLabel.value} Â· {landing.totalRecords.value} records Â· {landing.startYear.value}-{landing.endYear.value}
+            {story.datasetLabel} · {story.totalRecords} records · {story.startYear}-{story.endYear}
           </div>
 
           <div className="mt-10 grid gap-8 lg:grid-cols-[1fr_260px] lg:items-end">
@@ -28,25 +26,23 @@ export function LandingPage({ onBegin }: LandingPageProps) {
                 className="mt-4 max-w-[10ch] text-6xl leading-none text-[var(--color-ink)] md:text-8xl"
                 style={{ fontFamily: "var(--font-display)" }}
               >
-                {landing.heroMetricValue.value}
+                {story.heroMetricValue}
               </h2>
-              <p className="mt-4 text-lg text-[var(--color-muted)]">{landing.heroMetricUnit.value}</p>
-              <p className="mt-6 max-w-[32rem] text-lg leading-8 text-[var(--color-ink)]">
-                {landing.heroDescription.value}. This prototype uses hardcoded story data for now and lists the exact API fields that must replace each visible value.
-              </p>
+              <p className="mt-4 text-lg text-[var(--color-muted)]">{story.heroMetricUnit}</p>
+              <p className="mt-6 max-w-[32rem] text-lg leading-8 text-[var(--color-ink)]">{story.heroDescription}</p>
             </div>
 
             <div className="rounded-[28px] border border-[var(--color-border)] bg-[var(--color-accent-soft)] p-6">
-              <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-[var(--color-muted)]">Current implementation mode</p>
+              <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-[var(--color-muted)]">Data mode</p>
               <div className="mt-5 space-y-4">
                 <div>
-                  <p className="text-sm text-[var(--color-muted)]">Data mode</p>
-                  <p className="text-xl font-semibold text-[var(--color-ink)]">Structured hardcoded seed</p>
+                  <p className="text-sm text-[var(--color-muted)]">Source</p>
+                  <p className="text-xl font-semibold text-[var(--color-ink)]">Live API response</p>
                 </div>
                 <div>
-                  <p className="text-sm text-[var(--color-muted)]">Next backend step</p>
+                  <p className="text-sm text-[var(--color-muted)]">Missing fields</p>
                   <p className="text-base leading-7 text-[var(--color-ink)]">
-                    Replace landing hero, chips, and metadata with <span className="font-semibold">GET /story/landing</span>.
+                    Any field not returned by the API is rendered as <span className="font-semibold">X</span>.
                   </p>
                 </div>
               </div>
@@ -54,14 +50,11 @@ export function LandingPage({ onBegin }: LandingPageProps) {
           </div>
 
           <div className="mt-10 grid gap-4 md:grid-cols-3">
-            {landing.chips.map((chip) => (
-              <div
-                key={`${chip.label.value}-${chip.year.value}`}
-                className="rounded-[24px] border border-[var(--color-border)] bg-white/80 p-5"
-              >
-                <p className="text-3xl font-semibold text-[var(--color-ink)]">{chip.value.value}</p>
-                <p className="mt-2 text-sm leading-6 text-[var(--color-ink)]">{chip.label.value}</p>
-                <p className="mt-3 text-xs uppercase tracking-[0.22em] text-[var(--color-muted)]">{chip.year.value}</p>
+            {story.chips.map((chip) => (
+              <div key={`${chip.label}-${chip.year}`} className="rounded-[24px] border border-[var(--color-border)] bg-white/80 p-5">
+                <p className="text-3xl font-semibold text-[var(--color-ink)]">{chip.value}</p>
+                <p className="mt-2 text-sm leading-6 text-[var(--color-ink)]">{chip.label}</p>
+                <p className="mt-3 text-xs uppercase tracking-[0.22em] text-[var(--color-muted)]">{chip.year}</p>
               </div>
             ))}
           </div>
@@ -100,8 +93,6 @@ export function LandingPage({ onBegin }: LandingPageProps) {
           </div>
         </motion.aside>
       </section>
-
-      <BackendRequirementsPanel title="Landing API contract" items={backendRequirements.landing} />
     </div>
   );
 }

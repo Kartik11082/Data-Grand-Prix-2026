@@ -4,12 +4,15 @@ import { ActOne } from "./components/ActOne";
 import { ActTwo } from "./components/ActTwo";
 import { ActThree } from "./components/ActThree";
 import { ExecutiveSummary } from "./components/ExecutiveSummary";
+import { EMPTY_STORY_DATA, fetchStoryData } from "./dataService";
 import "./index.css";
 
 const pageLabels = ["Overview", "Collapse", "Recovery", "Behavior Shift", "Summary"];
 
 export default function App() {
   const [currentPage, setCurrentPage] = useState(0);
+  const [storyData, setStoryData] = useState(EMPTY_STORY_DATA);
+  const [isLoadingData, setIsLoadingData] = useState(true);
 
   const goNext = () => {
     setCurrentPage((previousPage) => Math.min(previousPage + 1, pageLabels.length - 1));
@@ -36,20 +39,43 @@ export default function App() {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, []);
 
+  useEffect(() => {
+    let isCancelled = false;
+
+    const loadData = async () => {
+      try {
+        const data = await fetchStoryData();
+        if (!isCancelled) {
+          setStoryData(data);
+        }
+      } finally {
+        if (!isCancelled) {
+          setIsLoadingData(false);
+        }
+      }
+    };
+
+    void loadData();
+
+    return () => {
+      isCancelled = true;
+    };
+  }, []);
+
   const renderPage = () => {
     switch (currentPage) {
       case 0:
-        return <LandingPage onBegin={goNext} />;
+        return <LandingPage onBegin={goNext} story={storyData.landing} />;
       case 1:
-        return <ActOne onNext={goNext} onPrev={goPrev} />;
+        return <ActOne onNext={goNext} onPrev={goPrev} story={storyData.collapse} />;
       case 2:
-        return <ActTwo onNext={goNext} onPrev={goPrev} />;
+        return <ActTwo onNext={goNext} onPrev={goPrev} story={storyData.recovery} />;
       case 3:
-        return <ActThree onNext={goNext} onPrev={goPrev} />;
+        return <ActThree onNext={goNext} onPrev={goPrev} story={storyData.behaviorShift} />;
       case 4:
-        return <ExecutiveSummary onPrev={goPrev} />;
+        return <ExecutiveSummary onPrev={goPrev} story={storyData.summary} />;
       default:
-        return <LandingPage onBegin={goNext} />;
+        return <LandingPage onBegin={goNext} story={storyData.landing} />;
     }
   };
 
@@ -64,6 +90,9 @@ export default function App() {
             <h1 className="mt-1 text-xl text-[var(--color-ink)]" style={{ fontFamily: "var(--font-display)" }}>
               HMDA mortgage story
             </h1>
+            <p className="mt-1 text-xs text-[var(--color-muted)]">
+              {isLoadingData ? "Syncing API data..." : "API data synced"}
+            </p>
           </div>
 
           <nav className="flex flex-wrap items-center justify-end gap-2">

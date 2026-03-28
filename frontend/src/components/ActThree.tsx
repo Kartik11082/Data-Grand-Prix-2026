@@ -1,13 +1,13 @@
 import { useMemo, useState } from "react";
 import { ComposableMap, Geographies, Geography } from "react-simple-maps";
-import { BackendRequirementsPanel } from "./BackendRequirementsPanel";
-import { backendRequirements, storySeed } from "../storySeed";
+import type { BehaviorShiftData } from "../dataService";
 
 const geoUrl = "https://cdn.jsdelivr.net/npm/us-atlas@3/states-10m.json";
 
 interface ActThreeProps {
   onPrev: () => void;
   onNext: () => void;
+  story: BehaviorShiftData;
 }
 
 const bucketFill = {
@@ -16,16 +16,17 @@ const bucketFill = {
   low: "var(--color-coral)",
 } as const;
 
-export function ActThree({ onPrev, onNext }: ActThreeProps) {
+const toPercentWidth = (value: string): string => {
+  const normalized = value.trim();
+  return /^\d+(\.\d+)?%$/.test(normalized) ? normalized : "0%";
+};
+
+export function ActThree({ onPrev, onNext, story }: ActThreeProps) {
   const [era, setEra] = useState<"2007" | "2017">("2007");
-  const comparison = storySeed.behaviorShift;
-  const eraData = comparison.eras[era];
+  const eraData = story.eras[era];
 
   const stateLookup = useMemo(
-    () =>
-      new Map(
-        eraData.geography.states.value.map((item) => [item.state, item]),
-      ),
+    () => new Map(eraData.geography.states.map((item) => [item.state, item])),
     [eraData],
   );
 
@@ -39,7 +40,7 @@ export function ActThree({ onPrev, onNext }: ActThreeProps) {
               The behavior shift
             </h2>
             <p className="mt-5 max-w-[42rem] text-base leading-7 text-[var(--color-ink)]">
-              Compare the pre-crisis and post-recovery market. The page is still hardcoded, but every value below now has a declared backend source.
+              Compare the pre-crisis and post-recovery market. Missing API values appear as X.
             </p>
           </div>
 
@@ -68,33 +69,33 @@ export function ActThree({ onPrev, onNext }: ActThreeProps) {
               <div>
                 <div className="mb-2 flex items-center justify-between text-sm text-[var(--color-ink)]">
                   <span>Conventional share</span>
-                  <span>{eraData.lenderMix.conventional.value}</span>
+                  <span>{eraData.lenderMix.conventional}</span>
                 </div>
                 <div className="h-3 rounded-full bg-white/80">
-                  <div className="h-3 rounded-full bg-[var(--color-accent)]" style={{ width: eraData.lenderMix.conventional.value }} />
+                  <div className="h-3 rounded-full bg-[var(--color-accent)]" style={{ width: toPercentWidth(eraData.lenderMix.conventional) }} />
                 </div>
               </div>
               <div>
                 <div className="mb-2 flex items-center justify-between text-sm text-[var(--color-ink)]">
                   <span>Government-backed share</span>
-                  <span>{eraData.lenderMix.govtBacked.value}</span>
+                  <span>{eraData.lenderMix.govtBacked}</span>
                 </div>
                 <div className="h-3 rounded-full bg-white/80">
-                  <div className="h-3 rounded-full bg-[var(--color-mint)]" style={{ width: eraData.lenderMix.govtBacked.value }} />
+                  <div className="h-3 rounded-full bg-[var(--color-mint)]" style={{ width: toPercentWidth(eraData.lenderMix.govtBacked) }} />
                 </div>
               </div>
               <div>
                 <div className="mb-2 flex items-center justify-between text-sm text-[var(--color-ink)]">
                   <span>Second mortgages</span>
-                  <span>{eraData.lenderMix.secondMortgages.value}</span>
+                  <span>{eraData.lenderMix.secondMortgages}</span>
                 </div>
                 <div className="h-3 rounded-full bg-white/80">
-                  <div className="h-3 rounded-full bg-[var(--color-coral)]" style={{ width: eraData.lenderMix.secondMortgages.value }} />
+                  <div className="h-3 rounded-full bg-[var(--color-coral)]" style={{ width: toPercentWidth(eraData.lenderMix.secondMortgages) }} />
                 </div>
               </div>
             </div>
             <div className="mt-8 rounded-[20px] border border-[var(--color-border)] bg-white/85 p-4 text-sm leading-6 text-[var(--color-ink)]">
-              {era === "2007" ? comparison.comparison.lender2007.value : comparison.comparison.lender2017.value}
+              {era === "2007" ? story.comparison.lender2007 : story.comparison.lender2017}
             </div>
           </article>
 
@@ -106,9 +107,7 @@ export function ActThree({ onPrev, onNext }: ActThreeProps) {
                   {era === "2007" ? "Loan volume concentration" : "Recovery index dispersion"}
                 </h3>
               </div>
-              <div className="rounded-full border border-[var(--color-border)] bg-white/80 px-4 py-2 text-xs text-[var(--color-muted)]">
-                Source expectation: GET /story/behavior-shift
-              </div>
+              <div className="rounded-full border border-[var(--color-border)] bg-white/80 px-4 py-2 text-xs text-[var(--color-muted)]">API-backed</div>
             </div>
 
             <div className="mt-6 rounded-[24px] border border-[var(--color-border)] bg-white/80 p-4">
@@ -143,8 +142,8 @@ export function ActThree({ onPrev, onNext }: ActThreeProps) {
               <div className="rounded-[20px] border border-[var(--color-border)] bg-white/85 p-4">
                 <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-[var(--color-muted)]">Top states</p>
                 <div className="mt-4 space-y-3">
-                  {eraData.geography.topStates.value.map((item) => (
-                    <div key={item.state} className="flex items-center justify-between text-sm text-[var(--color-ink)]">
+                  {eraData.geography.topStates.map((item, index) => (
+                    <div key={`${item.state}-${item.value}-${index}`} className="flex items-center justify-between text-sm text-[var(--color-ink)]">
                       <span>{item.state}</span>
                       <span>{item.value}</span>
                     </div>
@@ -155,8 +154,8 @@ export function ActThree({ onPrev, onNext }: ActThreeProps) {
               <div className="rounded-[20px] border border-[var(--color-border)] bg-white/85 p-4">
                 <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-[var(--color-muted)]">Bottom states</p>
                 <div className="mt-4 space-y-3">
-                  {eraData.geography.bottomStates.value.map((item) => (
-                    <div key={item.state} className="flex items-center justify-between text-sm text-[var(--color-ink)]">
+                  {eraData.geography.bottomStates.map((item, index) => (
+                    <div key={`${item.state}-${item.value}-${index}`} className="flex items-center justify-between text-sm text-[var(--color-ink)]">
                       <span>{item.state}</span>
                       <span>{item.value}</span>
                     </div>
@@ -171,31 +170,25 @@ export function ActThree({ onPrev, onNext }: ActThreeProps) {
             <div className="mt-6 space-y-5">
               <div className="rounded-[20px] border border-[var(--color-border)] bg-white/85 p-4">
                 <p className="text-xs uppercase tracking-[0.24em] text-[var(--color-muted)]">Median income</p>
-                <p className="mt-2 text-3xl font-semibold text-[var(--color-ink)]">
-                  {eraData.borrowerProfile.medianIncome.value}
-                </p>
+                <p className="mt-2 text-3xl font-semibold text-[var(--color-ink)]">{eraData.borrowerProfile.medianIncome}</p>
               </div>
               <div className="rounded-[20px] border border-[var(--color-border)] bg-white/85 p-4">
                 <p className="text-xs uppercase tracking-[0.24em] text-[var(--color-muted)]">Approval rate</p>
-                <p className="mt-2 text-3xl font-semibold text-[var(--color-ink)]">
-                  {eraData.borrowerProfile.approvalRate.value}
-                </p>
+                <p className="mt-2 text-3xl font-semibold text-[var(--color-ink)]">{eraData.borrowerProfile.approvalRate}</p>
               </div>
               <div className="rounded-[20px] border border-[var(--color-border)] bg-white/85 p-4">
                 <p className="text-xs uppercase tracking-[0.24em] text-[var(--color-muted)]">Dominant purpose</p>
                 <p className="mt-2 text-lg font-semibold text-[var(--color-ink)]">
-                  {eraData.borrowerProfile.dominantPurpose.value} ({eraData.borrowerProfile.dominantPurposeShare.value})
+                  {eraData.borrowerProfile.dominantPurpose} ({eraData.borrowerProfile.dominantPurposeShare})
                 </p>
               </div>
               <div className="rounded-[20px] border border-[var(--color-border)] bg-white/85 p-4">
                 <p className="text-xs uppercase tracking-[0.24em] text-[var(--color-muted)]">Typical loan type received</p>
-                <p className="mt-2 text-lg font-semibold text-[var(--color-ink)]">
-                  {eraData.borrowerProfile.receivedLoanType.value}
-                </p>
+                <p className="mt-2 text-lg font-semibold text-[var(--color-ink)]">{eraData.borrowerProfile.receivedLoanType}</p>
               </div>
             </div>
             <div className="mt-8 rounded-[20px] border border-[var(--color-border)] bg-[var(--color-accent-soft)] p-4 text-sm leading-6 text-[var(--color-ink)]">
-              {era === "2007" ? comparison.comparison.borrower2007.value : comparison.comparison.borrower2017.value}
+              {era === "2007" ? story.comparison.borrower2007 : story.comparison.borrower2017}
             </div>
           </article>
         </div>
@@ -217,8 +210,6 @@ export function ActThree({ onPrev, onNext }: ActThreeProps) {
           Continue to summary
         </button>
       </div>
-
-      <BackendRequirementsPanel title="Behavior shift API contract" items={backendRequirements.behaviorShift} />
     </div>
   );
 }

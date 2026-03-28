@@ -1,19 +1,19 @@
 import { Area, AreaChart, ReferenceLine, ResponsiveContainer, XAxis, YAxis } from "recharts";
-import { BackendRequirementsPanel } from "./BackendRequirementsPanel";
-import { backendRequirements, storySeed } from "../storySeed";
+import type { CollapseData } from "../dataService";
 
 interface ActOneProps {
   onPrev: () => void;
   onNext: () => void;
+  story: CollapseData;
 }
 
-export function ActOne({ onPrev, onNext }: ActOneProps) {
-  const collapse = storySeed.collapse;
-  const gapSeries = collapse.gapSeries.value.map((point) => ({
+export function ActOne({ onPrev, onNext, story }: ActOneProps) {
+  const gapSeries = story.gapSeries.map((point) => ({
     ...point,
     gapFill: point.applications,
   }));
-  const loanTypeSeries = collapse.loanTypeSeries.value;
+  const loanTypeSeries = story.loanTypeSeries;
+  const mix2009 = loanTypeSeries.find((point) => point.year === 2009) ?? loanTypeSeries[2] ?? null;
 
   return (
     <div className="mx-auto flex w-full max-w-[1400px] flex-col gap-10 px-4 py-8 md:px-8 md:py-10">
@@ -24,25 +24,22 @@ export function ActOne({ onPrev, onNext }: ActOneProps) {
             The collapse
           </h2>
           <p className="mt-5 text-base leading-7 text-[var(--color-ink)]">
-            The page stays narrative-first, but every metric and chart on it is now coming from the centralized seed instead of inline JSX constants.
+            The market froze fast, then lending standards shifted. Missing API fields are shown as X.
           </p>
 
           <div className="mt-8 rounded-[28px] border border-[var(--color-border)] bg-[var(--color-coral-soft)] p-5">
             <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-[var(--color-muted)]">Approval collapse</p>
-            <p className="mt-4 text-5xl font-semibold text-[var(--color-coral)]">
-              {collapse.approvalShift.dropPp.value}
-            </p>
+            <p className="mt-4 text-5xl font-semibold text-[var(--color-coral)]">{story.approvalShift.dropPp}</p>
             <p className="mt-3 text-sm leading-6 text-[var(--color-ink)]">
-              From {collapse.approvalShift.basePct.value}% in {collapse.approvalShift.baseYear.value} to{" "}
-              {collapse.approvalShift.floorPct.value}% in {collapse.approvalShift.floorYear.value}.
+              From {story.approvalShift.basePct} in {story.approvalShift.baseYear} to {story.approvalShift.floorPct} in {story.approvalShift.floorYear}.
             </p>
           </div>
 
           <div className="mt-6 space-y-3">
             {[
-              `${collapse.kpis.applicationsPeak.value} applications at the peak`,
-              `${collapse.kpis.originationsFloor.value} originated at the floor`,
-              `${collapse.kpis.approvalDrop.value} total approval-rate drop`,
+              `${story.kpis.applicationsPeak} applications at the peak`,
+              `${story.kpis.originationsFloor} originated at the floor`,
+              `${story.kpis.approvalDrop} total approval-rate drop`,
             ].map((line) => (
               <div key={line} className="rounded-[20px] border border-[var(--color-border)] bg-[var(--color-sand)] px-4 py-3 text-sm text-[var(--color-ink)]">
                 {line}
@@ -61,32 +58,44 @@ export function ActOne({ onPrev, onNext }: ActOneProps) {
                 </h3>
               </div>
               <div className="rounded-full bg-[var(--color-coral-soft)] px-4 py-2 text-sm text-[var(--color-coral)]">
-                Marker year: {collapse.markers.floorYear.value}
+                Marker year: {story.approvalShift.floorYear}
               </div>
             </div>
 
             <div className="mt-6 h-[340px] rounded-[24px] border border-[var(--color-border)] bg-[var(--color-page)] p-4">
-              <ResponsiveContainer width="100%" height="100%">
-                <AreaChart data={gapSeries}>
-                  <XAxis dataKey="year" axisLine={false} tickLine={false} stroke="var(--color-muted)" />
-                  <YAxis axisLine={false} tickLine={false} stroke="var(--color-muted)" />
-                  <ReferenceLine x={collapse.markers.floorYear.value} stroke="var(--color-coral)" strokeDasharray="4 4" />
-                  <Area type="monotone" dataKey="gapFill" stroke="none" fill="var(--color-coral-soft)" />
-                  <Area type="monotone" dataKey="originations" stroke="var(--color-mint)" fill="var(--color-mint-soft)" fillOpacity={0.8} />
-                  <Area type="monotone" dataKey="applications" stroke="var(--color-accent)" fill="var(--color-accent-soft)" fillOpacity={0.65} />
-                </AreaChart>
-              </ResponsiveContainer>
+              {gapSeries.length > 0 ? (
+                <ResponsiveContainer width="100%" height="100%">
+                  <AreaChart data={gapSeries}>
+                    <XAxis dataKey="year" axisLine={false} tickLine={false} stroke="var(--color-muted)" />
+                    <YAxis axisLine={false} tickLine={false} stroke="var(--color-muted)" />
+                    {story.markers.floorYear !== null ? <ReferenceLine x={story.markers.floorYear} stroke="var(--color-coral)" strokeDasharray="4 4" /> : null}
+                    <Area type="monotone" dataKey="gapFill" stroke="none" fill="var(--color-coral-soft)" />
+                    <Area type="monotone" dataKey="originations" stroke="var(--color-mint)" fill="var(--color-mint-soft)" fillOpacity={0.8} />
+                    <Area type="monotone" dataKey="applications" stroke="var(--color-accent)" fill="var(--color-accent-soft)" fillOpacity={0.65} />
+                  </AreaChart>
+                </ResponsiveContainer>
+              ) : (
+                <div className="flex h-full items-center justify-center rounded-[16px] border border-dashed border-[var(--color-border)] text-sm text-[var(--color-muted)]">
+                  X chart data missing
+                </div>
+              )}
             </div>
 
             <div className="mt-6 grid gap-4 md:grid-cols-3">
-              {gapSeries.map((point) => (
-                <div key={point.year} className="rounded-[20px] border border-[var(--color-border)] bg-white/80 p-4">
-                  <p className="text-xs uppercase tracking-[0.24em] text-[var(--color-muted)]">{point.year}</p>
-                  <p className="mt-3 text-sm text-[var(--color-ink)]">{point.applications}M applications</p>
-                  <p className="mt-1 text-sm text-[var(--color-ink)]">{point.originations}M originations</p>
-                  <p className="mt-1 text-sm text-[var(--color-coral)]">{point.approvalRate}% approval rate</p>
-                </div>
-              )).slice(0, 3)}
+              {(gapSeries.length > 0
+                ? gapSeries.slice(0, 3).map((point) => (
+                    <div key={point.year} className="rounded-[20px] border border-[var(--color-border)] bg-white/80 p-4">
+                      <p className="text-xs uppercase tracking-[0.24em] text-[var(--color-muted)]">{point.year}</p>
+                      <p className="mt-3 text-sm text-[var(--color-ink)]">{point.applications}M applications</p>
+                      <p className="mt-1 text-sm text-[var(--color-ink)]">{point.originations}M originations</p>
+                      <p className="mt-1 text-sm text-[var(--color-coral)]">{point.approvalRate ?? "X"}% approval rate</p>
+                    </div>
+                  ))
+                : [
+                    <div key="gap-x-1" className="rounded-[20px] border border-[var(--color-border)] bg-white/80 p-4 text-sm text-[var(--color-muted)]">X</div>,
+                    <div key="gap-x-2" className="rounded-[20px] border border-[var(--color-border)] bg-white/80 p-4 text-sm text-[var(--color-muted)]">X</div>,
+                    <div key="gap-x-3" className="rounded-[20px] border border-[var(--color-border)] bg-white/80 p-4 text-sm text-[var(--color-muted)]">X</div>,
+                  ])}
             </div>
           </article>
 
@@ -99,30 +108,43 @@ export function ActOne({ onPrev, onNext }: ActOneProps) {
                 </h3>
               </div>
               <div className="rounded-full bg-[var(--color-mint-soft)] px-4 py-2 text-sm text-[var(--color-mint)]">
-                2009 mix: {loanTypeSeries[2].conventional}% conventional / {loanTypeSeries[2].govtBacked}% government-backed
+                2009 mix: {mix2009 ? `${mix2009.conventional}% conventional / ${mix2009.govtBacked}% government-backed` : "X"}
               </div>
             </div>
 
             <div className="mt-6 h-[320px] rounded-[24px] border border-[var(--color-border)] bg-[var(--color-page)] p-4">
-              <ResponsiveContainer width="100%" height="100%">
-                <AreaChart data={loanTypeSeries} stackOffset="expand">
-                  <XAxis dataKey="year" axisLine={false} tickLine={false} stroke="var(--color-muted)" />
-                  <YAxis axisLine={false} tickLine={false} stroke="var(--color-muted)" tickFormatter={(value) => `${Math.round(value * 100)}%`} />
-                  <ReferenceLine x={2009} stroke="var(--color-accent)" strokeDasharray="4 4" />
-                  <Area type="monotone" dataKey="conventional" stackId="1" stroke="none" fill="var(--color-accent)" fillOpacity={0.85} />
-                  <Area type="monotone" dataKey="govtBacked" stackId="1" stroke="none" fill="var(--color-mint)" fillOpacity={0.85} />
-                </AreaChart>
-              </ResponsiveContainer>
+              {loanTypeSeries.length > 0 ? (
+                <ResponsiveContainer width="100%" height="100%">
+                  <AreaChart data={loanTypeSeries} stackOffset="expand">
+                    <XAxis dataKey="year" axisLine={false} tickLine={false} stroke="var(--color-muted)" />
+                    <YAxis axisLine={false} tickLine={false} stroke="var(--color-muted)" tickFormatter={(value) => `${Math.round(value * 100)}%`} />
+                    {mix2009 ? <ReferenceLine x={mix2009.year} stroke="var(--color-accent)" strokeDasharray="4 4" /> : null}
+                    <Area type="monotone" dataKey="conventional" stackId="1" stroke="none" fill="var(--color-accent)" fillOpacity={0.85} />
+                    <Area type="monotone" dataKey="govtBacked" stackId="1" stroke="none" fill="var(--color-mint)" fillOpacity={0.85} />
+                  </AreaChart>
+                </ResponsiveContainer>
+              ) : (
+                <div className="flex h-full items-center justify-center rounded-[16px] border border-dashed border-[var(--color-border)] text-sm text-[var(--color-muted)]">
+                  X chart data missing
+                </div>
+              )}
             </div>
 
             <div className="mt-6 grid gap-4 md:grid-cols-4">
-              {loanTypeSeries.map((point) => (
-                <div key={point.year} className="rounded-[20px] border border-[var(--color-border)] bg-white/80 p-4">
-                  <p className="text-xs uppercase tracking-[0.24em] text-[var(--color-muted)]">{point.year}</p>
-                  <p className="mt-2 text-sm text-[var(--color-accent)]">{point.conventional}% conventional</p>
-                  <p className="mt-1 text-sm text-[var(--color-mint)]">{point.govtBacked}% government-backed</p>
-                </div>
-              ))}
+              {(loanTypeSeries.length > 0
+                ? loanTypeSeries.map((point) => (
+                    <div key={point.year} className="rounded-[20px] border border-[var(--color-border)] bg-white/80 p-4">
+                      <p className="text-xs uppercase tracking-[0.24em] text-[var(--color-muted)]">{point.year}</p>
+                      <p className="mt-2 text-sm text-[var(--color-accent)]">{point.conventional}% conventional</p>
+                      <p className="mt-1 text-sm text-[var(--color-mint)]">{point.govtBacked}% government-backed</p>
+                    </div>
+                  ))
+                : [
+                    <div key="loan-x-1" className="rounded-[20px] border border-[var(--color-border)] bg-white/80 p-4 text-sm text-[var(--color-muted)]">X</div>,
+                    <div key="loan-x-2" className="rounded-[20px] border border-[var(--color-border)] bg-white/80 p-4 text-sm text-[var(--color-muted)]">X</div>,
+                    <div key="loan-x-3" className="rounded-[20px] border border-[var(--color-border)] bg-white/80 p-4 text-sm text-[var(--color-muted)]">X</div>,
+                    <div key="loan-x-4" className="rounded-[20px] border border-[var(--color-border)] bg-white/80 p-4 text-sm text-[var(--color-muted)]">X</div>,
+                  ])}
             </div>
           </article>
         </div>
@@ -144,8 +166,6 @@ export function ActOne({ onPrev, onNext }: ActOneProps) {
           Continue to recovery
         </button>
       </div>
-
-      <BackendRequirementsPanel title="Collapse page API contract" items={backendRequirements.collapse} />
     </div>
   );
 }
