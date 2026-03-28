@@ -1,0 +1,62 @@
+Here's the full spec, query logic included.
+
+---
+
+## Page 1 — Fallout
+
+**Chart 1.1 — Gap Area Chart (2007–2010)**
+
+Two series: total applications and total originations per year. For each year, `applications = COUNT(*)`, `originations = COUNT(*) WHERE action_taken = 1`. The red fill is the visual encoding of `applications − originations` — you never compute it explicitly, the chart just fills between the two lines. Derivation: `origination_rate = originations / applications`. Fields: `action_taken`, `as_of_year`.
+
+**Chart 1.2 — 100% Stacked Area, Loan Type (2007–2010)**
+
+Originations only (`action_taken = 1`). For each year, count originations grouped by `loan_type` (1=conventional, 2=FHA, 3=VA, 4=FSA). Normalize: `share_k = count_k / SUM(count_all_types)` per year × 100. Output is four percentage columns that sum to 100 each year. Fields: `loan_type`, `action_taken`, `as_of_year`.
+
+---
+
+## Page 2 — Recovery
+
+**Chart 2.1 — Gap Area Chart extended (2007–2017)**
+
+Identical query to Chart 1.1 — same logic, same fields, just `as_of_year` range extended to 2007–2017. No new computation. This is literally a superset of Chart 1.1's output. Run once, use for both.
+
+**Chart 2.2 — Refinancing Wave Area Chart (2010–2017)**
+
+Originations only. For each year: `total = COUNT(*) WHERE action_taken = 1`, `refi = COUNT(*) WHERE action_taken = 1 AND loan_purpose = 3`. Compute `refi_share = refi / total × 100`. Single output column per year. Fields: `loan_purpose`, `action_taken`, `as_of_year`.
+
+---
+
+## Page 3 — Behavior Shift
+
+**Chart 3.1 — Borrower ID Card (2007 vs 2017, point-in-time comparison)**
+
+Filter to `as_of_year IN (2007, 2017)`. For each year compute independently:
+- `median_income = PERCENTILE(applicant_income_000s, 0.5)` where `action_taken = 1` and income is not null
+- `approval_rate = COUNT(action_taken = 1) / COUNT(*)`
+- `denial_rate = COUNT(action_taken = 3) / COUNT(*)`
+- `dominant_purpose = MODE(loan_purpose) WHERE action_taken = 1` → map to label
+- `dominant_loan_type = MODE(loan_type) WHERE action_taken = 1` → map to label
+
+Output: 2 rows × 7 columns. Fields: `applicant_income_000s`, `action_taken`, `loan_purpose`, `loan_type`, `as_of_year`.
+
+**Chart 3.2 — Dual-State Choropleth (2007 volume density vs 2017 recovery index)**
+
+Filter to `as_of_year IN (2007, 2017)`, `action_taken = 1`. Group by `(year, state_code)`, compute `vol = COUNT(*)`. Pivot to get `vol_2007` and `vol_2017` as columns. Derive: `recovery_index = vol_2017 / vol_2007`. Two color encodings used in JS — 2007 uses a sequential blue scale on raw `vol_2007`; 2017 maps `recovery_index` to a diverging red→green scale centered at 1.0. Fields: `state_code`, `action_taken`, `as_of_year`. Note: `state_code` is numeric FIPS — join a FIPS→abbreviation lookup before export.
+
+**Chart 3.3 — Dual Leaderboard (top/bottom 5 states, toggle 2007 volume vs 2017 recovery)**
+
+No new query. Derived entirely from Chart 3.2's output. In JS: sort the 50-row state DataFrame by `vol_2007` descending for the 2007 toggle view; sort by `recovery_index` for the 2017 toggle view. Take `slice(0,5)` for top, `slice(-5)` for bottom. Bar width = `value / max_value × 100%`. Value label = raw origination count (2007 view) or `(recovery_index − 1) × 100` formatted as `±N%` (2017 view).
+
+---
+
+## Complete Query Map
+
+| ID | Scope | Core operation | Output rows |
+|----|-------|----------------|-------------|
+| Q1 | 2007–2017 | COUNT by year, split on `action_taken=1` vs total | 11 × 3 |
+| Q2 | 2007–2010 | COUNT by (year, loan_type) where `action_taken=1`, normalize to % | 4 × 5 |
+| Q3 | 2010–2017 | COUNT refi / total originations by year | 8 × 2 |
+| Q4 | 2007, 2017 | Median income, approval rate, denial rate, mode of purpose and type | 2 × 7 |
+| Q5 | 2007, 2017 | COUNT originations by (year, state), pivot, compute recovery index | 50 × 4 |
+
+Q1 feeds charts 1.1 and 2.1. Q5 feeds charts 3.2 and 3.3. Every summary page KPI is a scalar derived from one of these five outputs — no sixth query needed.
