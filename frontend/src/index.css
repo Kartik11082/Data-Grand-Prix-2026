@@ -1,23 +1,23 @@
 @import "tailwindcss";
 
 :root {
-  --color-page: #f7f6f1;
-  --color-surface: #fffdfa;
-  --color-sand: #f1eadf;
-  --color-border: #ddd6c9;
-  --color-ink: #22313a;
-  --color-muted: #6f7a81;
-  --color-accent: #4f86a6;
-  --color-accent-soft: #dcecf5;
-  --color-mint: #6d9683;
-  --color-mint-soft: #e3efe9;
-  --color-amber: #c79a4a;
-  --color-amber-soft: #f7eddc;
-  --color-coral: #c97b66;
-  --color-coral-soft: #f6e3dd;
-  --shadow-soft: 0 20px 50px rgba(34, 49, 58, 0.08);
-  --font-body: "Noah", "Avenir Next", "Segoe UI", sans-serif;
-  --font-display: "Noah", "Avenir Next", "Segoe UI", sans-serif;
+  --color-page: #f5f6f8;
+  --color-surface: #ffffff;
+  --color-sand: #edeef2;
+  --color-border: #d4d8df;
+  --color-ink: #242f3d;
+  --color-muted: #737d88;
+  --color-accent: #4a6fa5;
+  --color-accent-soft: #e4eaf4;
+  --color-mint: #3e8a6e;
+  --color-mint-soft: #dceee6;
+  --color-amber: #b8882e;
+  --color-amber-soft: #f5ecd6;
+  --color-coral: #b35544;
+  --color-coral-soft: #f3ddd8;
+  --shadow-soft: 0 16px 40px rgba(36, 47, 61, 0.06);
+  --font-body: "Inter", "Segoe UI", system-ui, sans-serif;
+  --font-display: "Inter", "Segoe UI", system-ui, sans-serif;
   color: var(--color-ink);
   background: var(--color-page);
   font-family: var(--font-body);
@@ -31,10 +31,10 @@ body {
   min-width: 320px;
   min-height: 100vh;
   background:
-    linear-gradient(90deg, rgba(79, 134, 166, 0) 0%, rgba(79, 134, 166, 0.035) 58%, rgba(34, 49, 58, 0.08) 100%),
-    radial-gradient(circle at top left, rgba(220, 236, 245, 0.95), transparent 30%),
-    radial-gradient(circle at 82% 18%, rgba(247, 237, 220, 0.42), transparent 20%),
-    radial-gradient(circle at bottom right, rgba(176, 194, 204, 0.32), transparent 28%),
+    linear-gradient(90deg, rgba(74, 111, 165, 0) 0%, rgba(74, 111, 165, 0.025) 58%, rgba(36, 47, 61, 0.05) 100%),
+    radial-gradient(circle at top left, rgba(228, 234, 244, 0.8), transparent 30%),
+    radial-gradient(circle at 82% 18%, rgba(245, 236, 214, 0.28), transparent 20%),
+    radial-gradient(circle at bottom right, rgba(200, 206, 216, 0.22), transparent 28%),
     var(--color-page);
 }
 
@@ -44,10 +44,10 @@ body::before {
   inset: 0;
   pointer-events: none;
   z-index: 0;
-  opacity: 0.38;
+  opacity: 0.24;
   background:
-    linear-gradient(90deg, rgba(79, 134, 166, 0.02) 0%, rgba(79, 134, 166, 0.065) 62%, rgba(34, 49, 58, 0.13) 100%),
-    repeating-conic-gradient(from 45deg at 50% 50%, #dce3ec 0deg 90deg, transparent 90deg 180deg);
+    linear-gradient(90deg, rgba(74, 111, 165, 0.015) 0%, rgba(74, 111, 165, 0.04) 62%, rgba(36, 47, 61, 0.07) 100%),
+    repeating-conic-gradient(from 45deg at 50% 50%, #d6dbe5 0deg 90deg, transparent 90deg 180deg);
   background-size: 100% 100%, 32px 32px;
   animation: backgroundDrift 40s linear infinite;
   will-change: background-position;
@@ -60,7 +60,7 @@ body::after {
   pointer-events: none;
   z-index: 0;
   opacity: 0.22;
-  background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.03) 52%, rgba(34, 49, 58, 0.07) 100%);
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.03) 52%, rgba(27, 42, 61, 0.06) 100%);
 }
 
 button {
