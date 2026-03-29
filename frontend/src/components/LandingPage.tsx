@@ -28,7 +28,7 @@ export function LandingPage({ onBegin, story, isTransitioning }: LandingPageProp
             className="max-w-[13ch] text-4xl leading-tight text-[var(--color-ink)] md:text-6xl"
             style={{ fontFamily: "var(--font-display)" }}
           >
-            Post-Crisis Lending Landscape
+            APEX
           </h2>
 
           <div className="mt-10 flex w-full flex-wrap items-center justify-center gap-3">
