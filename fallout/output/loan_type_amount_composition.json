@@ -1,0 +1,112 @@
+[
+  {
+    "year": 2007,
+    "conventional_pct": 94.0,
+    "govt_backed_pct": 6.0,
+    "conventional_amt_000s": 1976335209.0,
+    "govt_backed_amt_000s": 97739527.0,
+    "total_amt_000s": 2074074736.0,
+    "conventional_amt_share_pct": 95.3,
+    "govt_backed_amt_share_pct": 4.7
+  },
+  {
+    "year": 2008,
+    "conventional_pct": 76.6,
+    "govt_backed_pct": 23.4,
+    "conventional_amt_000s": 69189913.0,
+    "govt_backed_amt_000s": 18315621.0,
+    "total_amt_000s": 87505534.0,
+    "conventional_amt_share_pct": 79.1,
+    "govt_backed_amt_share_pct": 20.9
+  },
+  {
+    "year": 2009,
+    "conventional_pct": 73.8,
+    "govt_backed_pct": 26.2,
+    "conventional_amt_000s": 1393429187.0,
+    "govt_backed_amt_000s": 428833378.0,
+    "total_amt_000s": 1822262565.0,
+    "conventional_amt_share_pct": 76.5,
+    "govt_backed_amt_share_pct": 23.5
+  },
+  {
+    "year": 2010,
+    "conventional_pct": 76.6,
+    "govt_backed_pct": 23.4,
+    "conventional_amt_000s": 1296375409.0,
+    "govt_backed_amt_000s": 346351962.0,
+    "total_amt_000s": 1642727371.0,
+    "conventional_amt_share_pct": 78.9,
+    "govt_backed_amt_share_pct": 21.1
+  },
+  {
+    "year": 2011,
+    "conventional_pct": 77.8,
+    "govt_backed_pct": 22.2,
+    "conventional_amt_000s": 1202664381.0,
+    "govt_backed_amt_000s": 287391713.0,
+    "total_amt_000s": 1490056094.0,
+    "conventional_amt_share_pct": 80.7,
+    "govt_backed_amt_share_pct": 19.3
+  },
+  {
+    "year": 2012,
+    "conventional_pct": 79.4,
+    "govt_backed_pct": 20.6,
+    "conventional_amt_000s": 1744506574.0,
+    "govt_backed_amt_000s": 390806265.0,
+    "total_amt_000s": 2135312839.0,
+    "conventional_amt_share_pct": 81.7,
+    "govt_backed_amt_share_pct": 18.3
+  },
+  {
+    "year": 2013,
+    "conventional_pct": 79.5,
+    "govt_backed_pct": 20.5,
+    "conventional_amt_000s": 1563111119.0,
+    "govt_backed_amt_000s": 340155119.0,
+    "total_amt_000s": 1903266238.0,
+    "conventional_amt_share_pct": 82.1,
+    "govt_backed_amt_share_pct": 17.9
+  },
+  {
+    "year": 2014,
+    "conventional_pct": 71.6,
+    "govt_backed_pct": 28.4,
+    "conventional_amt_000s": 853167428.0,
+    "govt_backed_amt_000s": 263292271.0,
+    "total_amt_000s": 1116459699.0,
+    "conventional_amt_share_pct": 76.4,
+    "govt_backed_amt_share_pct": 23.6
+  },
+  {
+    "year": 2015,
+    "conventional_pct": 68.8,
+    "govt_backed_pct": 31.2,
+    "conventional_amt_000s": 1110451908.0,
+    "govt_backed_amt_000s": 396974396.0,
+    "total_amt_000s": 1507426304.0,
+    "conventional_amt_share_pct": 73.7,
+    "govt_backed_amt_share_pct": 26.3
+  },
+  {
+    "year": 2016,
+    "conventional_pct": 69.0,
+    "govt_backed_pct": 31.0,
+    "conventional_amt_000s": 1335942202.0,
+    "govt_backed_amt_000s": 472913724.0,
+    "total_amt_000s": 1808855926.0,
+    "conventional_amt_share_pct": 73.9,
+    "govt_backed_amt_share_pct": 26.1
+  },
+  {
+    "year": 2017,
+    "conventional_pct": 68.7,
+    "govt_backed_pct": 31.3,
+    "conventional_amt_000s": 1132886437.0,
+    "govt_backed_amt_000s": 407312003.0,
+    "total_amt_000s": 1540198440.0,
+    "conventional_amt_share_pct": 73.6,
+    "govt_backed_amt_share_pct": 26.4
+  }
+]
