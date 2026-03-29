@@ -7,6 +7,8 @@ from fastapi.responses import FileResponse
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 OUTPUT_DIR = os.path.join(SCRIPT_DIR, "output")
 STORY_DIR = os.path.join(OUTPUT_DIR, "story")
+REPO_ROOT = os.path.dirname(SCRIPT_DIR)
+HMDA_STATE_FRONTEND_DIR = os.path.join(REPO_ROOT, "hmda_state", "frontend")
 
 logger = logging.getLogger("hmda_api")
 logger.setLevel(logging.INFO)
@@ -49,6 +51,18 @@ def serve_story_json(filename: str) -> FileResponse:
         raise HTTPException(
             status_code=404,
             detail=f"'{filename}' not found. Run export_story_json.py to generate it.",
+        )
+    return FileResponse(filepath, media_type="application/json")
+
+
+def serve_hmda_state_frontend_json(filename: str) -> FileResponse:
+    """Serve a JSON file from hmda_state/frontend/."""
+    filepath = os.path.join(HMDA_STATE_FRONTEND_DIR, filename)
+    if not os.path.exists(filepath):
+        logger.error(f"Missing hmda_state frontend file: {filepath}")
+        raise HTTPException(
+            status_code=404,
+            detail=f"'{filename}' not found in hmda_state/frontend. Run the batch job to generate it.",
         )
     return FileResponse(filepath, media_type="application/json")
 
@@ -121,8 +135,8 @@ async def get_chart5() -> FileResponse:
 @app.get("/chart6", response_class=FileResponse, tags=["charts"])
 async def get_chart6() -> FileResponse:
     """Loan type amount companion data — count shares plus originated loan amounts."""
-    logger.info("Serving /chart6 -> loan_type_amount_composition.json")
-    return serve_json_file("loan_type_amount_composition.json")
+    logger.info("Serving /chart6 -> hmda_state/frontend/loan_type_amount_composition.json")
+    return serve_hmda_state_frontend_json("loan_type_amount_composition.json")
 
 
 # ── story endpoints ───────────────────────────────────────────────────────────
