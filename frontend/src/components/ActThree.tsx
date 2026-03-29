@@ -60,7 +60,7 @@ export function ActThree({ onPrev, onNext, story }: ActThreeProps) {
           : "present";
 
   const narrativeText: Record<string, string> = {
-    baseline: "This is the 2007 baseline — every state starts at 100%. Drag the slider forward to watch the crisis unfold geographically.",
+    baseline: "This is the 2007 baseline where every state starts at 100%. Upon using the slider, you can observe how the crisis unfolded.",
     crash: `By ${selectedYear}, the crash is spreading unevenly. States with housing bubbles (FL, AZ, NV, CA) are losing lending volume fastest. Heartland states hold steadier.`,
     trough: `The market is bottoming out. Some states are starting to show signs of recovery while others remain deeply depressed. The geographic inequality is becoming structural.`,
     recovery: `Recovery is underway but uneven. Energy and tech states (TX, CO, ND) are rebounding fast. Former bubble states (FL, NV, NJ) remain well below their 2007 levels.`,

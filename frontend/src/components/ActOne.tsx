@@ -1,6 +1,7 @@
 import { useLayoutEffect, useRef, useState } from "react";
 import { Area, AreaChart, CartesianGrid, ReferenceLine, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import type { CollapseData } from "../dataService";
+import { LoanTypeAmountTooltip } from "./LoanTypeAmountTooltip";
 
 interface ActOneProps {
   onPrev: () => void;
@@ -219,7 +220,7 @@ export function ActOne({ onPrev, onNext, story }: ActOneProps) {
                     <CartesianGrid strokeDasharray="3 3" stroke="var(--color-border)" vertical={false} />
                     <XAxis dataKey="year" axisLine={false} tickLine={false} stroke="var(--color-muted)" />
                     <YAxis axisLine={false} tickLine={false} stroke="var(--color-muted)" width={48} tickFormatter={(value) => `${Math.round(value * 100)}%`} />
-                    <Tooltip contentStyle={{ borderRadius: 12, border: '1px solid var(--color-border)', fontSize: 13 }} formatter={(value: any) => [`${Math.round(Number(value))}%`]} labelFormatter={(label) => `Year: ${label}`} />
+                    <Tooltip content={<LoanTypeAmountTooltip />} />
                     {mix2009 ? <ReferenceLine x={mix2009.year} stroke="var(--color-accent)" strokeDasharray="4 4" /> : null}
                     <Area type="monotone" dataKey="conventional" stackId="1" stroke="none" fill="var(--color-accent)" fillOpacity={0.85} />
                     <Area type="monotone" dataKey="govtBacked" stackId="1" stroke="none" fill="var(--color-mint)" fillOpacity={0.85} />

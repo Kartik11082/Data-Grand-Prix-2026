@@ -13,6 +13,20 @@ export interface LoanTypePoint {
   year: number;
   conventional: number;
   govtBacked: number;
+  conventionalAmountThousands?: number | null;
+  govtBackedAmountThousands?: number | null;
+  totalAmountThousands?: number | null;
+  conventionalAmountShare?: number | null;
+  govtBackedAmountShare?: number | null;
+}
+
+export interface LoanTypeAmountPoint {
+  year: number;
+  conventionalAmountThousands: number | null;
+  govtBackedAmountThousands: number | null;
+  totalAmountThousands: number | null;
+  conventionalAmountShare: number | null;
+  govtBackedAmountShare: number | null;
 }
 
 export interface RefiPoint {
@@ -347,6 +361,33 @@ const loanTypePoint = (item: unknown): LoanTypePoint | null => {
   };
 };
 
+const loanTypeAmountPoint = (item: unknown): LoanTypeAmountPoint | null => {
+  const row = asRecord(item);
+  if (!row) {
+    return null;
+  }
+
+  const year = toNumber(row.year);
+  if (year === null) {
+    return null;
+  }
+
+  const conventionalAmountThousands = toNumber(firstDefined(row.conventional_amt_000s, row.conventionalAmountThousands));
+  const govtBackedAmountThousands = toNumber(firstDefined(row.govt_backed_amt_000s, row.govtBackedAmountThousands));
+  const totalAmountThousands = toNumber(firstDefined(row.total_amt_000s, row.totalAmountThousands));
+  const conventionalAmountShare = toNumber(firstDefined(row.conventional_amt_share_pct, row.conventionalAmountShare));
+  const govtBackedAmountShare = toNumber(firstDefined(row.govt_backed_amt_share_pct, row.govtBackedAmountShare));
+
+  return {
+    year: Math.round(year),
+    conventionalAmountThousands,
+    govtBackedAmountThousands,
+    totalAmountThousands,
+    conventionalAmountShare: conventionalAmountShare === null ? null : round(conventionalAmountShare, 1),
+    govtBackedAmountShare: govtBackedAmountShare === null ? null : round(govtBackedAmountShare, 1),
+  };
+};
+
 const refiPoint = (item: unknown): RefiPoint | null => {
   const row = asRecord(item);
   if (!row) {
@@ -525,6 +566,9 @@ const mapGapSeries = (value: unknown): GapSeriesPoint[] => asArray(value).map(ga
 
 const mapLoanTypeSeries = (value: unknown): LoanTypePoint[] =>
   asArray(value).map(loanTypePoint).filter((item): item is LoanTypePoint => item !== null);
+
+const mapLoanTypeAmountSeries = (value: unknown): LoanTypeAmountPoint[] =>
+  asArray(value).map(loanTypeAmountPoint).filter((item): item is LoanTypeAmountPoint => item !== null);
 
 const mapRefiSeries = (value: unknown): RefiPoint[] => asArray(value).map(refiPoint).filter((item): item is RefiPoint => item !== null);
 
@@ -720,6 +764,27 @@ const mergeApprovalRates = (primary: GapSeriesPoint[], supplemental: GapSeriesPo
   }));
 };
 
+const mergeLoanTypeAmounts = (primary: LoanTypePoint[], supplemental: LoanTypeAmountPoint[]): LoanTypePoint[] => {
+  if (primary.length === 0) {
+    return primary;
+  }
+
+  const supplementalMap = new Map(supplemental.map((point) => [point.year, point]));
+
+  return primary.map((point) => {
+    const amountRow = supplementalMap.get(point.year);
+
+    return {
+      ...point,
+      conventionalAmountThousands: amountRow?.conventionalAmountThousands ?? null,
+      govtBackedAmountThousands: amountRow?.govtBackedAmountThousands ?? null,
+      totalAmountThousands: amountRow?.totalAmountThousands ?? null,
+      conventionalAmountShare: amountRow?.conventionalAmountShare ?? null,
+      govtBackedAmountShare: amountRow?.govtBackedAmountShare ?? null,
+    };
+  });
+};
+
 const normalizeNarrativeArc = (value: unknown): string[] => {
   const arc = asArray(value)
     .map((step) => {
@@ -754,7 +819,12 @@ const buildLanding = (landingApi: unknown): LandingData => {
   };
 };
 
-const buildCollapse = (collapseApi: unknown, chart1Gap: GapSeriesPoint[], chart2LoanTypes: LoanTypePoint[]): CollapseData => {
+const buildCollapse = (
+  collapseApi: unknown,
+  chart1Gap: GapSeriesPoint[],
+  chart2LoanTypes: LoanTypePoint[],
+  chart6LoanTypeAmounts: LoanTypeAmountPoint[],
+): CollapseData => {
   const fallback = EMPTY_STORY_DATA.collapse;
   const collapseRecord = asRecord(collapseApi);
   const approvalShift = asRecord(collapseRecord?.approval_shift);
@@ -766,7 +836,8 @@ const buildCollapse = (collapseApi: unknown, chart1Gap: GapSeriesPoint[], chart2
   const gapSeries = mergeApprovalRates(chartGap.length > 0 ? chartGap : storyGap, storyGap);
 
   const storyLoanTypes = mapLoanTypeSeries(collapseRecord?.loan_type_series).slice(0, 4);
-  const loanTypeSeries = chart2LoanTypes.length > 0 ? chart2LoanTypes.slice(0, 4) : storyLoanTypes;
+  const baseLoanTypeSeries = chart2LoanTypes.length > 0 ? chart2LoanTypes.slice(0, 4) : storyLoanTypes;
+  const loanTypeSeries = mergeLoanTypeAmounts(baseLoanTypeSeries, chart6LoanTypeAmounts);
 
   return {
     approvalShift: {
@@ -795,6 +866,7 @@ const buildRecovery = (
   chart3Gap: GapSeriesPoint[],
   chart4Refi: RefiPoint[],
   chart5LoanTypes: LoanTypePoint[],
+  chart6LoanTypeAmounts: LoanTypeAmountPoint[],
 ): RecoveryData => {
   const fallback = EMPTY_STORY_DATA.recovery;
   const recoveryRecord = asRecord(recoveryApi);
@@ -813,7 +885,8 @@ const buildRecovery = (
   const loanPurposeSeries = mapLoanPurposeSeries(recoveryRecord?.loan_purpose_series);
 
   const storyLoanTypes = mapLoanTypeSeries(recoveryRecord?.loan_type_series);
-  const loanTypeSeries = chart5LoanTypes.length > 0 ? chart5LoanTypes : storyLoanTypes;
+  const baseLoanTypeSeries = chart5LoanTypes.length > 0 ? chart5LoanTypes : storyLoanTypes;
+  const loanTypeSeries = mergeLoanTypeAmounts(baseLoanTypeSeries, chart6LoanTypeAmounts);
 
   return {
     gapSeries,
@@ -952,6 +1025,7 @@ export const fetchStoryData = async (): Promise<StoryData> => {
     chart3Api,
     chart4Api,
     chart5Api,
+    chart6Api,
   ] = await Promise.all([
     fetchEndpoint("/"),
     fetchEndpoint("/story/landing"),
@@ -964,6 +1038,7 @@ export const fetchStoryData = async (): Promise<StoryData> => {
     fetchEndpoint("/chart3"),
     fetchEndpoint("/chart4"),
     fetchEndpoint("/chart5"),
+    fetchEndpoint("/chart6"),
   ]);
 
   const apiIndex = asRecord(apiIndexApi);
@@ -982,11 +1057,12 @@ export const fetchStoryData = async (): Promise<StoryData> => {
   const chart3 = mapGapSeries(chart3Api);
   const chart4 = mapRefiSeries(chart4Api);
   const chart5 = mapLoanTypeSeries(chart5Api);
+  const chart6 = mapLoanTypeAmountSeries(chart6Api);
 
   return {
     landing: buildLanding(landingApi),
-    collapse: buildCollapse(collapseApi, chart1, chart2),
-    recovery: buildRecovery(recoveryApi, chart3.length > 0 ? chart3 : chart1, chart4, chart5.length > 0 ? chart5 : chart2),
+    collapse: buildCollapse(collapseApi, chart1, chart2, chart6),
+    recovery: buildRecovery(recoveryApi, chart3.length > 0 ? chart3 : chart1, chart4, chart5.length > 0 ? chart5 : chart2, chart6),
     behaviorShift: buildBehaviorShift(behaviorApi),
     summary: buildSummary(summaryApi, chart3.length > 0 ? chart3 : chart1),
   };

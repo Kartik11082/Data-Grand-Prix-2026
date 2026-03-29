@@ -1,5 +1,6 @@
 import { Area, AreaChart, CartesianGrid, ReferenceLine, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import type { RecoveryData } from "../dataService";
+import { LoanTypeAmountTooltip } from "./LoanTypeAmountTooltip";
 
 interface ActTwoProps {
   onPrev: () => void;
@@ -15,6 +16,7 @@ export function ActTwo({ onPrev, onNext, story }: ActTwoProps) {
   const refiSeries = story.refiSeries;
   const loanPurposeSeries = story.loanPurposeSeries;
   const loanTypeSeries = story.loanTypeSeries;
+  const recoveryLoanTypeSeries = loanTypeSeries.filter((point) => point.year >= 2009);
   const purpose2007 = loanPurposeSeries.find((point) => point.year === 2007);
   const purpose2017 = loanPurposeSeries.find((point) => point.year === 2017);
 
@@ -203,13 +205,13 @@ export function ActTwo({ onPrev, onNext, story }: ActTwoProps) {
               </div>
             </div>
             <div className="mt-6 h-[320px] rounded-[24px] border border-[var(--color-border)] bg-[var(--color-page)] p-4">
-              {loanTypeSeries.length > 0 ? (
+              {recoveryLoanTypeSeries.length > 0 ? (
                 <ResponsiveContainer width="100%" height="100%">
-                  <AreaChart data={loanTypeSeries} stackOffset="expand">
+                  <AreaChart data={recoveryLoanTypeSeries} stackOffset="expand">
                     <CartesianGrid strokeDasharray="3 3" stroke="var(--color-border)" vertical={false} />
                     <XAxis dataKey="year" axisLine={false} tickLine={false} stroke="var(--color-muted)" />
                     <YAxis axisLine={false} tickLine={false} stroke="var(--color-muted)" width={48} tickFormatter={(value) => `${Math.round(value * 100)}%`} />
-                    <Tooltip contentStyle={{ borderRadius: 12, border: '1px solid var(--color-border)', fontSize: 13 }} formatter={(value: any) => [`${Math.round(Number(value))}%`]} labelFormatter={(label) => `Year: ${label}`} />
+                    <Tooltip content={<LoanTypeAmountTooltip />} />
                     <Area type="monotone" dataKey="conventional" stackId="1" stroke="none" fill="var(--color-accent)" fillOpacity={0.86} />
                     <Area type="monotone" dataKey="govtBacked" stackId="1" stroke="none" fill="var(--color-mint)" fillOpacity={0.86} />
                   </AreaChart>

@@ -17,7 +17,7 @@ logger.addHandler(ch)
 app = FastAPI(
     title="Data Grand Prix API",
     description="Serves precomputed HMDA chart and story JSON exports to the visualization frontend.",
-    version="1.1.0",
+    version="1.2.0",
 )
 
 app.add_middleware(
@@ -61,13 +61,14 @@ async def root() -> dict:
     """API index — lists all active endpoints."""
     return {
         "status": "online",
-        "version": "1.1.0",
+        "version": "1.2.0",
         "chart_endpoints": {
             "/chart1": "gap_chart.json | Gap area chart (Fallout)",
             "/chart2": "loan_type_composition.json | Loan type composition (Fallout)",
             "/chart3": "gap_chart.json | Full-decade gap chart (Recovery)",
             "/chart4": "refi_wave.json | Refinancing wave index (Recovery)",
             "/chart5": "loan_type_composition.json | Loan type composition (Recovery)",
+            "/chart6": "loan_type_amount_composition.json | Loan-type amount companion data (Collapse + Recovery)",
         },
         "story_endpoints": {
             "/story/landing": "story_landing.json | Hero metric + dataset metadata + stat chips",
@@ -115,6 +116,13 @@ async def get_chart5() -> FileResponse:
     """Loan type composition — full decade view."""
     logger.info("Serving /chart5 -> loan_type_composition.json")
     return serve_json_file("loan_type_composition.json")
+
+
+@app.get("/chart6", response_class=FileResponse, tags=["charts"])
+async def get_chart6() -> FileResponse:
+    """Loan type amount companion data — count shares plus originated loan amounts."""
+    logger.info("Serving /chart6 -> loan_type_amount_composition.json")
+    return serve_json_file("loan_type_amount_composition.json")
 
 
 # ── story endpoints ───────────────────────────────────────────────────────────
