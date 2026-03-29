@@ -8,7 +8,10 @@ interface ActTwoProps {
 }
 
 export function ActTwo({ onPrev, onNext, story }: ActTwoProps) {
-  const gapSeries = story.gapSeries.map((point) => ({ ...point, gapFill: point.applications }));
+  const gapSeries = story.gapSeries.map((point) => ({
+    ...point,
+    gap: parseInt(Math.max(point.applications - point.originations, 0).toString()),
+  }));
   const refiSeries = story.refiSeries;
   const loanPurposeSeries = story.loanPurposeSeries;
   const loanTypeSeries = story.loanTypeSeries;
@@ -85,7 +88,8 @@ export function ActTwo({ onPrev, onNext, story }: ActTwoProps) {
                     {story.milestones.recoveryStartYearValue !== null ? (
                       <ReferenceLine x={story.milestones.recoveryStartYearValue} stroke="var(--color-mint)" strokeDasharray="4 4" />
                     ) : null}
-                    <Area type="monotone" dataKey="gapFill" stroke="none" fill="var(--color-coral-soft)" />
+                    <Area type="monotone" dataKey="originations" stackId="gap-band" stroke="none" fill="transparent" fillOpacity={0} />
+                    <Area type="monotone" dataKey="gap" stackId="gap-band" stroke="none" fill="var(--color-coral-soft)" />
                     <Area type="monotone" dataKey="originations" stroke="var(--color-mint)" fill="var(--color-mint-soft)" fillOpacity={0.85} />
                     <Area type="monotone" dataKey="applications" stroke="var(--color-accent)" fill="var(--color-accent-soft)" fillOpacity={0.65} />
                   </AreaChart>

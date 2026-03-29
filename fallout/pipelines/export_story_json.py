@@ -471,6 +471,21 @@ def build_recovery(state: dict) -> dict:
             }
         )
 
+    # Denial rate series — full decade
+    denial_series = []
+    for y in years:
+        denial_series.append(
+            {
+                "year": int(y),
+                "denialRate": round(q1[y]["denial_rate"] * 100, 1),
+            }
+        )
+
+    # Denial peak
+    denial_peak_year = max(years, key=lambda y: q1[y]["denial_rate"])
+    denial_peak_pct = round(q1[denial_peak_year]["denial_rate"] * 100, 1)
+    denial_2017_pct = round(q1["2017"]["denial_rate"] * 100, 1)
+
     # Structural shift
     govt_2007 = round(100.0 - q2["2007"]["conventional_pct"])
     govt_2017 = round(100.0 - q2["2017"]["conventional_pct"])
@@ -489,6 +504,12 @@ def build_recovery(state: dict) -> dict:
         "refi_peak": {
             "year": int(refi_peak_year),
             "delta_from_baseline_pct": delta_from_baseline,
+        },
+        "denial_series": denial_series,
+        "denial_peak": {
+            "year": int(denial_peak_year),
+            "pct": denial_peak_pct,
+            "pct_2017": denial_2017_pct,
         },
         "loan_type_series": loan_type_series,
         "loan_purpose_series": loan_purpose_series,

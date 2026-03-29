@@ -85,7 +85,7 @@ function ApprovalCollapseCard({ story }: ApprovalCollapseCardProps) {
 export function ActOne({ onPrev, onNext, story }: ActOneProps) {
   const gapSeries = story.gapSeries.map((point) => ({
     ...point,
-    gapFill: point.applications,
+    gap: parseInt(Math.max(point.applications - point.originations, 0).toString()),
   }));
   const loanTypeSeries = story.loanTypeSeries;
   const mix2009 = loanTypeSeries.find((point) => point.year === 2009) ?? loanTypeSeries[2] ?? null;
@@ -155,7 +155,8 @@ export function ActOne({ onPrev, onNext, story }: ActOneProps) {
                     <YAxis axisLine={false} tickLine={false} stroke="var(--color-muted)" width={48} tickFormatter={(value) => `${value}M`} />
                     <Tooltip contentStyle={{ borderRadius: 12, border: '1px solid var(--color-border)', fontSize: 13 }} formatter={(value: any, name: any) => [`${value}M`, name === 'gapFill' ? 'Applications (gap fill)' : String(name).charAt(0).toUpperCase() + String(name).slice(1)]} labelFormatter={(label) => `Year: ${label}`} />
                     {story.markers.floorYear !== null ? <ReferenceLine x={story.markers.floorYear} stroke="var(--color-coral)" strokeDasharray="4 4" /> : null}
-                    <Area type="monotone" dataKey="gapFill" stroke="none" fill="var(--color-coral-soft)" />
+                    <Area type="monotone" dataKey="originations" stackId="gap-band" stroke="none" fill="transparent" fillOpacity={0} />
+                    <Area type="monotone" dataKey="gap" stackId="gap-band" stroke="none" fill="var(--color-coral-soft)" />
                     <Area type="monotone" dataKey="originations" stroke="var(--color-mint)" fill="var(--color-mint-soft)" fillOpacity={0.8} />
                     <Area type="monotone" dataKey="applications" stroke="var(--color-accent)" fill="var(--color-accent-soft)" fillOpacity={0.65} />
                   </AreaChart>

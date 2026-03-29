@@ -26,6 +26,11 @@ export interface LoanPurposePoint {
   refiShare: number;
 }
 
+export interface DenialPoint {
+  year: number;
+  denialRate: number;
+}
+
 export interface StatePoint {
   state: string;
   value: string;
@@ -105,6 +110,12 @@ export interface RecoveryData {
   refiPeak: {
     year: string;
     deltaFromBaseline: string;
+  };
+  denialSeries: DenialPoint[];
+  denialPeak: {
+    year: string;
+    pct: string;
+    pct2017: string;
   };
   loanPurposeSeries: LoanPurposePoint[];
   loanTypeSeries: LoanTypePoint[];
@@ -520,6 +531,18 @@ const mapRefiSeries = (value: unknown): RefiPoint[] => asArray(value).map(refiPo
 const mapLoanPurposeSeries = (value: unknown): LoanPurposePoint[] =>
   asArray(value).map(loanPurposePoint).filter((item): item is LoanPurposePoint => item !== null);
 
+const denialPoint = (item: unknown): DenialPoint | null => {
+  const row = asRecord(item);
+  if (!row) return null;
+  const year = toNumber(row.year);
+  const denialRate = toNumber(firstDefined(row.denialRate, row.denial_rate));
+  if (year === null || denialRate === null) return null;
+  return { year: Math.round(year), denialRate: round(denialRate, 1) };
+};
+
+const mapDenialSeries = (value: unknown): DenialPoint[] =>
+  asArray(value).map(denialPoint).filter((item): item is DenialPoint => item !== null);
+
 const mapStates = (value: unknown): StatePoint[] => asArray(value).map(statePoint).filter((item): item is StatePoint => item !== null);
 
 const mapStateRanks = (value: unknown): StateRankPoint[] =>
@@ -579,6 +602,12 @@ const createPlaceholderStoryData = (): StoryData => ({
     refiPeak: {
       year: PLACEHOLDER_VALUE,
       deltaFromBaseline: PLACEHOLDER_VALUE,
+    },
+    denialSeries: [],
+    denialPeak: {
+      year: PLACEHOLDER_VALUE,
+      pct: PLACEHOLDER_VALUE,
+      pct2017: PLACEHOLDER_VALUE,
     },
     loanPurposeSeries: [],
     loanTypeSeries: [],
@@ -773,6 +802,8 @@ const buildRecovery = (
   const refiPeakRecord = asRecord(recoveryRecord?.refi_peak);
   const structuralShift = asRecord(recoveryRecord?.structural_shift);
 
+  const denialPeakRecord = asRecord(recoveryRecord?.denial_peak);
+
   const storyGap = mapGapSeries(recoveryRecord?.gap_series);
   const gapSeries = mergeApprovalRates(chart3Gap.length > 0 ? chart3Gap : storyGap, storyGap);
 
@@ -802,6 +833,12 @@ const buildRecovery = (
       deltaFromBaseline: toText(firstDefined(refiPeakRecord?.delta_from_baseline_pct, fallback.refiPeak.deltaFromBaseline)),
     },
     loanPurposeSeries,
+    denialSeries: mapDenialSeries(recoveryRecord?.denial_series),
+    denialPeak: {
+      year: toYearText(firstDefined(denialPeakRecord?.year, fallback.denialPeak.year)),
+      pct: toPercentText(firstDefined(denialPeakRecord?.pct, fallback.denialPeak.pct)),
+      pct2017: toPercentText(firstDefined(denialPeakRecord?.pct_2017, fallback.denialPeak.pct2017)),
+    },
     loanTypeSeries,
     structuralShift: {
       govtShare2007: toPercentText(firstDefined(structuralShift?.govt_share_2007_pct, fallback.structuralShift.govtShare2007)),

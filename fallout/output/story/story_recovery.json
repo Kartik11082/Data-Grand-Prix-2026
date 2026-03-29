@@ -102,6 +102,57 @@
     "year": 2012,
     "delta_from_baseline_pct": "+34%"
   },
+  "denial_series": [
+    {
+      "year": 2007,
+      "denialRate": 27.3
+    },
+    {
+      "year": 2008,
+      "denialRate": 27.3
+    },
+    {
+      "year": 2009,
+      "denialRate": 19.8
+    },
+    {
+      "year": 2010,
+      "denialRate": 19.5
+    },
+    {
+      "year": 2011,
+      "denialRate": 19.7
+    },
+    {
+      "year": 2012,
+      "denialRate": 17.8
+    },
+    {
+      "year": 2013,
+      "denialRate": 18.6
+    },
+    {
+      "year": 2014,
+      "denialRate": 20.2
+    },
+    {
+      "year": 2015,
+      "denialRate": 18.5
+    },
+    {
+      "year": 2016,
+      "denialRate": 19.0
+    },
+    {
+      "year": 2017,
+      "denialRate": 16.5
+    }
+  ],
+  "denial_peak": {
+    "year": 2007,
+    "pct": 27.3,
+    "pct_2017": 16.5
+  },
   "loan_type_series": [
     {
       "year": 2007,
