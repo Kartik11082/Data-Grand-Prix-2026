@@ -159,6 +159,63 @@
       "govtBacked": 26
     }
   ],
+  "loan_purpose_series": [
+    {
+      "year": 2007,
+      "purchaseShare": 44.7,
+      "refiShare": 46.1
+    },
+    {
+      "year": 2008,
+      "purchaseShare": 43.6,
+      "refiShare": 48.4
+    },
+    {
+      "year": 2009,
+      "purchaseShare": 31.2,
+      "refiShare": 64.5
+    },
+    {
+      "year": 2010,
+      "purchaseShare": 32.4,
+      "refiShare": 63.2
+    },
+    {
+      "year": 2011,
+      "purchaseShare": 34.2,
+      "refiShare": 61.0
+    },
+    {
+      "year": 2012,
+      "purchaseShare": 28.0,
+      "refiShare": 68.1
+    },
+    {
+      "year": 2013,
+      "purchaseShare": 35.9,
+      "refiShare": 59.2
+    },
+    {
+      "year": 2014,
+      "purchaseShare": 53.8,
+      "refiShare": 39.3
+    },
+    {
+      "year": 2015,
+      "purchaseShare": 49.7,
+      "refiShare": 43.8
+    },
+    {
+      "year": 2016,
+      "purchaseShare": 48.5,
+      "refiShare": 45.0
+    },
+    {
+      "year": 2017,
+      "purchaseShare": 58.0,
+      "refiShare": 34.5
+    }
+  ],
   "structural_shift": {
     "govt_share_2007_pct": "6%",
     "govt_share_2017_pct": "26%"

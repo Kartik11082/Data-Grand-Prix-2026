@@ -1,4 +1,4 @@
-import { Area, AreaChart, ReferenceLine, ResponsiveContainer, XAxis, YAxis } from "recharts";
+import { Area, AreaChart, CartesianGrid, ReferenceLine, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import type { RecoveryData } from "../dataService";
 
 interface ActTwoProps {
@@ -10,7 +10,10 @@ interface ActTwoProps {
 export function ActTwo({ onPrev, onNext, story }: ActTwoProps) {
   const gapSeries = story.gapSeries.map((point) => ({ ...point, gapFill: point.applications }));
   const refiSeries = story.refiSeries;
+  const loanPurposeSeries = story.loanPurposeSeries;
   const loanTypeSeries = story.loanTypeSeries;
+  const purpose2007 = loanPurposeSeries.find((point) => point.year === 2007);
+  const purpose2017 = loanPurposeSeries.find((point) => point.year === 2017);
 
   return (
     <div className="mx-auto flex w-full max-w-[1400px] flex-col gap-10 px-4 py-8 md:px-8 md:py-10">
@@ -21,12 +24,13 @@ export function ActTwo({ onPrev, onNext, story }: ActTwoProps) {
             The climb back
           </h2>
           <p className="mt-5 text-base leading-7 text-[var(--color-ink)]">
-            Recovery appears in three graphs that track how lending normalized, where demand re-entered, and what permanently changed.
+            Recovery appears in four graphs that track how lending normalized, where demand re-entered, how borrower purpose shifted, and what permanently changed.
           </p>
           <ol className="mt-6 space-y-2 text-sm leading-6 text-[var(--color-ink)]">
             <li>1. Approval gap recovery</li>
             <li>2. Refinance wave</li>
-            <li>3. Government-backed share shift</li>
+            <li>3. Purchase vs refinance shift</li>
+            <li>4. Government-backed share shift</li>
           </ol>
 
           <div className="mt-8 space-y-4">
@@ -71,8 +75,10 @@ export function ActTwo({ onPrev, onNext, story }: ActTwoProps) {
               {gapSeries.length > 0 ? (
                 <ResponsiveContainer width="100%" height="100%">
                   <AreaChart data={gapSeries}>
+                    <CartesianGrid strokeDasharray="3 3" stroke="var(--color-border)" vertical={false} />
                     <XAxis dataKey="year" axisLine={false} tickLine={false} stroke="var(--color-muted)" />
-                    <YAxis axisLine={false} tickLine={false} stroke="var(--color-muted)" />
+                    <YAxis axisLine={false} tickLine={false} stroke="var(--color-muted)" width={48} tickFormatter={(value) => `${value}M`} />
+                    <Tooltip contentStyle={{ borderRadius: 12, border: '1px solid var(--color-border)', fontSize: 13 }} formatter={(value: any, name: any) => [`${value}M`, name === 'gapFill' ? 'Gap area' : String(name).charAt(0).toUpperCase() + String(name).slice(1)]} labelFormatter={(label) => `Year: ${label}`} />
                     {story.milestones.floorYearValue !== null ? (
                       <ReferenceLine x={story.milestones.floorYearValue} stroke="var(--color-coral)" strokeDasharray="4 4" />
                     ) : null}
@@ -111,8 +117,10 @@ export function ActTwo({ onPrev, onNext, story }: ActTwoProps) {
               {refiSeries.length > 0 ? (
                 <ResponsiveContainer width="100%" height="100%">
                   <AreaChart data={refiSeries}>
+                    <CartesianGrid strokeDasharray="3 3" stroke="var(--color-border)" vertical={false} />
                     <XAxis dataKey="year" axisLine={false} tickLine={false} stroke="var(--color-muted)" />
-                    <YAxis axisLine={false} tickLine={false} stroke="var(--color-muted)" />
+                    <YAxis axisLine={false} tickLine={false} stroke="var(--color-muted)" width={48} domain={[0, 'auto']} tickFormatter={(value) => `${Math.round(value)}`} />
+                    <Tooltip contentStyle={{ borderRadius: 12, border: '1px solid var(--color-border)', fontSize: 13 }} formatter={(value: any) => [`${Number(value).toFixed(1)}`, 'Refi index']} labelFormatter={(label) => `Year: ${label}`} />
                     <ReferenceLine y={100} stroke="var(--color-muted)" strokeDasharray="4 4" />
                     <Area type="monotone" dataKey="refiIndex" stroke="var(--color-amber)" fill="var(--color-amber-soft)" fillOpacity={0.9} />
                   </AreaChart>
@@ -125,6 +133,53 @@ export function ActTwo({ onPrev, onNext, story }: ActTwoProps) {
             </div>
             <div className="mt-6 rounded-[24px] border border-[var(--color-border)] bg-[var(--color-amber-soft)] p-5 text-sm leading-7 text-[var(--color-ink)]">
               Refinance peak: {story.refiPeak.deltaFromBaseline} in {story.refiPeak.year}.
+            </div>
+          </article>
+
+          <article className="rounded-[32px] border border-[var(--color-border)] bg-[var(--color-surface)] p-6 shadow-[var(--shadow-soft)] md:p-8">
+            <h3 className="text-2xl font-semibold text-[var(--color-ink)]">Borrower purpose shifted from refinance-heavy back toward purchase demand.</h3>
+            <p className="mt-3 text-sm leading-6 text-[var(--color-muted)]">
+              X-axis: year. Y-axis: share of originations by purpose (%), comparing Purchase vs Refinance.
+            </p>
+            <div className="mt-6 flex flex-wrap gap-3 text-sm text-[var(--color-ink)]">
+              <div className="inline-flex items-center gap-2 rounded-full border border-[var(--color-border)] bg-white/80 px-3 py-2">
+                <span className="h-2.5 w-2.5 rounded-full bg-[var(--color-accent)]" />
+                <span>Purchase share</span>
+              </div>
+              <div className="inline-flex items-center gap-2 rounded-full border border-[var(--color-border)] bg-white/80 px-3 py-2">
+                <span className="h-2.5 w-2.5 rounded-full bg-[var(--color-amber)]" />
+                <span>Refinance share</span>
+              </div>
+            </div>
+            <div className="mt-6 h-[320px] rounded-[24px] border border-[var(--color-border)] bg-[var(--color-page)] p-4">
+              {loanPurposeSeries.length > 0 ? (
+                <ResponsiveContainer width="100%" height="100%">
+                  <AreaChart data={loanPurposeSeries}>
+                    <CartesianGrid strokeDasharray="3 3" stroke="var(--color-border)" vertical={false} />
+                    <XAxis dataKey="year" axisLine={false} tickLine={false} stroke="var(--color-muted)" />
+                    <YAxis axisLine={false} tickLine={false} stroke="var(--color-muted)" width={48} tickFormatter={(value) => `${Math.round(value)}%`} />
+                    <Tooltip contentStyle={{ borderRadius: 12, border: '1px solid var(--color-border)', fontSize: 13 }} formatter={(value: any, name: any) => [`${Number(value).toFixed(1)}%`, name === 'purchaseShare' ? 'Purchase' : 'Refinance']} labelFormatter={(label) => `Year: ${label}`} />
+                    <Area type="monotone" dataKey="purchaseShare" stroke="var(--color-accent)" fill="var(--color-accent-soft)" fillOpacity={0.55} />
+                    <Area type="monotone" dataKey="refiShare" stroke="var(--color-amber)" fill="var(--color-amber-soft)" fillOpacity={0.6} />
+                  </AreaChart>
+                </ResponsiveContainer>
+              ) : (
+                <div className="flex h-full items-center justify-center rounded-[16px] border border-dashed border-[var(--color-border)] text-sm text-[var(--color-muted)]">
+                  X chart data missing
+                </div>
+              )}
+            </div>
+            <div className="mt-6 grid gap-4 md:grid-cols-2">
+              <div className="rounded-[24px] border border-[var(--color-border)] bg-white/80 p-5">
+                <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-[var(--color-muted)]">2007</p>
+                <p className="mt-2 text-sm text-[var(--color-accent)]">{purpose2007 ? `${purpose2007.purchaseShare}% purchase` : "X purchase"}</p>
+                <p className="mt-1 text-sm text-[var(--color-amber)]">{purpose2007 ? `${purpose2007.refiShare}% refinance` : "X refinance"}</p>
+              </div>
+              <div className="rounded-[24px] border border-[var(--color-border)] bg-white/80 p-5">
+                <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-[var(--color-muted)]">2017</p>
+                <p className="mt-2 text-sm text-[var(--color-accent)]">{purpose2017 ? `${purpose2017.purchaseShare}% purchase` : "X purchase"}</p>
+                <p className="mt-1 text-sm text-[var(--color-amber)]">{purpose2017 ? `${purpose2017.refiShare}% refinance` : "X refinance"}</p>
+              </div>
             </div>
           </article>
 
@@ -147,8 +202,10 @@ export function ActTwo({ onPrev, onNext, story }: ActTwoProps) {
               {loanTypeSeries.length > 0 ? (
                 <ResponsiveContainer width="100%" height="100%">
                   <AreaChart data={loanTypeSeries} stackOffset="expand">
+                    <CartesianGrid strokeDasharray="3 3" stroke="var(--color-border)" vertical={false} />
                     <XAxis dataKey="year" axisLine={false} tickLine={false} stroke="var(--color-muted)" />
-                    <YAxis axisLine={false} tickLine={false} stroke="var(--color-muted)" tickFormatter={(value) => `${Math.round(value * 100)}%`} />
+                    <YAxis axisLine={false} tickLine={false} stroke="var(--color-muted)" width={48} tickFormatter={(value) => `${Math.round(value * 100)}%`} />
+                    <Tooltip contentStyle={{ borderRadius: 12, border: '1px solid var(--color-border)', fontSize: 13 }} formatter={(value: any) => [`${Math.round(Number(value))}%`]} labelFormatter={(label) => `Year: ${label}`} />
                     <Area type="monotone" dataKey="conventional" stackId="1" stroke="none" fill="var(--color-accent)" fillOpacity={0.86} />
                     <Area type="monotone" dataKey="govtBacked" stackId="1" stroke="none" fill="var(--color-mint)" fillOpacity={0.86} />
                   </AreaChart>

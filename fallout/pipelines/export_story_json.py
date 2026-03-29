@@ -167,6 +167,84 @@ def signed_pct(delta: float) -> str:
     return f"{sign}{rounded}%"
 
 
+def build_originations_metric(volumes_by_state: dict[str, int]) -> dict:
+    """Build a map payload for originations volume by state."""
+    sorted_states = sorted(volumes_by_state.items(), key=lambda item: item[1], reverse=True)
+    if not sorted_states:
+        return {"title": "Originations volume by state", "states": [], "top_states": [], "bottom_states": []}
+
+    values = [float(volume) for _, volume in sorted_states]
+    low_cut = quantile_threshold(values, 0.33)
+    high_cut = quantile_threshold(values, 0.67)
+
+    states = [
+        {
+            "state": ABBR_TO_NAME.get(abbr, abbr),
+            "abbr": abbr,
+            "value": fmt_millions(volume),
+            "raw_value": volume,
+            "bucket": bucket_from_terciles(float(volume), low_cut, high_cut),
+        }
+        for abbr, volume in sorted_states
+    ]
+
+    top_states = [{"state": abbr, "abbr": abbr, "value": fmt_millions(volume)} for abbr, volume in sorted_states[:3]]
+    bottom_states = [{"state": abbr, "abbr": abbr, "value": fmt_millions(volume)} for abbr, volume in sorted_states[-3:]]
+
+    return {
+        "title": "Originations volume by state",
+        "states": states,
+        "top_states": top_states,
+        "bottom_states": bottom_states,
+    }
+
+
+def build_recovery_metric(vol_2007: dict[str, int], volumes_by_state: dict[str, int]) -> dict:
+    """Build a map payload for recovery index by state relative to 2007."""
+    recovery_items: list[tuple[str, float]] = []
+    for abbr in set(vol_2007.keys()) & set(volumes_by_state.keys()):
+        base_volume = vol_2007.get(abbr, 0)
+        year_volume = volumes_by_state.get(abbr, 0)
+        if base_volume and year_volume and base_volume > 0:
+            recovery_items.append((abbr, year_volume / base_volume))
+
+    recovery_items.sort(key=lambda item: item[1], reverse=True)
+
+    if not recovery_items:
+        return {"title": "Recovery index vs 2007 baseline", "states": [], "top_states": [], "bottom_states": []}
+
+    values = [ratio for _, ratio in recovery_items]
+    low_cut = quantile_threshold(values, 0.33)
+    high_cut = quantile_threshold(values, 0.67)
+
+    states = [
+        {
+            "state": ABBR_TO_NAME.get(abbr, abbr),
+            "abbr": abbr,
+            "value": pct_of_baseline(ratio),
+            "raw_value": round(ratio, 4),
+            "bucket": bucket_from_terciles(ratio, low_cut, high_cut),
+        }
+        for abbr, ratio in recovery_items
+    ]
+
+    top_states = [
+        {"state": abbr, "abbr": abbr, "value": signed_pct((ratio - 1) * 100)}
+        for abbr, ratio in recovery_items[:3]
+    ]
+    bottom_states = [
+        {"state": abbr, "abbr": abbr, "value": signed_pct((ratio - 1) * 100)}
+        for abbr, ratio in recovery_items[-3:]
+    ]
+
+    return {
+        "title": "Recovery index vs 2007 baseline",
+        "states": states,
+        "top_states": top_states,
+        "bottom_states": bottom_states,
+    }
+
+
 # ── 1. /story/landing ─────────────────────────────────────────────────────────
 
 
@@ -381,6 +459,18 @@ def build_recovery(state: dict) -> dict:
             }
         )
 
+    loan_purpose_series = []
+    for y in years:
+        purchase_share = round(q3[y]["purchase_share_pct"], 1)
+        refi_share = round(q3[y]["refi_share_pct"], 1)
+        loan_purpose_series.append(
+            {
+                "year": int(y),
+                "purchaseShare": purchase_share,
+                "refiShare": refi_share,
+            }
+        )
+
     # Structural shift
     govt_2007 = round(100.0 - q2["2007"]["conventional_pct"])
     govt_2017 = round(100.0 - q2["2017"]["conventional_pct"])
@@ -401,6 +491,7 @@ def build_recovery(state: dict) -> dict:
             "delta_from_baseline_pct": delta_from_baseline,
         },
         "loan_type_series": loan_type_series,
+        "loan_purpose_series": loan_purpose_series,
         "structural_shift": {
             "govt_share_2007_pct": f"{govt_2007}%",
             "govt_share_2017_pct": f"{govt_2017}%",
@@ -449,76 +540,11 @@ def build_behavior_shift(state: dict) -> dict:
         else:
             type_label = f"{dominant_type} (government)"
 
-        # Geography
+        # Geography (backward-compatible era cards)
         if year_str == "2007":
-            # 2007: bucket all states by raw volume terciles
-            sorted_states = sorted(vol.items(), key=lambda x: x[1], reverse=True)
-            volumes = [v for _, v in sorted_states]
-            low_cut = quantile_threshold([float(v) for v in volumes], 0.33)
-            high_cut = quantile_threshold([float(v) for v in volumes], 0.67)
-
-            geo_states = [
-                {
-                    "state": ABBR_TO_NAME.get(abbr, abbr),
-                    "value": fmt_millions(v),
-                    "bucket": bucket_from_terciles(float(v), low_cut, high_cut),
-                }
-                for abbr, v in sorted_states
-            ]
-
-            top_states = [
-                {
-                    "state": abbr,
-                    "value": fmt_millions(v),
-                    "label": "Top lending state by volume",
-                }
-                for abbr, v in sorted_states[:3]
-            ]
-            bottom_states = [
-                {
-                    "state": abbr,
-                    "value": fmt_millions(v),
-                    "label": "Smallest lending volume",
-                }
-                for abbr, v in sorted_states[-3:]
-            ]
+            metric_payload = build_originations_metric(vol)
         else:
-            # 2017: bucket all states by recovery-index terciles
-            ri_items = []
-            for abbr in set(vol_2007.keys()) & set(vol_2017.keys()):
-                ri = recovery_index(vol_2007, vol_2017, abbr)
-                if ri is not None:
-                    ri_items.append((abbr, ri))
-            ri_items.sort(key=lambda x: x[1], reverse=True)
-
-            low_cut = quantile_threshold([ri for _, ri in ri_items], 0.33)
-            high_cut = quantile_threshold([ri for _, ri in ri_items], 0.67)
-
-            geo_states = [
-                {
-                    "state": ABBR_TO_NAME.get(abbr, abbr),
-                    "value": pct_of_baseline(ri),
-                    "bucket": bucket_from_terciles(ri, low_cut, high_cut),
-                }
-                for abbr, ri in ri_items
-            ]
-
-            top_states = [
-                {
-                    "state": abbr,
-                    "value": signed_pct((ri - 1) * 100),
-                    "label": "Fast recovery index",
-                }
-                for abbr, ri in ri_items[:3]
-            ]
-            bottom_states = [
-                {
-                    "state": abbr,
-                    "value": signed_pct((ri - 1) * 100),
-                    "label": "Still below baseline",
-                }
-                for abbr, ri in ri_items[-3:]
-            ]
+            metric_payload = build_recovery_metric(vol_2007, vol)
 
         return {
             "lender_mix": {
@@ -534,9 +560,9 @@ def build_behavior_shift(state: dict) -> dict:
                 "received_loan_type_label": type_label,
             },
             "geography": {
-                "states": geo_states,
-                "top_states": top_states,
-                "bottom_states": bottom_states,
+                "states": metric_payload["states"],
+                "top_states": metric_payload["top_states"],
+                "bottom_states": metric_payload["bottom_states"],
             },
         }
 
@@ -548,6 +574,18 @@ def build_behavior_shift(state: dict) -> dict:
     income_17 = q4["2017"]["median_income_k"]
     approval_07 = approval_rate_pct(q1["2007"])
     approval_17 = approval_rate_pct(q1["2017"])
+
+    # Geography explorer — single metric: recovery index vs 2007 baseline
+    # Each state shows what % of its 2007 lending volume it has in the selected year.
+    # 2007 = 100% for all states. Scrubbing forward reveals the crash and uneven recovery.
+    years = sorted(q5.keys(), key=int)
+    default_year = 2017 if "2017" in q5 else int(years[-1])
+    yearly: dict[str, dict] = {}
+    for year_str in years:
+        vol_year = q5[year_str]
+        yearly[year_str] = {
+            "recovery_index": build_recovery_metric(vol_2007, vol_year),
+        }
 
     return {
         "eras": {
@@ -565,6 +603,18 @@ def build_behavior_shift(state: dict) -> dict:
             ),
             "lender_summary_2007": "Taking on risk was the business model.",
             "lender_summary_2017": "Safety first. Government guarantees preferred.",
+        },
+        "geography_explorer": {
+            "years": [int(year) for year in years],
+            "default_year": default_year,
+            "metrics": {
+                "recovery_index": {
+                    "label": "Recovery index",
+                    "unit": "% of 2007 lending volume",
+                    "available": True,
+                },
+            },
+            "yearly": yearly,
         },
     }
 
@@ -604,7 +654,7 @@ def build_summary(state: dict) -> dict:
     vol_2007 = q5["2007"]
     vol_2017 = q5["2017"]
     ri_items = []
-    for abbr in set(vol_2007.keys()) & set(vol_2017.keys()):
+    for abbr in sorted(set(vol_2007.keys()) & set(vol_2017.keys())):
         ri = recovery_index(vol_2007, vol_2017, abbr)
         if ri is not None:
             delta_pct = round((ri - 1) * 100)

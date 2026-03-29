@@ -7,8 +7,7 @@ import { ExecutiveSummary } from "./components/ExecutiveSummary";
 import { EMPTY_STORY_DATA, fetchStoryData } from "./dataService";
 import "./index.css";
 
-// const pageLabels = ["Overview", "Collapse", "Recovery", "Behavior Shift", "Summary"];
-const pageLabels = ["Collapse", "Recovery", "Behavior Shift", "Summary"];
+const pageLabels = ["Overview", "Collapse", "Recovery", "Behavior Shift", "Summary"];
 const navLabels = pageLabels.slice(1);
 
 export default function App() {

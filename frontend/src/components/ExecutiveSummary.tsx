@@ -1,4 +1,4 @@
-import { Area, AreaChart, Cell, Pie, PieChart, ResponsiveContainer } from "recharts";
+import { Area, AreaChart, Cell, Pie, PieChart, ResponsiveContainer, Tooltip, XAxis } from "recharts";
 import { ComposableMap, Geographies, Geography } from "react-simple-maps";
 import type { SummaryData } from "../dataService";
 
@@ -58,11 +58,14 @@ export function ExecutiveSummary({ story }: ExecutiveSummaryProps) {
               <p className="mt-4 text-sm leading-7 text-[var(--color-ink)]">
                 Peak gap year: {story.crisisCard.peakYear}. Applications were {story.crisisCard.applications} and originations were {story.crisisCard.originations}.
               </p>
+              <p className="mt-2 text-xs text-[var(--color-muted)]">X-axis: year. Y-axis: volume in millions of loans.</p>
 
               <div className="mt-6 h-[170px] rounded-[20px] border border-[var(--color-border)] bg-white/80 p-4">
                 {story.crisisCard.sparkline.length > 0 ? (
                   <ResponsiveContainer width="100%" height="100%">
                     <AreaChart data={story.crisisCard.sparkline}>
+                      <XAxis dataKey="year" axisLine={false} tickLine={false} stroke="var(--color-muted)" tick={{ fontSize: 10 }} />
+                      <Tooltip contentStyle={{ borderRadius: 12, border: '1px solid var(--color-border)', fontSize: 12 }} formatter={(value: any, name: any) => [`${value}M`, String(name).charAt(0).toUpperCase() + String(name).slice(1)]} labelFormatter={(label) => `${label}`} />
                       <Area type="monotone" dataKey="applications" stroke="var(--color-accent)" fill="var(--color-accent-soft)" fillOpacity={0.7} />
                       <Area type="monotone" dataKey="originations" stroke="var(--color-mint)" fill="var(--color-mint-soft)" fillOpacity={0.85} />
                     </AreaChart>
@@ -98,6 +101,7 @@ export function ExecutiveSummary({ story }: ExecutiveSummaryProps) {
                   </PieChart>
                 </ResponsiveContainer>
               </div>
+              <p className="mt-2 text-xs text-[var(--color-muted)]">Unit: percent share of originated loans.</p>
               <div className="mt-6 grid gap-4 md:grid-cols-2">
                 {donutData.map((item) => (
                   <div key={item.label} className="rounded-[18px] border border-[var(--color-border)] bg-white/90 p-4">
@@ -147,6 +151,7 @@ export function ExecutiveSummary({ story }: ExecutiveSummaryProps) {
                   </Geographies>
                 </ComposableMap>
               </div>
+              <p className="mt-2 text-xs text-[var(--color-muted)]">Color buckets are terciles of recovery index values by state.</p>
 
               <div className="mt-6 grid gap-3">
                 <div className="flex flex-wrap gap-2">

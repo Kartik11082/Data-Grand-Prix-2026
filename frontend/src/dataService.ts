@@ -20,15 +20,47 @@ export interface RefiPoint {
   refiIndex: number;
 }
 
+export interface LoanPurposePoint {
+  year: number;
+  purchaseShare: number;
+  refiShare: number;
+}
+
 export interface StatePoint {
   state: string;
   value: string;
   bucket: StateBucket;
+  abbr?: string;
+  rawValue?: number | null;
 }
 
 export interface StateRankPoint {
   state: string;
   value: string;
+  abbr?: string;
+}
+
+export type GeographyMetricKey = "originations_volume" | "denial_rate" | "recovery_index";
+
+export interface GeographyMetricMeta {
+  label: string;
+  unit: string;
+  available: boolean;
+  missingReason: string;
+}
+
+export interface GeographyMetricData {
+  title: string;
+  states: StatePoint[];
+  topStates: StateRankPoint[];
+  bottomStates: StateRankPoint[];
+}
+
+export interface GeographyExplorerData {
+  years: number[];
+  defaultYear: number;
+  metrics: Record<GeographyMetricKey, GeographyMetricMeta>;
+  yearly: Record<string, Partial<Record<GeographyMetricKey, GeographyMetricData>>>;
 }
 
 export interface LandingData {
@@ -74,6 +106,7 @@ export interface RecoveryData {
     year: string;
     deltaFromBaseline: string;
   };
+  loanPurposeSeries: LoanPurposePoint[];
   loanTypeSeries: LoanTypePoint[];
   structuralShift: {
     govtShare2007: string;
@@ -109,6 +142,7 @@ export interface BehaviorShiftData {
     lender2007: string;
     lender2017: string;
   };
+  geographyExplorer?: GeographyExplorerData;
 }
 
 export interface SummaryData {
@@ -153,6 +187,7 @@ const asRecord = (value: unknown): Record<string, unknown> | null => (isRecord(v
 const asArray = (value: unknown): unknown[] => (Array.isArray(value) ? value : []);
 
 const firstDefined = (...values: unknown[]): unknown => values.find((value) => value !== undefined && value !== null);
+const GEOGRAPHY_METRIC_KEYS: GeographyMetricKey[] = ["originations_volume", "denial_rate", "recovery_index"];
 
 const toNumber = (value: unknown): number | null => {
   if (typeof value === "number" && Number.isFinite(value)) {
@@ -182,6 +217,37 @@ const toText = (value: unknown): string => {
   }
 
   return PLACEHOLDER_VALUE;
+};
+
+const toOptionalText = (value: unknown): string => {
+  if (typeof value !== "string") {
+    return "";
+  }
+
+  const trimmed = value.trim();
+  return trimmed;
+};
+
+const toBoolean = (value: unknown): boolean => {
+  if (typeof value === "boolean") {
+    return value;
+  }
+
+  if (typeof value === "number") {
+    return value !== 0;
+  }
+
+  if (typeof value === "string") {
+    const normalized = value.trim().toLowerCase();
+    if (["true", "1", "yes"].includes(normalized)) {
+      return true;
+    }
+    if (["false", "0", "no"].includes(normalized)) {
+      return false;
+    }
+  }
+
+  return false;
 };
 
 const round = (value: number, decimals = 1): number => Number(value.toFixed(decimals));
@@ -289,6 +355,27 @@ const refiPoint = (item: unknown): RefiPoint | null => {
   };
 };
 
+const loanPurposePoint = (item: unknown): LoanPurposePoint | null => {
+  const row = asRecord(item);
+  if (!row) {
+    return null;
+  }
+
+  const year = toNumber(row.year);
+  const purchaseShare = toNumber(firstDefined(row.purchaseShare, row.purchase_share, row.purchase_share_pct));
+  const refiShare = toNumber(firstDefined(row.refiShare, row.refi_share, row.refi_share_pct));
+
+  if (year === null || purchaseShare === null || refiShare === null) {
+    return null;
+  }
+
+  return {
+    year: Math.round(year),
+    purchaseShare: round(purchaseShare, 1),
+    refiShare: round(refiShare, 1),
+  };
+};
+
 const statePoint = (item: unknown): StatePoint | null => {
   const row = asRecord(item);
   if (!row) {
@@ -298,8 +385,16 @@ const statePoint = (item: unknown): StatePoint | null => {
   const state = toText(row.state);
   const value = toText(row.value);
   const bucket = toStateBucket(row.bucket);
+  const abbrRaw = toOptionalText(row.abbr);
+  const rawValue = toNumber(firstDefined(row.raw_value, row.rawValue));
 
-  return { state, value, bucket };
+  return {
+    state,
+    value,
+    bucket,
+    abbr: abbrRaw.length > 0 ? abbrRaw : undefined,
+    rawValue,
+  };
 };
 
 const stateRankPoint = (item: unknown): StateRankPoint | null => {
@@ -308,9 +403,110 @@ const stateRankPoint = (item: unknown): StateRankPoint | null => {
     return null;
   }
 
+  const abbrRaw = toOptionalText(row.abbr);
+
   return {
     state: toText(row.state),
     value: toText(row.value),
+    abbr: abbrRaw.length > 0 ? abbrRaw : undefined,
+  };
+};
+
+const geographyMetricData = (value: unknown): GeographyMetricData => {
+  const row = asRecord(value);
+
+  return {
+    title: toText(firstDefined(row?.title, row?.label)),
+    states: mapStates(row?.states),
+    topStates: mapStateRanks(row?.top_states),
+    bottomStates: mapStateRanks(row?.bottom_states),
+  };
+};
+
+const geographyMetricMeta = (value: unknown, fallbackLabel: string, fallbackUnit: string): GeographyMetricMeta => {
+  const row = asRecord(value);
+
+  return {
+    label: toText(firstDefined(row?.label, fallbackLabel)),
+    unit: toText(firstDefined(row?.unit, fallbackUnit)),
+    available: toBoolean(firstDefined(row?.available, false)),
+    missingReason: toOptionalText(firstDefined(row?.missing_reason, row?.missingReason)),
+  };
+};
+
+const defaultGeographyMetricMeta = (): Record<GeographyMetricKey, GeographyMetricMeta> => ({
+  originations_volume: geographyMetricMeta(undefined, "Originations volume", "Originated loans"),
+  denial_rate: geographyMetricMeta(undefined, "Denial rate", "% of applications denied"),
+  recovery_index: geographyMetricMeta(undefined, "Recovery index", "Share of 2007 baseline"),
+});
+
+const geographyExplorer = (value: unknown): GeographyExplorerData | undefined => {
+  const row = asRecord(value);
+  if (!row) {
+    return undefined;
+  }
+
+  const metricsRecord = asRecord(row.metrics);
+  const metrics = defaultGeographyMetricMeta();
+  metrics.originations_volume = geographyMetricMeta(
+    metricsRecord?.originations_volume,
+    metrics.originations_volume.label,
+    metrics.originations_volume.unit,
+  );
+  metrics.denial_rate = geographyMetricMeta(
+    metricsRecord?.denial_rate,
+    metrics.denial_rate.label,
+    metrics.denial_rate.unit,
+  );
+  metrics.recovery_index = geographyMetricMeta(
+    metricsRecord?.recovery_index,
+    metrics.recovery_index.label,
+    metrics.recovery_index.unit,
+  );
+
+  const years = asArray(row.years)
+    .map(toNumber)
+    .filter((item): item is number => item !== null)
+    .map((item) => Math.round(item))
+    .sort((a, b) => a - b);
+
+  const defaultYear = toNumber(row.default_year);
+  const normalizedDefaultYear =
+    defaultYear !== null
+      ? Math.round(defaultYear)
+      : years.includes(2017)
+        ? 2017
+        : years[years.length - 1] ?? 2017;
+
+  const yearlyRecord = asRecord(row.yearly);
+  const yearly: Record<string, Partial<Record<GeographyMetricKey, GeographyMetricData>>> = {};
+  if (yearlyRecord) {
+    for (const [yearKey, yearValue] of Object.entries(yearlyRecord)) {
+      const perYear = asRecord(yearValue);
+      if (!perYear) {
+        continue;
+      }
+
+      const metricRows: Partial<Record<GeographyMetricKey, GeographyMetricData>> = {};
+      for (const metricKey of GEOGRAPHY_METRIC_KEYS) {
+        if (perYear[metricKey] !== undefined) {
+          metricRows[metricKey] = geographyMetricData(perYear[metricKey]);
+        }
+      }
+
+      yearly[yearKey] = metricRows;
+    }
+  }
+
+  if (years.length === 0 && Object.keys(yearly).length === 0) {
+    return undefined;
+  }
+
+  return {
+    years,
+    defaultYear: normalizedDefaultYear,
+    metrics,
+    yearly,
   };
 };
 
@@ -320,6 +516,9 @@ const mapLoanTypeSeries = (value: unknown): LoanTypePoint[] =>
   asArray(value).map(loanTypePoint).filter((item): item is LoanTypePoint => item !== null);
 
 const mapRefiSeries = (value: unknown): RefiPoint[] => asArray(value).map(refiPoint).filter((item): item is RefiPoint => item !== null);
+
+const mapLoanPurposeSeries = (value: unknown): LoanPurposePoint[] =>
+  asArray(value).map(loanPurposePoint).filter((item): item is LoanPurposePoint => item !== null);
 
 const mapStates = (value: unknown): StatePoint[] => asArray(value).map(statePoint).filter((item): item is StatePoint => item !== null);
 
@@ -381,6 +580,7 @@ const createPlaceholderStoryData = (): StoryData => ({
       year: PLACEHOLDER_VALUE,
       deltaFromBaseline: PLACEHOLDER_VALUE,
     },
+    loanPurposeSeries: [],
     loanTypeSeries: [],
     structuralShift: {
       govtShare2007: PLACEHOLDER_VALUE,
@@ -579,6 +779,8 @@ const buildRecovery = (
   const storyRefi = mapRefiSeries(recoveryRecord?.refi_series);
   const refiSeries = chart4Refi.length > 0 ? chart4Refi : storyRefi;
 
+  const loanPurposeSeries = mapLoanPurposeSeries(recoveryRecord?.loan_purpose_series);
+
   const storyLoanTypes = mapLoanTypeSeries(recoveryRecord?.loan_type_series);
   const loanTypeSeries = chart5LoanTypes.length > 0 ? chart5LoanTypes : storyLoanTypes;
 
@@ -599,6 +801,7 @@ const buildRecovery = (
       year: toYearText(firstDefined(refiPeakRecord?.year, fallback.refiPeak.year)),
       deltaFromBaseline: toText(firstDefined(refiPeakRecord?.delta_from_baseline_pct, fallback.refiPeak.deltaFromBaseline)),
     },
+    loanPurposeSeries,
     loanTypeSeries,
     structuralShift: {
       govtShare2007: toPercentText(firstDefined(structuralShift?.govt_share_2007_pct, fallback.structuralShift.govtShare2007)),
@@ -655,6 +858,7 @@ const buildBehaviorShift = (behaviorApi: unknown): BehaviorShiftData => {
       lender2007: toText(firstDefined(comparison?.lender_summary_2007, fallback.comparison.lender2007)),
       lender2017: toText(firstDefined(comparison?.lender_summary_2017, fallback.comparison.lender2017)),
     },
+    geographyExplorer: geographyExplorer(behaviorRecord?.geography_explorer),
   };
 };
 

@@ -1,5 +1,5 @@
 import { useLayoutEffect, useRef, useState } from "react";
-import { Area, AreaChart, ReferenceLine, ResponsiveContainer, XAxis, YAxis } from "recharts";
+import { Area, AreaChart, CartesianGrid, ReferenceLine, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import type { CollapseData } from "../dataService";
 
 interface ActOneProps {
@@ -150,8 +150,10 @@ export function ActOne({ onPrev, onNext, story }: ActOneProps) {
               {gapSeries.length > 0 ? (
                 <ResponsiveContainer width="100%" height="100%">
                   <AreaChart data={gapSeries}>
+                    <CartesianGrid strokeDasharray="3 3" stroke="var(--color-border)" vertical={false} />
                     <XAxis dataKey="year" axisLine={false} tickLine={false} stroke="var(--color-muted)" />
-                    <YAxis axisLine={false} tickLine={false} stroke="var(--color-muted)" />
+                    <YAxis axisLine={false} tickLine={false} stroke="var(--color-muted)" width={48} tickFormatter={(value) => `${value}M`} />
+                    <Tooltip contentStyle={{ borderRadius: 12, border: '1px solid var(--color-border)', fontSize: 13 }} formatter={(value: any, name: any) => [`${value}M`, name === 'gapFill' ? 'Applications (gap fill)' : String(name).charAt(0).toUpperCase() + String(name).slice(1)]} labelFormatter={(label) => `Year: ${label}`} />
                     {story.markers.floorYear !== null ? <ReferenceLine x={story.markers.floorYear} stroke="var(--color-coral)" strokeDasharray="4 4" /> : null}
                     <Area type="monotone" dataKey="gapFill" stroke="none" fill="var(--color-coral-soft)" />
                     <Area type="monotone" dataKey="originations" stroke="var(--color-mint)" fill="var(--color-mint-soft)" fillOpacity={0.8} />
@@ -213,8 +215,10 @@ export function ActOne({ onPrev, onNext, story }: ActOneProps) {
               {loanTypeSeries.length > 0 ? (
                 <ResponsiveContainer width="100%" height="100%">
                   <AreaChart data={loanTypeSeries} stackOffset="expand">
+                    <CartesianGrid strokeDasharray="3 3" stroke="var(--color-border)" vertical={false} />
                     <XAxis dataKey="year" axisLine={false} tickLine={false} stroke="var(--color-muted)" />
-                    <YAxis axisLine={false} tickLine={false} stroke="var(--color-muted)" tickFormatter={(value) => `${Math.round(value * 100)}%`} />
+                    <YAxis axisLine={false} tickLine={false} stroke="var(--color-muted)" width={48} tickFormatter={(value) => `${Math.round(value * 100)}%`} />
+                    <Tooltip contentStyle={{ borderRadius: 12, border: '1px solid var(--color-border)', fontSize: 13 }} formatter={(value: any) => [`${Math.round(Number(value))}%`]} labelFormatter={(label) => `Year: ${label}`} />
                     {mix2009 ? <ReferenceLine x={mix2009.year} stroke="var(--color-accent)" strokeDasharray="4 4" /> : null}
                     <Area type="monotone" dataKey="conventional" stackId="1" stroke="none" fill="var(--color-accent)" fillOpacity={0.85} />
                     <Area type="monotone" dataKey="govtBacked" stackId="1" stroke="none" fill="var(--color-mint)" fillOpacity={0.85} />

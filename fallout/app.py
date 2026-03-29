@@ -72,8 +72,8 @@ async def root() -> dict:
         "story_endpoints": {
             "/story/landing": "story_landing.json | Hero metric + dataset metadata + stat chips",
             "/story/collapse": "story_collapse.json | 2007-2010 crisis data",
-            "/story/recovery": "story_recovery.json | Full-decade recovery data",
-            "/story/behavior-shift": "story_behavior_shift.json | 2007 vs 2017 era comparison",
+            "/story/recovery": "story_recovery.json | Full-decade recovery data + loan purpose composition",
+            "/story/behavior-shift": "story_behavior_shift.json | Era comparison + geography explorer (2007-2017)",
             "/story/summary": "story_summary.json | Executive summary cards",
         },
     }
@@ -136,14 +136,14 @@ async def get_story_collapse() -> FileResponse:
 
 @app.get("/story/recovery", response_class=FileResponse, tags=["story"])
 async def get_story_recovery() -> FileResponse:
-    """Recovery page data — full-decade gap, refi index, milestones, structural shift."""
+    """Recovery page data — full-decade gap, refi index, loan purpose mix, milestones, structural shift."""
     logger.info("Serving /story/recovery -> story_recovery.json")
     return serve_story_json("story_recovery.json")
 
 
 @app.get("/story/behavior-shift", response_class=FileResponse, tags=["story"])
 async def get_story_behavior_shift() -> FileResponse:
-    """Behavior shift page data — 2007 vs 2017 era comparison."""
+    """Behavior shift page data - era comparison + geography explorer."""
     logger.info("Serving /story/behavior-shift -> story_behavior_shift.json")
     return serve_story_json("story_behavior_shift.json")
 
@@ -162,3 +162,4 @@ if __name__ == "__main__":
 
     logger.info("Starting uvicorn on 0.0.0.0:8000...")
     uvicorn.run("app:app", host="0.0.0.0", port=8000, reload=True)
+
